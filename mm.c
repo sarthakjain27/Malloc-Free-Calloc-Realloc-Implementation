@@ -80,24 +80,130 @@ static void PUT(char *p,word_t val)
        (unsigned int *)(p) = val;
 }
 
-static char* head_pointer(char *bp)
+static char* head_pointer(void *bp)
 {
     return ((char *)(bp)-WSIZE);   
 }
 
-static char* foot_pointer(char *bp)
+static char* foot_pointer(void *bp)
 {
-    return ((char *)(bp) + GET_SIZE(HDRP(bp)) - DSIZE);   
+    return ((char *)(bp) + GET_SIZE(head_pointer(bp)) - DSIZE);   
 }
 /* rounds up to the nearest multiple of ALIGNMENT */
 static size_t align(size_t x) {
     return ALIGNMENT * ((x+ALIGNMENT-1)/ALIGNMENT);
 }
 
+static word_t GET(void *p)
+{
+    return (*(unsigned int *)(p));   
+}
+
+static size_t GET_SIZE(void *p)
+{
+    return (GET(p) & ~0x7);   
+}
+
+static size_t GET_ALLOC(void *p)
+{
+    return (GET(p) & 0x1);   
+}
+
+static size_t GET_PREV_ALLOC(void *p)
+{
+    return (GET(p) & 0x2);   
+}
+
+static void *next_block_address(void *bp)
+{
+    return ((char *)(bp) + GET_SIZE(((char *)(bp) - WSIZE)));    
+}
+
+static void *prev_bloc_address(void *bp)
+{
+    return ((char *)(bp) - GET_SIZE(((char *)(bp) - DSIZE)));   
+}
+
+
+/*
+ * extend_heap - Extend heap size and return a pointer to the extend memory
+ *
+ *  If cannot extend heap, return NULL.
+ */
+static void *extend_heap(size_t word)
+{
+    char *bp;
+    size_t size;
+    size_t is_prev_alloc;
+
+    /* Allocate to maintain alignment requests */
+    size = (word % 2) ? (word + 1) * WSIZE : word * WSIZE;
+
+    if ((long)(bp = mem_sbrk(size)) == -1) {
+        printf("mem_sbrk fails\n");
+        return NULL;
+    }
+
+    /* Find bp's prev_alloc info to set extended block's prev_alloc */
+    is_prev_alloc = GET_PREV_ALLOC(head_pointer(bp));
+
+    /* Initialize the extended block header and footer */
+    PUT(head_pointer(bp), PACK(size, is_prev_alloc, is_free));
+    PUT(foot_pointer(bp), PACK(size, is_free, is_Free));
+
+    /* Initialize the epilogue header */
+    epilogue = head_pointer(next_block_address(bp));
+    PUT(head_pointer(next_block_address(bp)), PACK(0, prev_Alloc,is_alloc));
+
+    return coalesce(bp);
+}
+
 /*
  * Initialize: return false on error, true on success.
  */
 bool mm_init(void) {
+    /* Create initial empty heap */
+    size_t init_size = (2 * (MAXLIST + 1) + 4) * WSIZE;
+    size_t prologue_size = (2 * (MAXLIST + 1) + 2) * WSIZE;
+    if ((heap_list_pointer = mem_sbrk(init_size)) == (void *)-1) {
+        printf("mem_sbrk fails\n");
+        return false;
+    }
+
+    /* Get heap start address and first/last seglist start part */
+    heap_base_address = heap_list_pointer;
+    first_seglist = heap_list_pointer + DSIZE;
+    last_seglist = first_seglist + MAXLIST * DSIZE;
+    epilogue = heap_list_pointer + (2 * (MAXLIST + 1) + 3) * WSIZE;
+    
+    /* Padding part (4 bytes) for alignment */
+    PUT(heap_list_pointer, PACK(0, is_free, is_free));
+
+    /* Prologue part */
+    heap_list_pointer = heap_list_pointer + WSIZE;    // move to prologue header
+    PUT(heap_list_pointer, PACK(prologue_size, prev_aloc,is_alloc));
+    heap_list_pointer = heap_list_pointer + WSIZE; 
+    PUT(foot_pointer(heap_list_pointer), PACK(prologue_size, prev_alloc,is_alloc));
+
+    /* 
+     * Put each seglist's start part in the following space,
+     * and store the offset value for later query use
+     */
+    size_t offset;
+    for (size_t i = 0; i <= MAXLIST; i++) {
+        offset = (i + 1) * DSIZE;
+        PUT(base + offset, offset);
+        PUT(base + (offset + WSIZE), offset);
+    }
+
+    /* Epilogue part */
+    PUT(foot_pointer(heap_list_pointer) + WSIZE, PACK(0, prev_alloc,is_alloc));
+
+    /* Extend the empty heap with a block of INITSIZE bytes */
+    if (extend_heap(INITSIZE/WSIZE) == NULL) {
+        return false;
+    }
+    
     return true;
 }
 
