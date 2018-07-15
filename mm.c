@@ -56,7 +56,39 @@
 
 /* What is the correct alignment? */
 #define ALIGNMENT 16
+#define MAXLIST 9
+#define WSIZE 4
+#define is_free 0x0
+#define is_alloc 0x1
+#define prev_alloc 0x2
 
+/* Global Variables */
+static char *heap_list_pointer = 0;
+static char *heap_base_address=0;
+static char *first_seglist=0;
+static char *last_seglist=0;
+static char *epilogue=0;
+typedef uint64_t word_t;
+
+static word_t PACK(size_t size,int prev,int curr)
+{
+    return ((size) | (prev) | (curr));   
+}
+
+static void PUT(char *p,word_t val)
+{
+       (unsigned int *)(p) = val;
+}
+
+static char* head_pointer(char *bp)
+{
+    return ((char *)(bp)-WSIZE);   
+}
+
+static char* foot_pointer(char *bp)
+{
+    return ((char *)(bp) + GET_SIZE(HDRP(bp)) - DSIZE);   
+}
 /* rounds up to the nearest multiple of ALIGNMENT */
 static size_t align(size_t x) {
     return ALIGNMENT * ((x+ALIGNMENT-1)/ALIGNMENT);
