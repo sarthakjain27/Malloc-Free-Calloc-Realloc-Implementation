@@ -219,7 +219,7 @@ static void insert_free_list(void *bp, int size)
 {
 	int free_list_index = get_free_list_head(size);
 	(*(char **)(bp)) = (*((char **)(free_list_head) + free_list_index))
-	(*((char **)(((*((char **)(free_list_head) + free_list_index)))) + 1)) = bp;
+	(*((char **)(*((char **)(free_list_head) + free_list_index)) + 1)) = bp;
 	(*((char **)(bp) + 1)) = NULL;
 	(*((char **)(free_list_head) + free_list_index)) = bp;
 }
@@ -494,7 +494,7 @@ static void checkblock(void *bp)
 /*
  * checkheap - functions with multiple checks
  */
-int mm_checkheap(int verbose)
+bool mm_checkheap(int verbose)
 {
 
 	char *bp = heap_list_head;
@@ -526,7 +526,7 @@ int mm_checkheap(int verbose)
 		//return 1;
 	}
 
-	return 0;
+	return true;
 }
 
 static int get_free_list_head( unsigned int n)
