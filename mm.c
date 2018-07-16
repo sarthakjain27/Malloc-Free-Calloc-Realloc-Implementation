@@ -156,7 +156,7 @@ static void remove_block(void *bp, int size)
 	else
 	{
 		int free_list_index = get_free_list_head(size);
-		GET_FREE_HEAD(free_list_index) = (*(char **)(bp));
+		(*((char **)(free_list_head) + free_list_index)) = (*(char **)(bp));
 	}
 	(*((char **)((*(char **)(bp))) + 1)) = (*((char **)(bp) + 1));
 }
@@ -218,10 +218,10 @@ static void *coalesce(void *bp)
 static void insert_free_list(void *bp, int size)
 {
 	int free_list_index = get_free_list_head(size);
-	NEXT_FREE_BLK(bp) = GET_FREE_HEAD(free_list_index);
-	PREV_FREE_BLK(GET_FREE_HEAD(free_list_index)) = bp;
-	PREV_FREE_BLK(bp) = NULL;
-	GET_FREE_HEAD(free_list_index) = bp;
+	(*(char **)(bp)) = (*((char **)(free_list_head) + free_list_index))
+	(*((char **)(((*((char **)(free_list_head) + free_list_index)))) + 1)) = bp;
+	(*((char **)(bp) + 1)) = NULL;
+	(*((char **)(free_list_head) + free_list_index)) = bp;
 }
 
 static void *extend_heap(size_t words)
@@ -444,7 +444,7 @@ static void *first_fit(size_t req_size)
 	char *bp;
 	for (int i = get_free_list_head(req_size); i < LIST_NO; i++)
 	{
-		for (bp = GET_FREE_HEAD(i); GET_ALLOC(head_pointer(bp)) == 0; bp =(*(char **)(bp)) )
+		for (bp = (*((char **)(free_list_head) + i)); GET_ALLOC(head_pointer(bp)) == 0; bp =(*(char **)(bp)) )
 		{
 			if (req_size <= (size_t) GET_SIZE(head_pointer(bp)))
 				return bp;
