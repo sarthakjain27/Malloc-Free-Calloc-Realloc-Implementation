@@ -57,12 +57,15 @@
 /* What is the correct ment? */
 #define ALIGNMENT 16
 #define MAXLIST 9
+#define INITSIZE (1 << 12)
 #define WSIZE 4
+#define DSIZE 8
 #define is_free 0x0
 #define is_alloc 0x1
 #define prev_alloc 0x2
 #define MIN_ALLOC_SIZE 12
 #define MIN_FREE_SIZE 16
+#define BIGLIST 4
 
 /* Global Variables */
 static char *heap_list_pointer = 0;
@@ -177,10 +180,10 @@ static void* PREV_FREE_BLKP(void *bp)
 
 static inline void addBlock(void *bp, size_t index)
 {
-    PUT(NEXT_PTR(bp), GET(NEXT_PTR(first_list + index * DSIZE)));
+    PUT(NEXT_PTR(bp), GET(NEXT_PTR(first_seglist + index * DSIZE)));
     PUT(PREV_PTR(bp), GET(PREV_PTR(NEXT_FREE_BLKP(bp))));
 
-    PUT(NEXT_PTR(first_list + index * DSIZE), (long)bp - (long)heap_base_address);
+    PUT(NEXT_PTR(first_seglist + index * DSIZE), (long)bp - (long)heap_base_address);
     PUT(PREV_PTR(NEXT_FREE_BLKP(bp)), (long)bp - (long)heap_base_address);
 }
 
@@ -340,7 +343,7 @@ bool mm_init(void) {
 
     /* Prologue part */
     heap_list_pointer = heap_list_pointer + WSIZE;    // move to prologue header
-    PUT(heap_list_pointer, PACK(prologue_size, prev_aloc,is_alloc));
+    PUT(heap_list_pointer, PACK(prologue_size, prev_alloc,is_alloc));
     heap_list_pointer = heap_list_pointer + WSIZE; 
     PUT(foot_pointer(heap_list_pointer), PACK(prologue_size, prev_alloc,is_alloc));
 
