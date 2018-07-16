@@ -79,7 +79,7 @@ typedef uint64_t word_t;
 /*
  * max: returns x if x > y, and y otherwise.
  */
-static size_t max(size_t x, size_t y)
+static size_t MAX(size_t x, size_t y)
 {
     return (x > y) ? x : y;
 }
