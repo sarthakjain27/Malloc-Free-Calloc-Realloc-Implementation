@@ -612,7 +612,7 @@ static bool in_heap(const void *p) {
  */
 static bool aligned(const void *p) {
     size_t ip = (size_t) p;
-    return align(ip) == ip;
+    return ALIGN(ip) == ip;
 }
 
 /*
