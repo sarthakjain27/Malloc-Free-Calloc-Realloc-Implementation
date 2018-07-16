@@ -91,10 +91,6 @@ static void* head_pointer(void *bp)
     return ((char *)(bp)-WSIZE);   
 }
 
-static void* foot_pointer(void *bp)
-{
-    return ((char *)(bp) + gET_SIZE(head_pointer(bp)) - DSIZE);   
-}
 /* rounds up to the nearest multiple of ALIGNMENT */
 static size_t align(size_t x) {
     return ALIGNMENT * ((x+ALIGNMENT-1)/ALIGNMENT);
@@ -105,9 +101,14 @@ static size_t GET(void *p)
     return (*(unsigned int *)(p));   
 }
 
-static size_t gET_SIZE(void *p)
+static size_t GET_SIZE(void *p)
 {
     return (GET(p) & ~0x7);   
+}
+
+static void* foot_pointer(void *bp)
+{
+    return ((char *)(bp) + GET_SIZE(head_pointer(bp)) - DSIZE);   
 }
 
 static size_t GET_ALLOC(void *p)
@@ -122,12 +123,12 @@ static size_t GET_PREV_ALLOC(void *p)
 
 static void *next_block_address(void *bp)
 {
-    return ((char *)(bp) + gET_SIZE(((char *)(bp) - WSIZE)));    
+    return ((char *)(bp) + GET_SIZE(((char *)(bp) - WSIZE)));    
 }
 
 static void *prev_block_address(void *bp)
 {
-    return ((char *)(bp) - gET_SIZE(((char *)(bp) - DSIZE)));   
+    return ((char *)(bp) - GET_SIZE(((char *)(bp) - DSIZE)));   
 }
 
 static size_t find_list(size_t asize)
