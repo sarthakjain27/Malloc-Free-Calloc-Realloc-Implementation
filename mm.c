@@ -83,7 +83,7 @@ static size_t PACK(size_t size,int prev,int curr)
 
 static void PUT(void *p,size_t val)
 {
-       (unsigned int *)(p) = val;
+       (*(unsigned int *)(p))= val;
 }
 
 static void* head_pointer(void *bp)
