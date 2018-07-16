@@ -219,7 +219,7 @@ static void insert_free_list(void *bp, int size)
 {
 	int free_list_index = get_free_list_head(size);
 	(*(char **)(bp)) = (*((char **)(free_list_head) + free_list_index))
-	(*((char **)((*(char **)(bp))) + 1)) = bp;
+	//(*((char **)(free_list_head) + free_list_index))= bp;	
 	(*((char **)(bp) + 1)) = NULL;
 	(*((char **)(free_list_head) + free_list_index)) = bp;
 }
