@@ -55,7 +55,7 @@
 #endif /* def DRIVER */
 
 /* What is the correct ment? */
-#define ALIGNMENT 16
+#define ALIGNMENT 8
 #define MAXLIST 9
 #define INITSIZE (1 << 12)
 #define CHUNKSIZE (1 << 9)
@@ -102,7 +102,7 @@ static void* head_pointer(void *bp)
 
 /* rounds up to the nearest multiple of ALIGNMENT */
 static size_t ALIGN(size_t x) {
-    return ALIGNMENT * ((x+ALIGNMENT-1)/ALIGNMENT);
+    return (((size) + (ALIGNMENT - 1)) & ~0X7);
 }
 
 static size_t GET(void *p)
@@ -602,7 +602,7 @@ static bool in_heap(const void *p) {
  */
 static bool aligned(const void *p) {
     size_t ip = (size_t) p;
-    return align(ip) == ip;
+    return ALIGN(ip) == ip;
 }
 
 /*
