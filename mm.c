@@ -101,7 +101,7 @@ static void* head_pointer(void *bp)
 }
 
 /* rounds up to the nearest multiple of ALIGNMENT */
-static size_t align(size_t x) {
+static size_t ALIGN(size_t x) {
     return ALIGNMENT * ((x+ALIGNMENT-1)/ALIGNMENT);
 }
 
@@ -377,11 +377,6 @@ bool mm_init(void) {
         return false;
     }
     return true;
-}
-
-static size_t ALIGN(size_t size)
-{
-    return (((size_t)(size) + (ALIGNMENT - 1)) & ~0X7);   
 }
 
 static void *find_fit(size_t asize)
