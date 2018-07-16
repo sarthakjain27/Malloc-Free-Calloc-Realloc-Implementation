@@ -121,7 +121,7 @@ static void *next_block_address(void *bp)
     return ((char *)(bp) + GET_SIZE(((char *)(bp) - WSIZE)));    
 }
 
-static void *prev_bloc_address(void *bp)
+static void *prev_block_address(void *bp)
 {
     return ((char *)(bp) - GET_SIZE(((char *)(bp) - DSIZE)));   
 }
@@ -615,9 +615,312 @@ static bool aligned(const void *p) {
  */
 
 /*
+ * checkblock - check each block's header and footer consistency
+ */
+static void checkblock(void *bp)
+{
+    /* Block size got from header and footer */
+    size_t hsize = GET_SIZE(head_pointer(bp));       
+    size_t fsize = GET_SIZE(foot_pointer(bp)); 
+
+    /* Block allocate/free info got from header and footer */
+    size_t halloc = GET_ALLOC(head_pointer(bp));    
+    size_t falloc = GET_ALLOC(foot_pointer(bp));
+    
+    /* Check block is inside heap range or not */
+    if (!in_heap(bp)) {
+        printf("Error: Block at %p is outside heap range [%p, %p]\n", bp, 
+                mem_heap_lo(), mem_heap_hi());
+    }
+
+    /* Check block address is aligned or not */
+    if (!aligned(bp)) {
+        printf("Error: Block at %p with size %zu is not doubleword aligned\n", 
+                bp, hsize);
+    }
+    
+    /* Check block size >= MIN_FREE_SIZE */
+    if ((hsize < MIN_FREE_SIZE)) {
+        printf("Error: Block at %p size %d is smaller than minimun size %d\n", 
+                bp, (int)hsize, (int)MIN_FREE_SIZE);
+    }
+
+    /* Check free block's header and footer consistency */
+    if ((!halloc) && ((hsize != fsize) || (halloc != falloc))) {
+        printf("Error: Block at %p's header doesn't match footer\n", bp);
+        printf("Block's header : (%zu, %c), footer : (%zu, %c)\n", 
+                hsize, (halloc ? 'A' : 'F'), fsize, (falloc ? 'A' : 'F'));
+    }         
+}
+
+/*
+ * printblock - Print block information
+ */
+static void printblock(void *bp)
+{
+    /* Block size got from header and footer */
+    size_t hsize = GET_SIZE(head_pointer(bp));       
+    size_t fsize = GET_SIZE(foot_pointer(bp)); 
+
+    /* Block allocate/free info got from header and footer */
+    size_t halloc = GET_ALLOC(head_pointer(bp));    
+    size_t falloc = GET_ALLOC(foot_pointer(bp));
+
+    /* Block prev's allocate/free info got from header */
+    size_t prev_alloc = GET_PREV_ALLOC(head_pointer(bp));  
+    
+    /* Epilogue Case */
+    //if (hsize == 0) {
+    if (GET_SIZE(bp) == 0) {
+        printf("Epilogue at %p : (%zu, %c)\n", bp, (size_t)GET_SIZE(bp), 
+                (GET_ALLOC(bp) ? 'A' : 'F'));
+    }
+    /* Not epilogue */
+    else {
+        /* Allocate block info */
+        if (halloc) {
+            printf("Allocate block at %p: header (%zu, %c, %c)\n", bp, hsize, 
+                    (halloc ? 'A' : 'F'), (prev_alloc ? 'A' : 'F'));
+        }
+        /* Free block info */
+        else {
+            printf("Free block at %p: header (%zu, %c, %c),",  
+                bp, hsize, (prev_alloc ? 'A' : 'F'), (halloc ? 'A' : 'F'));
+            printf(" footer (%zu, %c)\n", fsize, (falloc ? 'A' : 'F'));
+        }
+    }
+}
+
+/*
+ * checklist - Loop each block in heap to check and return free block number
+ */
+static size_t checklist(int verbose)
+{
+    /* Initialization */
+    void *bp = heap_list_pointer;
+    size_t size = GET_SIZE(head_pointer(bp));
+    size_t consec_free = 0;            
+    size_t stored_alloc = prev_alloc;
+    size_t free_blk_num = 0;
+    
+    /* When size is 0 means we meet epilogue */
+    while (size != 0) {
+        size_t is_alloc = GET_ALLOC(head_pointer(bp));
+        size_t prev_alloc = GET_PREV_ALLOC(head_pointer(bp));
+        
+        /* Check each block in heap */
+        /* Check address alignment */
+        if (!aligned(bp)) {
+            printf("Error: not satisfy alignment\n");
+            if (verbose) {
+                printf("Block at address %p doesn't satisfy alignment\n", bp);
+            }
+        }
+        
+        /* Check address in heap or not */
+        if (!in_heap(bp)) {
+            printf("Error: not in heap range\n");
+            if (verbose) {
+                printf("Block at address %p isn't in heap range [%p, %p]\n", 
+                        bp, mem_heap_lo(), mem_heap_hi());
+            }
+        }
+        
+        if (verbose) {
+            printblock(bp);
+        }
+        
+        /* Check prev/next allocate bit consistency */
+        if (stored_alloc != prev_alloc) {
+            printf("Error: prev/next allocate bit doesn't match\n");
+        }
+        stored_alloc = is_alloc << 1; 
+
+        /* Free blocks in heap */
+        if (is_alloc) {
+            free_blk_num++;
+            checkblock(bp);
+            
+            /* consec_free is 1 iff there are two consecutive free blocks */
+            if (consec_free == 1) {
+                printf("Error: two consecutive free blocks\n");
+                if (verbose) {
+                    printblock(bp);
+                    printblock(prev_block_address(bp));
+                }
+            }
+            else {
+                /* Update consec_free value */
+                consec_free++;
+            }
+        }
+        /* Allocate blocks in heap */
+        else {
+            /* Reset consecutive flag */
+            consec_free = 0;
+        }
+        
+        /* Move to next block */
+        bp = next_block_address(bp);
+        size = GET_SIZE(head_pointer(bp));
+    }
+    
+    return free_blk_num;
+}
+
+/*
+ * check_freelist - Loop each free block in seglist to check 
+ *                  and return free block number
+ */
+static size_t check_freelist(int verbose) 
+{
+    /* Initialization */
+    size_t free_blk_num = 0;
+    size_t free_list_num = 0;
+    size_t lower_bound = MIN_FREE_SIZE / 2;
+    size_t upper_bound = MIN_FREE_SIZE;
+    
+    char *cur_list;
+    char *bp;
+    char *cycle_bp;
+    
+    size_t bp_size;
+    
+    /* Loop each seglist */
+    for (cur_list = first_list; cur_list != last_list + DSIZE; cur_list = cur_list + DSIZE) {
+        free_list_num++;
+        
+        /* Check if there is cyclic linked list */
+        cycle_bp = NEXT_FREE_BLKP(cur_list);
+        if (check_cycle(cycle_bp)) {
+            printf("Error: there is cyclic linked list\n");
+        }
+
+        /* Loop each free block in this seglist */
+        for (bp = NEXT_FREE_BLKP(cur_list); bp != cur_list; bp = NEXT_FREE_BLKP(bp)) {
+            bp_size = GET_SIZE(head_pointer(bp));
+            free_blk_num++;
+            
+            if (verbose) {
+                printblock(bp);
+            }
+            
+            /* Check general block info correctness */
+            checkblock(bp);
+            
+            /* Check next/prev pointer consistency */
+            if (PREV_FREE_BLKP(NEXT_FREE_BLKP(bp)) != bp) {
+                printf("Error: free block next/prev pointer not consist\n");
+                if (verbose) {
+                    printf("free block at %p, prev %p, next %p, prev free \
+                        block's next point to %p\n", bp, PREV_FREE_BLKP(bp),
+                        NEXT_FREE_BLKP(bp), PREV_FREE_BLKP(NEXT_FREE_BLKP(bp)));
+                }
+            }
+            
+            /* Check free block fall into correct seg list */
+            /* seglist #0 - #8 */
+            if (lower_bound < MAX_SIZE) {
+                if (bp_size < lower_bound || bp_size > upper_bound) {
+                    printf("Error: free block falls into wrong seg list\n");
+                    if (verbose) {
+                        printf("free block at %p has size %zu when this", 
+                                bp, bp_size);
+                        printf(" seglist range [%zu, %zu]\n", 
+                                lower_bound, upper_bound);
+                    }
+                }
+            }
+            /* seglist #9 */
+            else {
+                if (bp_size < lower_bound) {
+                    printf("Error: free block falls into wrong seg list\n");
+                    if (verbose) {
+                        printf("free block at %p has size %zu when this", 
+                                bp, bp_size);
+                        printf(" seglist range >= %u\n", MAX_SIZE);
+                    }
+                }    
+            }
+        }  
+
+        /* Update lower_bound and upper_bound */
+        lower_bound = lower_bound * 2;
+        upper_bound = upper_bound * 2;
+    }
+    
+    /* Check seg list number */
+    if (free_list_num != (MAXLIST + 1)) {
+        printf("Error: seglist number doesn't match\n");
+        if (verbose) {
+            printf("Counted seglist number is %zu", free_list_num);
+            printf("while the correct number is %u\n", (MAXLIST + 1));
+        }
+    }
+
+    return free_blk_num;    
+}
+
+/*
  * mm_checkheap
  */
 bool mm_checkheap(int lineno) {
+    /* Check padding part */
+    if (GET(mem_heap_lo()) != 0) {
+        printf("Error: Padding part content isn't 0\n");
+        return false;
+    }
+    
+    /* Check prologue and epilogue blocks */
+    char *prologue = heap_listp;
+    size_t prologue_size = (2 * (MAXLIST + 1) + 2) * WSIZE;
+    
+    checkblock(prologue);
+    
+    if (GET_SIZE(HDRP(prologue)) != prologue_size) {
+        printf("Error: prologue %p size : %d doesn't match \
+            correct size : %d\n", prologue, (int)GET_SIZE(HDRP(prologue)), 
+            (int)prologue_size);
+        return false;
+    }
+    
+    if (!GET_ALLOC(HDRP(prologue))) {
+        printf("Error: prologue isn't allocated\n");
+        return false;
+    }
+       
+    if (verbose) {
+        printblock(prologue);
+    }
+    
+    if (GET_SIZE(epilogue) != 0) {
+        printf("Error: epilogue %p size : %d doesn't match \
+            correct size : 0\n", prologue, (int)GET_SIZE(HDRP(prologue)));
+        return false;
+    }
+    
+    if (!GET_ALLOC(epilogue)) {
+        printf("Error: epilogue isn't allocated\n");
+        return false;
+    }
+    
+    if (verbose) {
+        printblock(epilogue);
+    }
+    /* end check prologue and epilogue blocks */
+    
+    /* Check block in heap and in seglist */
+    size_t free_num_heap = checklist(verbose);
+    size_t free_num_list = check_freelist(verbose);
+    if (free_num_heap != free_num_list) {
+        printf("Error: different free block number\n");
+        if (verbose) {
+            printf("Free block number counted in heap is %zu", free_num_heap);
+            printf(" while free block number counted in list is %zu\n",
+                    free_num_list);
+        }
+        return false;
+    }
     return true;
 }
 
