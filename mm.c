@@ -133,7 +133,7 @@ static void* HDRP(void *bp)
 
 static void* FTRP(void *bp)
 {
-    return ((char *)(bp) + GET_SIZE(head_pointer(bp)) - DSIZE);   
+    return ((char *)(bp) + GET_SIZE(HDRP(bp)) - DSIZE);   
 }
 
 
@@ -195,7 +195,7 @@ static void checkblock(void *bp);
 static size_t check_cycle(void *bp);
 static size_t checklist(int verbose);
 static size_t check_freelist(int verbose);
-void mm_checkheap(int verbose);
+bool mm_checkheap(int verbose);
 /* $end internal helper funtion prototype */
 
 /*
@@ -692,7 +692,8 @@ static int in_heap(const void *p)
  */
 static long aligned(const void *p) 
 {
-    return (size_t)ALIGN(p) == (size_t)p;
+    size_t ip=(size_t) p;
+	return ALIGN(ip) == ip;
 }
 
 /*
