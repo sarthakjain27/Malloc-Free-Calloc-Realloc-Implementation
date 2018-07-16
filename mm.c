@@ -877,14 +877,14 @@ bool mm_checkheap(int lineno) {
     
     checkblock(prologue);
     
-    if (GET_SIZE(HDRP(prologue)) != prologue_size) {
+    if (GET_SIZE(head_pointer(prologue)) != prologue_size) {
         printf("Error: prologue %p size : %d doesn't match \
-            correct size : %d\n", prologue, (int)GET_SIZE(HDRP(prologue)), 
+            correct size : %d\n", prologue, (int)GET_SIZE(head_pointer(prologue)), 
             (int)prologue_size);
         return false;
     }
     
-    if (!GET_ALLOC(HDRP(prologue))) {
+    if (!GET_ALLOC(head_pointer(prologue))) {
         printf("Error: prologue isn't allocated\n");
         return false;
     }
@@ -895,7 +895,7 @@ bool mm_checkheap(int lineno) {
     
     if (GET_SIZE(epilogue) != 0) {
         printf("Error: epilogue %p size : %d doesn't match \
-            correct size : 0\n", prologue, (int)GET_SIZE(HDRP(prologue)));
+            correct size : 0\n", prologue, (int)GET_SIZE(head_pointer(prologue)));
         return false;
     }
     
