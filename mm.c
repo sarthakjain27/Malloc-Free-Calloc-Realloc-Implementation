@@ -77,6 +77,14 @@ static char *last_seglist=0;
 static char *epilogue=0;
 typedef uint64_t word_t;
 
+
+/*
+ * round_up: Rounds size up to next multiple of n
+ */
+static size_t round_up(size_t size, size_t n)
+{
+    return (n * ((size + (n-1)) / n));
+}
 /*
  * max: returns x if x > y, and y otherwise.
  */
