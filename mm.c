@@ -868,7 +868,7 @@ static size_t check_freelist(int verbose)
 /*
  * mm_checkheap
  */
-bool mm_checkheap(int lineno) {
+bool mm_checkheap(int verbose) {
     /* Check padding part */
     if (GET(mem_heap_lo()) != 0) {
         printf("Error: Padding part content isn't 0\n");
@@ -876,7 +876,7 @@ bool mm_checkheap(int lineno) {
     }
     
     /* Check prologue and epilogue blocks */
-    char *prologue = heap_listp;
+    char *prologue = heap_list_pointer;
     size_t prologue_size = (2 * (MAXLIST + 1) + 2) * WSIZE;
     
     checkblock(prologue);
