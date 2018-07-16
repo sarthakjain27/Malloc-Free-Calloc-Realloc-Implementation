@@ -105,6 +105,10 @@ static size_t ALIGN(size_t x) {
     return ((x + (ALIGNMENT - 1)) & ~0X7);
 }
 
+static size_t align(size_t x){
+    return ALIGNMENT * ((x+ALIGNMENT-1)/ALIGNMENT);   
+}
+
 static size_t GET(void *p)
 {
     return (*(unsigned int *)(p));   
@@ -602,7 +606,7 @@ static bool in_heap(const void *p) {
  */
 static bool aligned(const void *p) {
     size_t ip = (size_t) p;
-    return ALIGN(ip) == ip;
+    return align(ip) == ip;
 }
 
 /*
