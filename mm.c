@@ -54,7 +54,7 @@
 #define memcpy mem_memcpy
 #endif /* def DRIVER */
 
-/* What is the correct alignment? */
+/* What is the correct ment? */
 #define ALIGNMENT 16
 #define MAXLIST 9
 #define WSIZE 4
@@ -507,14 +507,57 @@ void *malloc (size_t size) {
  * free
  */
 void free (void *ptr) {
-    return;
+    /* Ignore spurious request */
+    if (bp == 0) {
+        return;
+    }
+
+    /* Get bp's size and prev_alloc info */
+    size_t size = GET_SIZE(HDRP(bp));
+    size_t is_prev_alloc = GET_PREV_ALLOC(HDRP(bp));
+
+    /* Set alloc bit to 0 to free this block and maintain prev alloc info */
+    PUT(head_pointer(bp), PACK(size, is_prev_alloc, is_free));
+    PUT(foot_pointer(bp), PACK(size, is_free, is_free));
+
+    coalesce(bp);
 }
 
 /*
  * realloc
  */
 void *realloc(void *oldptr, size_t size) {
-    return NULL;
+    size_t oldsize;
+    void *newptr;
+
+    /* If size == 0 then this is just free, and we return NULL. */
+    if(size == 0) {
+        mm_free(ptr);
+        return NULL;
+    }
+
+    /* If oldptr is NULL, then this is just malloc. */
+    if(ptr == NULL) {
+        return mm_malloc(size);
+    }
+
+    newptr = mm_malloc(size);
+
+    /* If realloc() fails the original block is left untouched  */
+    if(!newptr) {
+        return NULL;
+    }
+
+    /* Copy the old data. */
+    oldsize = GET_SIZE(HDRP(ptr));
+    if(size < oldsize) oldsize = size;
+    memcpy(newptr, ptr, oldsize);
+
+    /* Free the old block. */
+    mm_free(ptr);
+
+    //mm_checkheap(1);
+    return newptr;
 }
 
 /*
@@ -522,7 +565,17 @@ void *realloc(void *oldptr, size_t size) {
  * This function is not tested by mdriver
  */
 void *calloc (size_t nmemb, size_t size) {
-    return NULL;
+    if (nmemb == 0 || size == 0) {
+        return NULL;
+    }
+
+    size_t bytes = nmemb * size;
+    void *newptr;
+
+    newptr = malloc(bytes);
+    memset(newptr, 0, bytes);
+
+    return newptr;
 }
 
 
@@ -547,7 +600,7 @@ static bool aligned(const void *p) {
  *****************************************************************************
  * Do not delete the following super-secret(tm) lines,                       *
  * except if you're replacing the entire code in this file                   *
- * with the entire code contained in mm-line.c!                          *
+ * with the entire code contained in mm-baseline.c!                          *
  *                                                                           *
  * 54 68 69 73 20 69 73 20 61 20 73 75 62 6c 69 6d 69 6e 61 6c               *
  *                                                                           *
