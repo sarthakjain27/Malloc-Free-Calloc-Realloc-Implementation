@@ -61,6 +61,7 @@
 #define is_free 0x0
 #define is_alloc 0x1
 #define prev_alloc 0x2
+#define MIN_ALLOC_SIZE 12
 #define MIN_FREE_SIZE 16
 
 /* Global Variables */
@@ -76,17 +77,17 @@ static word_t PACK(size_t size,int prev,int curr)
     return ((size) | (prev) | (curr));   
 }
 
-static void PUT(char *p,word_t val)
+static void PUT(void *p,word_t val)
 {
        (unsigned int *)(p) = val;
 }
 
-static char* head_pointer(void *bp)
+static void* head_pointer(void *bp)
 {
     return ((char *)(bp)-WSIZE);   
 }
 
-static char* foot_pointer(void *bp)
+static void* foot_pointer(void *bp)
 {
     return ((char *)(bp) + GET_SIZE(head_pointer(bp)) - DSIZE);   
 }
@@ -95,7 +96,7 @@ static size_t align(size_t x) {
     return ALIGNMENT * ((x+ALIGNMENT-1)/ALIGNMENT);
 }
 
-static word_t GET(void *p)
+static size_t GET(void *p)
 {
     return (*(unsigned int *)(p));   
 }
@@ -166,12 +167,12 @@ static void FREE_PREV(void *bp)
 
 static void* NEXT_FREE_BLKP(void *bp)
 {
-    return (base + (*(unsigned int *)(NEXT_PTR(bp))));   
+    return (heap_base_address + (*(unsigned int *)(NEXT_PTR(bp))));   
 }
 
 static void* PREV_FREE_BLKP(void *bp)
 {
-    return (base + (*(unsigned int *)(PREV_PTR(bp))));   
+    return (heap_base_address + (*(unsigned int *)(PREV_PTR(bp))));   
 }
 
 static inline void addBlock(void *bp, size_t index)
@@ -179,8 +180,8 @@ static inline void addBlock(void *bp, size_t index)
     PUT(NEXT_PTR(bp), GET(NEXT_PTR(first_list + index * DSIZE)));
     PUT(PREV_PTR(bp), GET(PREV_PTR(NEXT_FREE_BLKP(bp))));
 
-    PUT(NEXT_PTR(first_list + index * DSIZE), (long)bp - (long)base);
-    PUT(PREV_PTR(NEXT_FREE_BLKP(bp)), (long)bp - (long)base);
+    PUT(NEXT_PTR(first_list + index * DSIZE), (long)bp - (long)heap_base_address);
+    PUT(PREV_PTR(NEXT_FREE_BLKP(bp)), (long)bp - (long)heap_base_address);
 }
 
 static inline void delBlock(void *bp)
@@ -350,8 +351,8 @@ bool mm_init(void) {
     size_t offset;
     for (size_t i = 0; i <= MAXLIST; i++) {
         offset = (i + 1) * DSIZE;
-        PUT(base + offset, offset);
-        PUT(base + (offset + WSIZE), offset);
+        PUT(heap_base_address + offset, offset);
+        PUT(heap_base_address + (offset + WSIZE), offset);
     }
 
     /* Epilogue part */
@@ -361,15 +362,145 @@ bool mm_init(void) {
     if (extend_heap(INITSIZE/WSIZE) == NULL) {
         return false;
     }
-    
     return true;
+}
+
+static size_t ALIGN(size_t size)
+{
+    return (((size_t)(size) + (ALIGNMENT - 1)) & ~0X7);   
+}
+
+static void *find_fit(size_t asize)
+{
+    /* Initialization */
+    void *bp;
+    void *temp_list;
+    
+    /* Find seglist index and corresponding seglist start part */
+    size_t index = find_list(asize);
+    char *cur_list = first_seglist + index * DSIZE;
+
+    /* For larger required size, use best fit approach */
+    if (index >= BIGLIST) {
+        /* Initialize min_bp to NULL in case cannot find suitable block */
+        void *min_bp = NULL;        
+        /* Initialize best_size to upper bound of a seglist */
+        size_t best_size = MIN_FREE_SIZE * (1 << index) - 1;
+        
+        /* Loop each seglist which range's lower bound >= asize */
+        for(temp_list = cur_list; temp_list != (char *)last_list + DSIZE; temp_list = (char *)temp_list + DSIZE) {
+            /* Loop each block of this seglist */
+            for (bp = NEXT_FREE_BLKP(temp_list); bp != temp_list; bp = NEXT_FREE_BLKP(bp)) {
+                if (!GET_ALLOC(head_pointe(bp)) && (asize <= GET_SIZE(head_pointer(bp)))) {
+                    /* 
+                     * min_bp = NULL means first get into this seglist
+                     * or we find a block is better, whose size < best_size
+                     */
+                    if (min_bp == NULL || GET_SIZE(head_pointer(bp)) < best_size) {
+                        /* Update related variables */
+                        min_bp = bp;
+                        best_size = GET_SIZE(head_pointer(bp));
+                    }
+                }
+            }
+        }
+
+        return min_bp;
+    }
+
+    /* For smaller required size, use first fit approach */
+    else {
+         /* Loop each seglist which range's lower bound >= asize */
+        for (temp_list = cur_list; temp_list != (char *)last_list + DSIZE; temp_list = (char *)temp_list + DSIZE) {
+            /* Loop each block of this seglist */
+            for (bp = NEXT_FREE_BLKP(temp_list); bp != temp_list; bp = NEXT_FREE_BLKP(bp)) {
+                /* Find first suitable block then return the pointer */
+                if (!GET_ALLOC(head_pointer(bp)) && (asize <= GET_SIZE(head_pointer(bp)))) {
+                    return bp;
+                }
+            }
+        }
+    }
+
+    /* Cannot find suitable block */
+    return NULL;
+}
+
+static void ALLOC_PREV(void *p)
+{
+    PUT(p, (GET(p) | prev_alloc));
+}
+
+static void place(void *bp, size_t asize)
+{
+    /* Initialization */
+    size_t csize = GET_SIZE(head_pointer(bp));
+    size_t index;
+    size_t is_prev_alloc = GET_PREV_ALLOC(head_pointer(bp));
+
+    /* Need split block to avoid fragmentation */
+    if ((csize - asize) >= MIN_FREE_SIZE) {
+        delBlock(bp);
+        
+        /* Make first part as allocated */
+        PUT(head_pointer(bp), PACK(asize, is_prev_alloc, is_alloc));
+        
+        /* Make second part as free */
+        bp = next_block_address(bp);
+        PUT(head_pointer(bp), PACK(csize - asize, prev_alloc, is_free));
+        PUT(foot_pointer(bp), PACK(csize - asize, is_free, is_free));
+
+        index = find_list(csize - asize);
+
+        addBlock(bp, index);
+    }
+
+    else {
+        delBlock(bp);
+
+        PUT(head_pointer(bp), PACK(csize, is_prev_alloc, is_alloc));
+
+        ALLOC_PREV(head_pointer(next_block_address(bp)));
+    }
 }
 
 /*
  * malloc
  */
 void *malloc (size_t size) {
-    return NULL;
+    size_t asize;       /* Adjusted block size */
+    size_t extendsize;  /* Amount to extend heap if no fit */
+    char *bp;
+
+    /* Ignore spurious requests */
+    if (size <= 0) {
+        return NULL;
+    }
+
+    /* Adjust block size to include alignment and overhead requirements */
+    if (size <= MIN_ALLOC_SIZE) {
+        asize = MIN_FREE_SIZE;
+    }
+    else {
+        asize = ALIGN(size + WSIZE);
+    }
+
+    /* Search free lists to find fit */
+    if ((bp = find_fit(asize)) != NULL) {
+        place(bp, asize);
+        return bp;
+    }
+    
+    /* No fit found, get more memory and place the block */
+    extendsize = MAX(asize, CHUNKSIZE);
+    if ((bp = extend_heap(extendsize/WSIZE)) == NULL) {
+        return NULL;
+    }
+
+    /* Go to newly extended memory and allocate */
+    place(bp, asize);
+    
+    return bp;
 }
 
 /*
@@ -416,7 +547,7 @@ static bool aligned(const void *p) {
  *****************************************************************************
  * Do not delete the following super-secret(tm) lines,                       *
  * except if you're replacing the entire code in this file                   *
- * with the entire code contained in mm-baseline.c!                          *
+ * with the entire code contained in mm-line.c!                          *
  *                                                                           *
  * 54 68 69 73 20 69 73 20 61 20 73 75 62 6c 69 6d 69 6e 61 6c               *
  *                                                                           *
