@@ -61,6 +61,7 @@
 #define is_free 0x0
 #define is_alloc 0x1
 #define prev_alloc 0x2
+#define MIN_FREE_SIZE 16
 
 /* Global Variables */
 static char *heap_list_pointer = 0;
@@ -124,6 +125,163 @@ static void *prev_bloc_address(void *bp)
     return ((char *)(bp) - GET_SIZE(((char *)(bp) - DSIZE)));   
 }
 
+static size_t find_list(size_t asize)
+{
+    if (asize == MIN_FREE_SIZE)
+        return 0;
+    else if (asize < (1 << 1) * MIN_FREE_SIZE)
+        return 1;
+    else if (asize < (1 << 2) * MIN_FREE_SIZE)
+        return 2;
+    else if (asize < (1 << 3) * MIN_FREE_SIZE)
+        return 3;
+    else if (asize < (1 << 4) * MIN_FREE_SIZE)
+        return 4;
+    else if (asize < (1 << 5) * MIN_FREE_SIZE)
+        return 5;
+    else if (asize < (1 << 6) * MIN_FREE_SIZE)
+        return 6;
+    else if (asize < (1 << 7) * MIN_FREE_SIZE)
+        return 7;
+    else if (asize < (1 << 8) * MIN_FREE_SIZE)
+        return 8;
+    else 
+        return 9;
+}
+
+static void* NEXT_PTR(void *bp)
+{
+    return bp;   
+}
+
+static void* PREV_PTR(void *bp)
+{
+    return ((char *)bp + WSIZE);   
+}
+
+static void FREE_PREV(void *bp)
+{
+    PUT(bp, (GET(bp) & (~prev_alloc)));   
+}
+
+static void* NEXT_FREE_BLKP(void *bp)
+{
+    return (base + (*(unsigned int *)(NEXT_PTR(bp))));   
+}
+
+static void* PREV_FREE_BLKP(void *bp)
+{
+    return (base + (*(unsigned int *)(PREV_PTR(bp))));   
+}
+
+static inline void addBlock(void *bp, size_t index)
+{
+    PUT(NEXT_PTR(bp), GET(NEXT_PTR(first_list + index * DSIZE)));
+    PUT(PREV_PTR(bp), GET(PREV_PTR(NEXT_FREE_BLKP(bp))));
+
+    PUT(NEXT_PTR(first_list + index * DSIZE), (long)bp - (long)base);
+    PUT(PREV_PTR(NEXT_FREE_BLKP(bp)), (long)bp - (long)base);
+}
+
+static inline void delBlock(void *bp)
+{
+    PUT(PREV_PTR(NEXT_FREE_BLKP(bp)), GET(PREV_PTR(bp)));
+    PUT(NEXT_PTR(PREV_FREE_BLKP(bp)), GET(NEXT_PTR(bp)));
+}
+
+static void *coalesce(void *bp)
+{
+    /* Find bp's prev and next block is allocate or not */
+    size_t prev_alloc = GET_PREV_ALLOC(head_pointer(bp));
+    size_t next_alloc = GET_ALLOC(head_pointer(next_block_address(bp)));
+    
+    /* Initialize */
+    size_t size = GET_SIZE(head_pointer(bp));   // bp's size
+    size_t index;                       // index used to find correct seg list
+    
+    /* 
+     * Case 1 - both prev and next block is allocate 
+     *   add bp into correct seg list
+     *   update bp's next block's prev_alloc bit to IS_FREE
+     */
+    if (prev_alloc && next_alloc) {
+        index = find_list(size);
+        addBlock(bp, index);
+        FREE_PREV(head_pointer(next_block_address(bp)));
+        return bp;
+    }
+    
+    /* 
+     * Case 2 - only prev block is allocate 
+     *   find new size for new free block and correct seg list index
+     *   delete next block from its seg list
+     *   merge bp and next block together 
+     *   update bp's prev_alloc bit to PREV_ALLOC
+     *   add new free block into seglist
+     */
+    else if (prev_alloc && !next_alloc) {
+        size += GET_SIZE(head_pointer(next_block_address(bp)));
+        index = find_list(size);
+        
+        delBlock(next_block_address(bp));
+        
+        PUT(head_pointer(bp), PACK(size,prev_alloc,0));
+        PUT(foot_pointer(bp), size);
+        
+        addBlock(bp, index);
+        return bp;
+    }
+    
+    /* 
+     * Case 3 - only next block is allocate 
+     *   find new size for new free block and correct seg list index
+     *   find bp's prev block's prev_alloc bit
+     *   delete prev block from its seg list
+     *   merge bp and prev block together 
+     *   update bp's prev_alloc bit to bp's prev block's prev_alloc bit
+     *   add new free block into seglist
+     */
+    else if (!prev_alloc && next_alloc) {
+        size += GET_SIZE(head_pointer(prev_block_address(bp)));
+        index = find_list(size);
+        
+        size_t prev_prev_alloc = GET_PREV_ALLOC(head_pointer(prev_block_address(bp)));
+        
+        delBlock(prev_block_address(bp));
+        
+        PUT(foot_pointer(bp), size);
+        PUT(head_pointer(prev_block_address(bp)),PACK(size, prev_prev_alloc, is_free));
+        FREE_PREV(head_pointer(next_block_address(prev_block_address(bp))));
+        
+        addBlock(prev_block_address(bp), index);
+        return (prev_block_address(bp));
+    }
+    
+    /* 
+     * Case 4 - both prev and next block is free 
+     *   find new size for new free block and correct seg list index
+     *   find bp's prev block's prev_alloc bit
+     *   delete prev and next block from its seg list
+     *   merge bp, prev and next block together 
+     *   update bp's prev_alloc bit to bp's prev block's prev_alloc bit
+     *   add new free block into seglist
+     */
+    else {
+        size += GET_SIZE(head_pointer(prev_block_address(bp)))+GET_SIZE(foot_pointer(next_block_address(bp)));
+        index = find_list(size);
+        
+        size_t prev_prev_alloc = GET_PREV_ALLOC(head_pointer(prev_block_address(bp)));
+        
+        delBlock(next_block_address(bp));
+        delBlock(prev_block_address(bp));
+        
+        PUT(head_pointer(prev_block_address(bp)),PACK(size, prev_prev_alloc, is_free));
+        PUT(foot_pointer(next_block_address(bp)),size);
+        
+        addBlock(prev_block_address(bp), index);
+        return (prev_block_address(bp));
+    }
+}
 
 /*
  * extend_heap - Extend heap size and return a pointer to the extend memory
@@ -149,11 +307,11 @@ static void *extend_heap(size_t word)
 
     /* Initialize the extended block header and footer */
     PUT(head_pointer(bp), PACK(size, is_prev_alloc, is_free));
-    PUT(foot_pointer(bp), PACK(size, is_free, is_Free));
+    PUT(foot_pointer(bp), PACK(size, is_free, is_free));
 
     /* Initialize the epilogue header */
     epilogue = head_pointer(next_block_address(bp));
-    PUT(head_pointer(next_block_address(bp)), PACK(0, prev_Alloc,is_alloc));
+    PUT(head_pointer(next_block_address(bp)), PACK(0, prev_alloc,is_alloc));
 
     return coalesce(bp);
 }
