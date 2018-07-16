@@ -157,6 +157,8 @@ static void* PREV_PTR(void *bp)
     return ((char *)bp + WSIZE);   
 }
 
+static char *base = 0; //heap start address
+
 static void* NEXT_FREE_BLKP(void *bp)
 {
     return (base + (*(unsigned int *)(NEXT_PTR(bp))));   
@@ -170,7 +172,6 @@ static void* PREV_FREE_BLKP(void *bp)
 /** Global Variables **/
 /* $begin global variables definition */
 static char *heap_listp = 0;        // heap start and then move to prologue
-static char *base = 0;              // heap start address (not change)
 static char *first_list = 0;        // seg list #0 start
 static char *last_list = 0;         // seg list #9 start
 static char *epilogue = 0;          // epilogue part
