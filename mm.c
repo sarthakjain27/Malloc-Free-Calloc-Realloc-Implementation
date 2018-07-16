@@ -102,7 +102,7 @@ static void* head_pointer(void *bp)
 
 /* rounds up to the nearest multiple of ALIGNMENT */
 static size_t ALIGN(size_t x) {
-    return (((size) + (ALIGNMENT - 1)) & ~0X7);
+    return ((x + (ALIGNMENT - 1)) & ~0X7);
 }
 
 static size_t GET(void *p)
