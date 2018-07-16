@@ -58,6 +58,7 @@
 #define ALIGNMENT 16
 #define MAXLIST 9
 #define INITSIZE (1 << 12)
+#define CHUNKSIZE (1 << 9)
 #define WSIZE 4
 #define DSIZE 8
 #define is_free 0x0
@@ -511,19 +512,19 @@ void *malloc (size_t size) {
  */
 void free (void *ptr) {
     /* Ignore spurious request */
-    if (bp == 0) {
+    if (ptr == 0) {
         return;
     }
 
     /* Get bp's size and prev_alloc info */
-    size_t size = GET_SIZE(HDRP(bp));
-    size_t is_prev_alloc = GET_PREV_ALLOC(HDRP(bp));
+    size_t size = GET_SIZE(head_pointer(ptr));
+    size_t is_prev_alloc = GET_PREV_ALLOC(head_pointer(ptr));
 
     /* Set alloc bit to 0 to free this block and maintain prev alloc info */
-    PUT(head_pointer(bp), PACK(size, is_prev_alloc, is_free));
-    PUT(foot_pointer(bp), PACK(size, is_free, is_free));
+    PUT(head_pointer(ptr), PACK(size, is_prev_alloc, is_free));
+    PUT(foot_pointer(ptr), PACK(size, is_free, is_free));
 
-    coalesce(bp);
+    coalesce(ptr);
 }
 
 /*
@@ -535,7 +536,7 @@ void *realloc(void *oldptr, size_t size) {
 
     /* If size == 0 then this is just free, and we return NULL. */
     if(size == 0) {
-        mm_free(ptr);
+        mm_free(oldptr);
         return NULL;
     }
 
@@ -552,12 +553,12 @@ void *realloc(void *oldptr, size_t size) {
     }
 
     /* Copy the old data. */
-    oldsize = GET_SIZE(HDRP(ptr));
+    oldsize = GET_SIZE(head_pointer(oldptr));
     if(size < oldsize) oldsize = size;
-    memcpy(newptr, ptr, oldsize);
+    memcpy(newptr, oldptr, oldsize);
 
     /* Free the old block. */
-    mm_free(ptr);
+    mm_free(oldptr);
 
     //mm_checkheap(1);
     return newptr;
