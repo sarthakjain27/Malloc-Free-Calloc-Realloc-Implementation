@@ -1,577 +1,543 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <stddef.h>
+/*
+ * mm.c
+ *
+ * NOTE TO STUDENTS: Replace this header comment with your own header
+ * comment that gives a high level description of your solution.
+ *
+ * You may use mm-baseline.c as a starting point instead of building
+ * your own solution from scratch (which may be a good idea).
+ *
+ */
 #include <assert.h>
-#include <stddef.h>
-#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
-#include <signal.h>
+#include <stdbool.h>
+#include <stdint.h>
 
+#include "mm.h"
+#include "memlib.h"
+
+/*
+ * If you want debugging output, uncomment the following. Be sure not
+ * to have debugging enabled in your final submission
+ */
+// #define DEBUG
+
+#ifdef DEBUG
+/* When debugging is enabled, the underlying functions get called */
+#define dbg_printf(...) printf(__VA_ARGS__)
+#define dbg_assert(...) assert(__VA_ARGS__)
+#define dbg_requires(...) assert(__VA_ARGS__)
+#define dbg_ensures(...) assert(__VA_ARGS__) 
+#define dbg_checkheap(...) mm_checkheap(__VA_ARGS__)
+#define dbg_printheap(...) print_heap(__VA_ARGS__)
+#else
+/* When debugging is disabled, no code gets generated */
+#define dbg_printf(...)
+#define dbg_assert(...)
+#define dbg_requires(...)
+#define dbg_ensures(...)
+#define dbg_checkheap(...)
+#define dbg_printheap(...)
+#endif
+
+/* do not change the following! */
+#ifdef DRIVER
 /* create aliases for driver tests */
 #define malloc mm_malloc
 #define free mm_free
 #define realloc mm_realloc
 #define calloc mm_calloc
-#define mem_sbrk sbrk
-/* You can change anything from here onward */
-
-/*
- * If DEBUG is defined, enable printing on dbg_printf and contracts.
- * Debugging macros, with names beginning "dbg_" are allowed.
- * You may not define any other macros having arguments.
- */
-// #define DEBUG // uncomment this line to enable debugging
+#define memset mem_memset
+#define memcpy mem_memcpy
+#endif /* def DRIVER */
 
 
-#ifdef DEBUG
-/* When debugging is enabled, these form aliases to useful functions */
-#define dbg_printf(...) printf(__VA_ARGS__)
-#define dbg_requires(...) assert(__VA_ARGS__)
-#define dbg_assert(...) assert(__VA_ARGS__)
-#define dbg_ensures(...) assert(__VA_ARGS__)
-#else
-/* When debugging is disnabled, no code gets generated for these */
-#define dbg_printf(...)
-#define dbg_requires(...)
-#define dbg_assert(...)
-#define dbg_ensures(...)
-#endif
+#define WSIZE 4       /* Word and header/footer size (bytes) */
+#define DSIZE 8       /* Doubleword size (bytes) */
+#define CHUNKSIZE 1<<9  /* Extend heap by this amount (bytes) */
+#define HEADER_SIZE 24  /* minimum block size */
+#define LIST_NO 20
 
-/* Basic constants */
-typedef uint64_t word_t;
-static const size_t wsize = sizeof(word_t);   // word and header size (bytes)
-static const size_t dsize = 2*sizeof(word_t);          // double word size (bytes)
-static const size_t min_block_size = 4*sizeof(word_t); // Minimum block size
-static const size_t chunksize = (1 << 12);    // requires (chunksize % 16 == 0)
+/* 4 or 8 byte alignment */
+#define ALIGNMENT 8
 
-static const word_t alloc_mask = 0x1;
-static const word_t size_mask = ~(word_t)0xF;
-
-typedef struct block
-{
-    /* Header contains size + allocation flag */
-    word_t header;
-    /*
-     * We don't know how big the payload will be.  Declaring it as an
-     * array of size 0 allows computing its starting address using
-     * pointer notation.
-     */
-    char payload[0];
-    /*
-     * We can't declare the footer as part of the struct, since its starting
-     * position is unknown
-     */
-} block_t;
-
-
-/* Global variables */
-/* Pointer to first block */
-static block_t *heap_listp = NULL;
-
-/* Function prototypes for internal helper routines */
-static block_t *extend_heap(size_t size);
-static void place(block_t *block, size_t asize);
-static block_t *find_fit(size_t asize);
-static block_t *coalesce(block_t *block);
-
-static size_t max(size_t x, size_t y);
-static size_t round_up(size_t size, size_t n);
-static word_t pack(size_t size, bool alloc);
-
-static size_t extract_size(word_t header);
-static size_t get_size(block_t *block);
-static size_t get_payload_size(block_t *block);
-
-static bool extract_alloc(word_t header);
-static bool get_alloc(block_t *block);
-
-static void write_header(block_t *block, size_t size, bool alloc);
-static void write_footer(block_t *block, size_t size, bool alloc);
-
-static block_t *payload_to_header(void *bp);
-static void *header_to_payload(block_t *block);
-
-static block_t *find_next(block_t *block);
-static word_t *find_prev_footer(block_t *block);
-static block_t *find_prev(block_t *block);
-
-bool mm_checkheap(int lineno);
-
-/*
- * mm_init: initializes the heap; it is run once when heap_start == NULL.
- *          prior to any extend_heap operation, this is the heap:
- *              start            start+8           start+16
- *          INIT: | PROLOGUE_FOOTER | EPILOGUE_HEADER |
- * heap_listp ends up pointing to the epilogue header.
- */
-bool mm_init(void) 
-{
-    // Create the initial empty heap 
-    word_t *start = (word_t *)(sbrk(2*wsize));
-
-    if (start == (void *)-1) 
-    {
-        return false;
-    }
-
-    start[0] = pack(0, true); // Prologue footer
-    start[1] = pack(0, true); // Epilogue header
-    // Heap starts with first block header (epilogue)
-    heap_listp = (block_t *) &(start[1]);
-
-    // Extend the empty heap with a free block of chunksize bytes
-    if (extend_heap(chunksize) == NULL)
-    {
-        return false;
-    }
-    return true;
-}
-
-/*
- * malloc: allocates a block with size at least (size + dsize), rounded up to
- *         the nearest 16 bytes, with a minimum of 2*dsize. Seeks a
- *         sufficiently-large unallocated block on the heap to be allocated.
- *         If no such block is found, extends heap by the maximum between
- *         chunksize and (size + dsize) rounded up to the nearest 16 bytes,
- *         and then attempts to allocate all, or a part of, that memory.
- *         Returns NULL on failure, otherwise returns a pointer to such block.
- *         The allocated block will not be used for further allocations until
- *         freed.
- */
-void *malloc(size_t size) 
-{
-    dbg_requires(mm_checkheap);
-    
-    size_t asize;      // Adjusted block size
-    size_t extendsize; // Amount to extend heap if no fit is found
-    block_t *block;
-    void *bp = NULL;
-
-    if (heap_listp == NULL) // Initialize heap if it isn't initialized
-    {
-        mm_init();
-    }
-
-    if (size == 0) // Ignore spurious request
-    {
-        dbg_ensures(mm_checkheap);
-        return bp;
-    }
-
-    // Adjust block size to include overhead and to meet alignment requirements
-    asize = round_up(size, dsize) + dsize;
-
-    // Search the free list for a fit
-    block = find_fit(asize);
-
-    // If no fit is found, request more memory, and then and place the block
-    if (block == NULL)
-    {  
-        extendsize = max(asize, chunksize);
-        block = extend_heap(extendsize);
-        if (block == NULL) // extend_heap returns an error
-        {
-            return bp;
-        }
-
-    }
-
-    place(block, asize);
-    bp = header_to_payload(block);
-
-    dbg_printf("Malloc size %zd on address %p.\n", size, bp);
-    dbg_ensures(mm_checkheap);
-    return bp;
-} 
-
-/*
- * free: Frees the block such that it is no longer allocated while still
- *       maintaining its size. Block will be available for use on malloc.
- */
-void free(void *bp)
-{
-    if (bp == NULL)
-    {
-        return;
-    }
-
-    block_t *block = payload_to_header(bp);
-    size_t size = get_size(block);
-
-    write_header(block, size, false);
-    write_footer(block, size, false);
-
-    coalesce(block);
-
-}
-
-/*
- * realloc: returns a pointer to an allocated region of at least size bytes:
- *          if ptrv is NULL, then call malloc(size);
- *          if size == 0, then call free(ptr) and returns NULL;
- *          else allocates new region of memory, copies old data to new memory,
- *          and then free old block. Returns old block if realloc fails or
- *          returns new pointer on success.
- */
-void *realloc(void *ptr, size_t size)
-{
-    block_t *block = payload_to_header(ptr);
-    size_t copysize;
-    void *newptr;
-
-    // If size == 0, then free block and return NULL
-    if (size == 0)
-    {
-        free(ptr);
-        return NULL;
-    }
-
-    // If ptr is NULL, then equivalent to malloc
-    if (ptr == NULL)
-    {
-        return malloc(size);
-    }
-
-    // Otherwise, proceed with reallocation
-    newptr = malloc(size);
-    // If malloc fails, the original block is left untouched
-    if (!newptr)
-    {
-        return NULL;
-    }
-
-    // Copy the old data
-    copysize = get_payload_size(block); // gets size of old payload
-    if(size < copysize)
-    {
-        copysize = size;
-    }
-    memcpy(newptr, ptr, copysize);
-
-    // Free the old block
-    free(ptr);
-
-    return newptr;
-}
-
-/*
- * calloc: Allocates a block with size at least (elements * size + dsize)
- *         through malloc, then initializes all bits in allocated memory to 0.
- *         Returns NULL on failure.
- */
-void *calloc(size_t nmemb, size_t size)
-{
-    void *bp;
-    size_t asize = nmemb * size;
-
-    if (asize/nmemb != size)
-    // Multiplication overflowed
-    return NULL;
-    
-    bp = malloc(asize);
-    if (bp == NULL)
-    {
-        return NULL;
-    }
-    // Initialize all bits to 0
-    memset(bp, 0, asize);
-
-    return bp;
-}
-
-/******** The remaining content below are helper and debug routines ********/
-
-/*
- * extend_heap: Extends the heap with the requested number of bytes, and
- *              recreates epilogue header. Returns a pointer to the result of
- *              coalescing the newly-created block with previous free block, if
- *              applicable, or NULL in failure.
- */
-static block_t *extend_heap(size_t size) 
-{
-    void *bp;
-
-    // Allocate an even number of words to maintain alignment
-    size = round_up(size, dsize);
-    if ((bp = mem_sbrk(size)) == (void *)-1)
-    {
-        return NULL;
-    }
-    
-    // Initialize free block header/footer 
-    block_t *block = payload_to_header(bp);
-    write_header(block, size, false);
-    write_footer(block, size, false);
-    // Create new epilogue header
-    block_t *block_next = find_next(block);
-    write_header(block_next, 0, true);
-
-    // Coalesce in case the previous block was free
-    return coalesce(block);
-}
-
-/* Coalesce: Coalesces current block with previous and next blocks if either
- *           or both are unallocated; otherwise the block is not modified.
- *           Returns pointer to the coalesced block. After coalescing, the
- *           immediate contiguous previous and next blocks must be allocated.
- */
-static block_t *coalesce(block_t * block) 
-{
-    block_t *block_next = find_next(block);
-    block_t *block_prev = find_prev(block);
-
-    bool prev_alloc = extract_alloc(*(find_prev_footer(block)));
-    bool next_alloc = get_alloc(block_next);
-    size_t size = get_size(block);
-
-    if (prev_alloc && next_alloc)              // Case 1
-    {
-        return block;
-    }
-
-    else if (prev_alloc && !next_alloc)        // Case 2
-    {
-        size += get_size(block_next);
-        write_header(block, size, false);
-        write_footer(block, size, false);
-    }
-
-    else if (!prev_alloc && next_alloc)        // Case 3
-    {
-        size += get_size(block_prev);
-        write_header(block_prev, size, false);
-        write_footer(block_prev, size, false);
-        block = block_prev;
-    }
-
-    else                                        // Case 4
-    {
-        size += get_size(block_next) + get_size(block_prev);
-        write_header(block_prev, size, false);
-        write_footer(block_prev, size, false);
-
-        block = block_prev;
-    }
-    return block;
-}
-
-/*
- * place: Places block with size of asize at the start of bp. If the remaining
- *        size is at least the minimum block size, then split the block to the
- *        the allocated block and the remaining block as free, which is then
- *        inserted into the segregated list. Requires that the block is
- *        initially unallocated.
- */
-static void place(block_t *block, size_t asize)
-{
-    size_t csize = get_size(block);
-
-    if ((csize - asize) >= min_block_size)
-    {
-        block_t *block_next;
-        write_header(block, asize, true);
-        write_footer(block, asize, true);
-
-        block_next = find_next(block);
-        write_header(block_next, csize-asize, false);
-        write_footer(block_next, csize-asize, false);
-    }
-
-    else
-    { 
-        write_header(block, csize, true);
-        write_footer(block, csize, true);
-    }
-}
-
-/*
- * find_fit: Looks for a free block with at least asize bytes with
- *           first-fit policy. Returns NULL if none is found.
- */
-static block_t *find_fit(size_t asize)
-{
-    block_t *block;
-
-    for (block = heap_listp; get_size(block) > 0;
-                             block = find_next(block))
-    {
-
-        if (!(get_alloc(block)) && (asize <= get_size(block)))
-        {
-            return block;
-        }
-    }
-    return NULL; // no fit found
+/* rounds up to the nearest multiple of ALIGNMENT */
+static size_t ALIGN(size_t x) {
+    return ((x + (ALIGNMENT - 1)) & ~0X7);
 }
 
 /*
  * max: returns x if x > y, and y otherwise.
  */
-static size_t max(size_t x, size_t y)
+static size_t MAX(size_t x, size_t y)
 {
     return (x > y) ? x : y;
 }
 
-
-/*
- * round_up: Rounds size up to next multiple of n
- */
-static size_t round_up(size_t size, size_t n)
+static size_t PACK(size_t size,int curr)
 {
-    return (n * ((size + (n-1)) / n));
+    return ((size) | (curr));   
 }
 
-/*
- * pack: returns a header reflecting a specified size and its alloc status.
- *       If the block is allocated, the lowest bit is set to 1, and 0 otherwise.
- */
-static word_t pack(size_t size, bool alloc)
+static size_t GET(void *p)
 {
-    return alloc ? (size | 1) : size;
+    return (*(unsigned int *)(p));   
 }
 
-
-/*
- * extract_size: returns the size of a given header value based on the header
- *               specification above.
- */
-static size_t extract_size(word_t word)
+static void PUT(char *p,size_t val)
 {
-    return (word & size_mask);
+       (*(unsigned int *)(p))= val;
 }
 
-/*
- * get_size: returns the size of a given block by clearing the lowest 4 bits
- *           (as the heap is 16-byte aligned).
- */
-static size_t get_size(block_t *block)
+static size_t GET_SIZE(void *p)
 {
-    return extract_size(block->header);
+    return (GET(p) & ~0x7);   
 }
 
-/*
- * get_payload_size: returns the payload size of a given block, equal to
- *                   the entire block size minus the header and footer sizes.
- */
-static word_t get_payload_size(block_t *block)
+static size_t GET_ALLOC(void *p)
 {
-    size_t asize = get_size(block);
-    return asize - dsize;
+    return (GET(p) & 0x1);   
 }
 
-/*
- * extract_alloc: returns the allocation status of a given header value based
- *                on the header specification above.
- */
-static bool extract_alloc(word_t word)
+static void* head_pointer(void *bp)
 {
-    return (bool)(word & alloc_mask);
+    return ((char *)(bp)-WSIZE);   
 }
 
-/*
- * get_alloc: returns true when the block is allocated based on the
- *            block header's lowest bit, and false otherwise.
- */
-static bool get_alloc(block_t *block)
+static void* foot_pointer(void *bp)
 {
-    return extract_alloc(block->header);
+    return ((char *)(bp) + GET_SIZE(head_pointer(bp)) - DSIZE);   
 }
 
-/*
- * write_header: given a block and its size and allocation status,
- *               writes an appropriate value to the block header.
- */
-static void write_header(block_t *block, size_t size, bool alloc)
+static void *next_block_address(void *bp)
 {
-    block->header = pack(size, alloc);
+    return ((char *)(bp) + GET_SIZE(((char *)(bp) - WSIZE)));    
 }
 
-
-/*
- * write_footer: given a block and its size and allocation status,
- *               writes an appropriate value to the block footer by first
- *               computing the position of the footer.
- */
-static void write_footer(block_t *block, size_t size, bool alloc)
+static void *prev_block_address(void *bp)
 {
-    word_t *footerp = (word_t *)((block->payload) + get_size(block) - dsize);
-    *footerp = pack(size, alloc);
+    return ((char *)(bp) - GET_SIZE(((char *)(bp) - DSIZE)));   
 }
 
+static void *extend_heap(size_t words);
+static void alloc(void *free_block, size_t req_size);
+static void *first_fit(size_t req_size);
+static void *coalesce(void *bp);
+static void printblock(void *bp);
+static void checkblock(void *bp);
+static void insert_free_list(void *bp, int size);
+static void remove_block(void *bp,int size);
+static int get_free_list_head( unsigned int n);
 
-/*
- * find_next: returns the next consecutive block on the heap by adding the
- *            size of the block.
+static char *heap_list_head = 0;
+static char *heap_header = 0;
+static char *free_list_head;
+
+/* init_fee_list- Sets the pointers pointing to heads of free lists to 0
+ *
  */
-static block_t *find_next(block_t *block)
+void init_free_list(char *bp)
 {
-    dbg_requires(block != NULL);
-    block_t *block_next = (block_t *)(((char *)block) + get_size(block));
-
-    dbg_ensures(block_next != NULL);
-    return block_next;
+	for(int i=0;i<LIST_NO;i++)
+		(*((char **)(free_list_head) + i)) = bp;
 }
 
-/*
- * find_prev_footer: returns the footer of the previous block.
+/*remove_block - Removes the block from the free list
+ * Sets the next pointer of the previous-free block of bp to the next-free block of bp
+ * Sets the previous pointer of the next-free block of bp to the previous-free block of bp
  */
-static word_t *find_prev_footer(block_t *block)
+static void remove_block(void *bp, int size)
 {
-    // Compute previous footer position as one word before the header
-    return (&(block->header)) - 1;
+	if ((*((char **)(bp) + 1)) != NULL )
+		(*(char **)((*((char **)(bp) + 1)))) = (*(char **)(bp));
+	else
+	{
+		int free_list_index = get_free_list_head(size);
+		GET_FREE_HEAD(free_list_index) = (*(char **)(bp));
+	}
+	(*((char **)((*(char **)(bp))) + 1)) = (*((char **)(bp) + 1));
 }
 
-/*
- * find_prev: returns the previous block position by checking the previous
- *            block's footer and calculating the start of the previous block
- *            based on its size.
+/* coalesce - Merge the free block neighbours and place them
+ * at the head of the free list
+ *
  */
-static block_t *find_prev(block_t *block)         // IS HACKABLE!!!!!!!
-{ 
-    word_t *footerp = find_prev_footer(block);
-    size_t size = extract_size(*footerp);         // IMPORTANT!!!!!!!!!!!
-    return (block_t *)((char *)block - size);
-}
 
-/*
- * payload_to_header: given a payload pointer, returns a pointer to the
- *                    corresponding block.
- */
-static block_t *payload_to_header(void *bp)
+static void *coalesce(void *bp)
 {
-    return (block_t *)(((char *)bp) - offsetof(block_t, payload));
+	size_t prev_alloc = GET_ALLOC(foot_pointer(prev_block_address(bp))) || (prev_block_address(bp) == bp);
+	size_t next_alloc = GET_ALLOC(head_pointer(next_block_address(bp)));
+	size_t size = GET_SIZE(head_pointer(bp));
+
+	if (prev_alloc && next_alloc)
+	{
+		// Do nothing
+	}
+
+	else if (prev_alloc && !next_alloc)
+	{
+		size += GET_SIZE(head_pointer(next_block_address(bp)));
+		remove_block(next_block_address(bp),GET_SIZE(head_pointer(next_block_address(bp))));
+		PUT(head_pointer(bp), PACK(size, 0));
+		PUT(foot_pointer(bp), PACK(size,0));
+	}
+
+	else if (!prev_alloc && next_alloc)
+	{
+		size += GET_SIZE(head_pointer(prev_block_address(bp)));
+		bp = prev_block_address(bp);
+		remove_block(bp,GET_SIZE(head_pointer(bp)));
+		PUT(head_pointer(bp), PACK(size, 0));
+		PUT(foot_pointer(bp), PACK(size, 0));
+
+	}
+
+	else
+	{
+		size += GET_SIZE(head_pointer(prev_block_address(bp))) + GET_SIZE(head_pointer(next_block_address(bp)));
+		void *pbp = prev_block_address(bp);
+		remove_block(pbp, GET_SIZE(head_pointer(pbp)));
+		void *nbp = next_block_address(bp);
+		remove_block(nbp, GET_SIZE(head_pointer(nbp)));
+		bp = prev_block_address(bp);
+		PUT(head_pointer(bp), PACK(size, 0));
+		PUT(foot_pointer(bp), PACK(size, 0));
+	}
+
+	insert_free_list(bp,size);
+	return bp;
+}
+
+/*insert_free_list - inserts the pointer at the head of the
+ * free list.
+ *
+ */
+static void insert_free_list(void *bp, int size)
+{
+	int free_list_index = get_free_list_head(size);
+	NEXT_FREE_BLK(bp) = GET_FREE_HEAD(free_list_index);
+	PREV_FREE_BLK(GET_FREE_HEAD(free_list_index)) = bp;
+	PREV_FREE_BLK(bp) = NULL;
+	GET_FREE_HEAD(free_list_index) = bp;
+}
+
+static void *extend_heap(size_t words)
+{
+	char *bp;
+	size_t size;
+
+	/* Allocate an even number of words to maintain alignment */
+	size = (words % 2) ? (words + 1) * WSIZE : words * WSIZE;
+	if (size < HEADER_SIZE)
+		size = HEADER_SIZE;
+	if ((long) (bp = mem_sbrk(size)) == -1)
+		return NULL ;
+
+	/* Initialize free block header/footer and the epilogue header */
+	PUT(head_pointer(bp), PACK(size, 0)); /* free block header */
+	PUT(foot_pointer(bp), PACK(size, 0)); /* free block footer */
+	PUT(head_pointer(next_block_address(bp)), PACK(0, 1)); /* new epilogue header */
+
+	/* Coalesce if the previous block was free and add the block to
+	 * the free list */
+	//mm_checkheap(1);
+	return coalesce(bp);                                //line:vm:mm:returnblock
+
 }
 
 /*
- * header_to_payload: given a block pointer, returns a pointer to the
- *                    corresponding payload.
+ * Initialize: return -1 on error, 0 on success.
  */
-static void *header_to_payload(block_t *block)
+bool mm_init(void)
 {
-    return (void *)(block->payload);
+
+	if ((heap_list_head = mem_sbrk(2 * HEADER_SIZE + 20*DSIZE)) == NULL )
+		return false;
+
+	PUT(heap_list_head, 0); //Alignment padding
+
+	/*initialize dummy block header*/
+	PUT(heap_list_head + WSIZE, PACK(HEADER_SIZE, 1)); //WSIZE = padding
+	PUT(heap_list_head + DSIZE, 0); //pointer to next free block
+	PUT(heap_list_head + DSIZE+WSIZE, 0); //pointer to the previous free block
+
+	free_list_head = heap_list_head + 2*DSIZE + WSIZE;
+
+	/*initialize dummy block footer*/
+	PUT(heap_list_head + HEADER_SIZE, PACK(HEADER_SIZE, 1));
+
+	/*initialize epilogue*/
+	PUT(heap_list_head+WSIZE + HEADER_SIZE, PACK(0, 1));
+
+
+	/*initialize the free list pointer to the tail block*/
+
+	heap_list_head += DSIZE;
+	heap_header = heap_list_head;
+	init_free_list(heap_list_head);
+
+	/*return -1 if unable to get heap space*/
+	if ((heap_list_head = extend_heap(CHUNKSIZE / WSIZE)) == NULL )
+		return false;
+	return true;
+
 }
 
-/* mm_checkheap: checks the heap for correctness; returns true if
- *               the heap is correct, and false otherwise.
- *               can call this function using mm_checkheap(__LINE__);
- *               to identify the line number of the call site.
+/*
+ * malloc
  */
-bool mm_checkheap(int lineno)  
-{ 
-    /* you will need to write the heap checker yourself. As a filler:
-     * one guacamole is equal to 6.02214086 x 10**23 guacas.
-     * one might even call it
-     * the avocado's number.
-     *
-     * Internal use only: If you mix guacamole on your bibimbap, 
-     * do you eat it with a pair of chopsticks, or with a spoon? 
-     * (Delete these lines!)
-     */
+void *malloc (size_t size)
+{
+	//printf("\nMalloc Count: %d\n",++malloc_count);
+	size_t asize;
+	size_t extendsize;
+	char *bp;
 
-    (void)lineno; // delete this line; it's a placeholder so that the compiler
-                  // will not warn you about unused variable.
-    return true;
+	/* Ignore spurious requests */
+	if (size <= 0)
+		return NULL;
 
+	/* Adjust block size to include overhead and alignment reqs */
+	asize = MAX(ALIGN(size) + DSIZE, HEADER_SIZE);
+
+	/* Search the free list for a fit */
+	if ((bp = first_fit(asize)))
+	{
+		alloc(bp, asize);
+		//mm_checkheap(1);
+		return bp;
+	}
+
+	extendsize = MAX(asize, CHUNKSIZE);
+	if ((bp = extend_heap(extendsize/WSIZE)) == NULL)
+		return NULL; 	//return NULL if unable to get heap space
+	alloc(bp, asize);
+	//mm_checkheap(1);
+	return bp;
+
+}
+
+/*
+ * free- Free the occupied block and coalesces the block
+ */
+void free(void *ptr)
+{
+
+	//printf("\nFree Count: %d\n",++free_count);
+
+	if (ptr == 0)
+		return;
+	size_t size = GET_SIZE(head_pointer(ptr));
+	if (heap_list_head == 0)
+		mm_init();
+
+	PUT(head_pointer(ptr), PACK(size, 0));
+	PUT(foot_pointer(ptr), PACK(size, 0));
+	coalesce(ptr);
+	//mm_checkheap(1);
+}
+
+/*
+ * realloc - referred mm-naive.c
+ */
+void *realloc(void *oldptr, size_t size)
+{
+	size_t oldsize;
+	void *newptr;
+	/* Adjust block size to include overhead and alignment reqs */
+	size_t req_size = MAX(ALIGN(size) + DSIZE, HEADER_SIZE);
+	/* If size == 0 then this is just free, and we return NULL. */
+	if (size == 0)
+	{
+		free(oldptr);
+		return 0;
+	}
+
+	/* If oldptr is NULL, then this is just malloc. */
+	if (oldptr == NULL )
+		return malloc(size);
+
+	oldsize = GET_SIZE(head_pointer(oldptr));
+
+	if(req_size == oldsize || (oldsize-req_size)<=HEADER_SIZE)
+		return oldptr;
+
+	if(req_size <= oldsize)
+	{
+		PUT(head_pointer(oldptr),PACK(req_size,1));
+		PUT(foot_pointer(oldptr),PACK(req_size,1));
+		PUT(head_pointer(next_block_address(oldptr)),PACK(oldsize-req_size,1));
+		PUT(foot_pointer(next_block_address(oldptr)),PACK(oldsize-req_size,1));
+		free(next_block_address(oldptr));
+		return oldptr;
+	}
+
+	newptr = malloc(size);
+	/* If realloc() fails the original block is left untouched  */
+	if (!newptr)
+		return 0;
+
+	/* Copy the old data. */
+
+	if (size < oldsize)
+		oldsize = size;
+	memcpy(newptr, oldptr, oldsize);
+
+	/* Free the old block. */
+	free(oldptr);
+
+	return newptr;
+}
+
+/*
+ * calloc - referred mm-naive.c
+ */
+void *calloc (size_t nmemb, size_t size)
+{
+	size_t bytes = nmemb * size;
+	void *newptr;
+
+	newptr = malloc(bytes);
+	memset(newptr, 0, bytes);
+
+	return newptr;
+}
+
+/*
+ * alloc - Allocates  block of req_size bytes at start of free block
+ *         and split if free block is larger
+ */
+static void alloc(void *free_block, size_t req_size)
+{
+	void *next_bp;
+    size_t csize = GET_SIZE(head_pointer(free_block));
+    //Split the free block into allocated and free.
+    if ((csize - req_size) >= HEADER_SIZE)
+	{
+    	PUT(head_pointer(free_block), PACK(req_size, 1)); //Allocating the block
+		PUT(foot_pointer(free_block), PACK(req_size, 1));
+		remove_block(free_block,csize);
+		next_bp = next_block_address(free_block);
+		PUT(head_pointer(next_bp), PACK(csize-req_size, 0));//Resetting the size of the free block
+		PUT(foot_pointer(next_bp), PACK(csize-req_size, 0));
+		coalesce(next_bp); //Coalesce of the newly resized free block
+	}
+	else
+    {
+		PUT(head_pointer(free_block), PACK(csize, 1));
+		PUT(foot_pointer(free_block), PACK(csize, 1));
+		remove_block(free_block,csize);
+	}
+
+}
+
+/*first_fit - Iterates through the free list to search for a free block
+ * with size greater than or equal to the requested block size.
+ *
+ */
+static void *first_fit(size_t req_size)
+{
+
+	char *bp;
+	for (int i = get_free_list_head(req_size); i < LIST_NO; i++)
+	{
+		for (bp = GET_FREE_HEAD(i); GET_ALLOC(head_pointer(bp)) == 0; bp =(*(char **)(bp)) )
+		{
+			if (req_size <= (size_t) GET_SIZE(head_pointer(bp)))
+				return bp;
+		}
+	}
+	/*for (int i = 0; i < get_free_list_head(req_size); i++)
+		{
+			for (bp = free_list_head[i]; GET_ALLOC(HDRP(bp)) == 0; bp =NEXT_FREE_BLK(bp) )
+			{
+				if (req_size <= (size_t) GET_SIZE(HDRP(bp)))
+					return bp;
+			}
+		}*/
+	return NULL ; // No fit
+}
+
+static void printblock(void *bp)
+{
+	size_t header_size = GET_SIZE(head_pointer(bp));
+	size_t header_alloc = GET_ALLOC(head_pointer(bp));
+	size_t footer_size = GET_SIZE(foot_pointer(bp));
+	size_t footer_alloc = GET_ALLOC(foot_pointer(bp));
+
+	if (header_size == 0)
+	{
+		printf("%p: EOL\n", bp);
+		return;
+	}
+
+	if (header_alloc)
+		printf("%p: header:[%d:%c] footer:[%d:%c]\n", bp, (int) header_size,
+				(header_alloc ? 'a' : 'f'), (int) footer_size, (footer_alloc ? 'a' : 'f'));
+	else
+		printf("%p:header:[%d:%c] prev:%p next:%p footer:[%d:%c]\n", bp,
+				(int) header_size, (header_alloc ? 'a' : 'f'), (*((char **)(bp) + 1)),
+				(*(char **)(bp)), (int) footer_size, (footer_alloc ? 'a' : 'f'));
+}
+
+static void checkblock(void *bp)
+{
+    if ((size_t)bp % 8)
+	printf("Error: %p is not 8 byte aligned\n", bp);
+    if (GET(head_pointer(bp)) != GET(foot_pointer(bp)))
+	printf("Error: header and footer are not equal\n");
+}
+
+/*
+ * checkheap - functions with multiple checks
+ */
+int mm_checkheap(int verbose)
+{
+
+	char *bp = heap_list_head;
+
+	if (verbose)
+	{
+		printf("Heap (%p):\n", heap_list_head);
+		//printf("Free List (%p):\n", free_list_head);
+	}
+
+	if ((GET_SIZE(head_pointer(heap_header)) != HEADER_SIZE)
+			|| !GET_ALLOC(head_pointer(heap_header)))
+	{
+		//printf("Bad prologue header\n");
+		//return 1;
+	}
+	checkblock(heap_list_head);
+	for (bp = heap_list_head; GET_SIZE(head_pointer(bp)) > 0; bp = next_block_address(bp))
+	{
+		if (verbose)
+			printblock(bp);
+		checkblock(bp);
+	}
+	if (verbose)
+		printblock(bp);
+	if ((GET_SIZE(head_pointer(bp)) != 0) || !(GET_ALLOC(head_pointer(bp))))
+	{
+		printf("Bad epilogue header\n");
+		//return 1;
+	}
+
+	return 0;
+}
+
+static int get_free_list_head( unsigned int n)
+{
+	int count = 0;
+	while(n>1)
+	{
+		n = n>>1;
+		count++;
+	}
+	if(count > LIST_NO-1 )
+		return  LIST_NO-1;
+	return count;
 }
