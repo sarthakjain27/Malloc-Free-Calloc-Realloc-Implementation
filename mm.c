@@ -318,8 +318,8 @@ static void *extend_heap(size_t word)
     size_t is_prev_alloc;
 
     /* Allocate to maintain alignment requests */
-    size = (word % 2) ? (word + 1) * WSIZE : word * WSIZE;
-
+    //size = (word % 2) ? (word + 1) * WSIZE : word * WSIZE;
+    size=round_up(word,DSIZE);
     if ((long)(bp = mem_sbrk(size)) == -1) {
         printf("mem_sbrk fails\n");
         return NULL;
@@ -494,13 +494,15 @@ void *malloc (size_t size) {
         return NULL;
     }
 
-    /* Adjust block size to include alignment and overhead requirements */
+    /* Adjust block size to include alignment and overhead requirements 
     if (size <= MIN_ALLOC_SIZE) {
         asize = MIN_FREE_SIZE;
     }
     else {
         asize = ALIGN(size + WSIZE);
     }
+    */
+    asize=round_up(size+DSIZE,DSIZE);
 
     /* Search free lists to find fit */
     if ((bp = find_fit(asize)) != NULL) {
