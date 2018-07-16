@@ -76,6 +76,14 @@ static char *last_seglist=0;
 static char *epilogue=0;
 typedef uint64_t word_t;
 
+/*
+ * max: returns x if x > y, and y otherwise.
+ */
+static size_t max(size_t x, size_t y)
+{
+    return (x > y) ? x : y;
+}
+
 static size_t PACK(size_t size,int prev,int curr)
 {
     return ((size) | (prev) | (curr));   
@@ -672,7 +680,7 @@ static void printblock(void *bp)
     size_t falloc = GET_ALLOC(foot_pointer(bp));
 
     /* Block prev's allocate/free info got from header */
-    size_t prev_alloc = GET_PREV_ALLOC(head_pointer(bp));  
+    size_t prevAlloc = GET_PREV_ALLOC(head_pointer(bp));  
     
     /* Epilogue Case */
     //if (hsize == 0) {
@@ -685,12 +693,12 @@ static void printblock(void *bp)
         /* Allocate block info */
         if (halloc) {
             printf("Allocate block at %p: header (%zu, %c, %c)\n", bp, hsize, 
-                    (halloc ? 'A' : 'F'), (prev_alloc ? 'A' : 'F'));
+                    (halloc ? 'A' : 'F'), (prevAlloc ? 'A' : 'F'));
         }
         /* Free block info */
         else {
             printf("Free block at %p: header (%zu, %c, %c),",  
-                bp, hsize, (prev_alloc ? 'A' : 'F'), (halloc ? 'A' : 'F'));
+                bp, hsize, (prevAlloc ? 'A' : 'F'), (halloc ? 'A' : 'F'));
             printf(" footer (%zu, %c)\n", fsize, (falloc ? 'A' : 'F'));
         }
     }
@@ -771,6 +779,29 @@ static size_t checklist(int verbose)
     }
     
     return free_blk_num;
+}
+
+/*
+ * check_cycle - Check if there is a cycle in linked list
+ *               Return 1 if exsit, 0 if not
+ */
+static size_t check_cycle(void *bp)
+{
+    char *hare = NEXT_FREE_BLKP(bp);        // faster pointer
+    char *tortoise = NEXT_FREE_BLKP(bp);    // slower pointer
+    
+    while (hare != bp && NEXT_FREE_BLKP(hare) != bp) {
+        if (NEXT_FREE_BLKP(hare) == tortoise
+            || NEXT_FREE_BLKP(NEXT_FREE_BLKP(hare)) == tortoise) {
+                return 1;
+        }
+
+        /* Update hare and tortoise */
+        hare = NEXT_FREE_BLKP(NEXT_FREE_BLKP(hare));
+        tortoise = NEXT_FREE_BLKP(tortoise);
+    }
+    
+    return 0;
 }
 
 /*
