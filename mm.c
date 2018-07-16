@@ -72,12 +72,12 @@ static char *last_seglist=0;
 static char *epilogue=0;
 typedef uint64_t word_t;
 
-static word_t PACK(size_t size,int prev,int curr)
+static size_t PACK(size_t size,int prev,int curr)
 {
     return ((size) | (prev) | (curr));   
 }
 
-static void PUT(void *p,word_t val)
+static void PUT(void *p,size_t val)
 {
        (unsigned int *)(p) = val;
 }
@@ -391,7 +391,7 @@ static void *find_fit(size_t asize)
         for(temp_list = cur_list; temp_list != (char *)last_list + DSIZE; temp_list = (char *)temp_list + DSIZE) {
             /* Loop each block of this seglist */
             for (bp = NEXT_FREE_BLKP(temp_list); bp != temp_list; bp = NEXT_FREE_BLKP(bp)) {
-                if (!GET_ALLOC(head_pointe(bp)) && (asize <= GET_SIZE(head_pointer(bp)))) {
+                if (!GET_ALLOC(head_pointer(bp)) && (asize <= GET_SIZE(head_pointer(bp)))) {
                     /* 
                      * min_bp = NULL means first get into this seglist
                      * or we find a block is better, whose size < best_size
