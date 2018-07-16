@@ -197,7 +197,7 @@ static inline void delBlock(void *bp)
 static void *coalesce(void *bp)
 {
     /* Find bp's prev and next block is allocate or not */
-    size_t prev_alloc = GET_PREV_ALLOC(head_pointer(bp));
+    size_t prev = GET_PREV_ALLOC(head_pointer(bp));
     size_t next_alloc = GET_ALLOC(head_pointer(next_block_address(bp)));
     
     /* Initialize */
@@ -209,7 +209,7 @@ static void *coalesce(void *bp)
      *   add bp into correct seg list
      *   update bp's next block's prev_alloc bit to IS_FREE
      */
-    if (prev_alloc && next_alloc) {
+    if (prev && next_alloc) {
         index = find_list(size);
         addBlock(bp, index);
         FREE_PREV(head_pointer(next_block_address(bp)));
@@ -224,13 +224,13 @@ static void *coalesce(void *bp)
      *   update bp's prev_alloc bit to PREV_ALLOC
      *   add new free block into seglist
      */
-    else if (prev_alloc && !next_alloc) {
+    else if (prev && !next_alloc) {
         size += GET_SIZE(head_pointer(next_block_address(bp)));
         index = find_list(size);
         
         delBlock(next_block_address(bp));
         
-        PUT(head_pointer(bp), PACK(size,prev_alloc,0));
+        PUT(head_pointer(bp), PACK(size,prev,0));
         PUT(foot_pointer(bp), size);
         
         addBlock(bp, index);
@@ -246,7 +246,7 @@ static void *coalesce(void *bp)
      *   update bp's prev_alloc bit to bp's prev block's prev_alloc bit
      *   add new free block into seglist
      */
-    else if (!prev_alloc && next_alloc) {
+    else if (!prev && next_alloc) {
         size += GET_SIZE(head_pointer(prev_block_address(bp)));
         index = find_list(size);
         
@@ -392,7 +392,7 @@ static void *find_fit(size_t asize)
         size_t best_size = MIN_FREE_SIZE * (1 << index) - 1;
         
         /* Loop each seglist which range's lower bound >= asize */
-        for(temp_list = cur_list; temp_list != (char *)last_list + DSIZE; temp_list = (char *)temp_list + DSIZE) {
+        for(temp_list = cur_list; temp_list != (char *)last_seglist + DSIZE; temp_list = (char *)temp_list + DSIZE) {
             /* Loop each block of this seglist */
             for (bp = NEXT_FREE_BLKP(temp_list); bp != temp_list; bp = NEXT_FREE_BLKP(bp)) {
                 if (!GET_ALLOC(head_pointer(bp)) && (asize <= GET_SIZE(head_pointer(bp)))) {
@@ -415,7 +415,7 @@ static void *find_fit(size_t asize)
     /* For smaller required size, use first fit approach */
     else {
          /* Loop each seglist which range's lower bound >= asize */
-        for (temp_list = cur_list; temp_list != (char *)last_list + DSIZE; temp_list = (char *)temp_list + DSIZE) {
+        for (temp_list = cur_list; temp_list != (char *)last_seglist + DSIZE; temp_list = (char *)temp_list + DSIZE) {
             /* Loop each block of this seglist */
             for (bp = NEXT_FREE_BLKP(temp_list); bp != temp_list; bp = NEXT_FREE_BLKP(bp)) {
                 /* Find first suitable block then return the pointer */
@@ -541,7 +541,7 @@ void *realloc(void *oldptr, size_t size) {
     }
 
     /* If oldptr is NULL, then this is just malloc. */
-    if(ptr == NULL) {
+    if(oldptr == NULL) {
         return mm_malloc(size);
     }
 
@@ -709,8 +709,8 @@ static size_t checklist(int verbose)
     
     /* When size is 0 means we meet epilogue */
     while (size != 0) {
-        size_t is_alloc = GET_ALLOC(head_pointer(bp));
-        size_t prev_alloc = GET_PREV_ALLOC(head_pointer(bp));
+        size_t isAlloc = GET_ALLOC(head_pointer(bp));
+        size_t prevAlloc = GET_PREV_ALLOC(head_pointer(bp));
         
         /* Check each block in heap */
         /* Check address alignment */
@@ -735,13 +735,13 @@ static size_t checklist(int verbose)
         }
         
         /* Check prev/next allocate bit consistency */
-        if (stored_alloc != prev_alloc) {
+        if (stored_alloc != prevAlloc) {
             printf("Error: prev/next allocate bit doesn't match\n");
         }
-        stored_alloc = is_alloc << 1; 
+        stored_alloc = isAlloc << 1; 
 
         /* Free blocks in heap */
-        if (is_alloc) {
+        if (isAlloc) {
             free_blk_num++;
             checkblock(bp);
             
@@ -791,7 +791,7 @@ static size_t check_freelist(int verbose)
     size_t bp_size;
     
     /* Loop each seglist */
-    for (cur_list = first_list; cur_list != last_list + DSIZE; cur_list = cur_list + DSIZE) {
+    for (cur_list = first_seglist; cur_list != last_seglist + DSIZE; cur_list = cur_list + DSIZE) {
         free_list_num++;
         
         /* Check if there is cyclic linked list */
