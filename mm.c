@@ -67,7 +67,6 @@
 #define MIN_ALLOC_SIZE 12
 #define MIN_FREE_SIZE 16
 #define BIGLIST 4
-#define MAX_SIZE 4096
 
 /* Global Variables */
 static char *heap_list_pointer = 0;
