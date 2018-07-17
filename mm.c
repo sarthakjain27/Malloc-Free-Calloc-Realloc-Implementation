@@ -111,6 +111,7 @@ static word_t pack(size_t size, bool alloc);
 
 static size_t extract_size(word_t header);
 static size_t get_size(block_t *block);
+static size_t get_free_size(block_f *block);
 static size_t get_payload_size(block_t *block);
 
 static bool extract_alloc(word_t header);
