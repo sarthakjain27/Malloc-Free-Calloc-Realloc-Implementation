@@ -211,14 +211,16 @@ void *malloc (size_t size) {
  * free
  */
 void free (void *bp) {
-    printf("Free called \n");
+    printf("Free called %p\n",bp);
+
 	if (bp == NULL)
     {
         return;
     }
 
     block_t *block = payload_to_header(bp);
-    size_t size = get_size(block);
+    printf("Free block pointer %p\n",block);
+	size_t size = get_size(block);
 
     write_header(block, size, false);
     write_footer(block, size, false);

@@ -157,7 +157,8 @@ block 0x800002918 size 113 block next 0x800002988 size 3392FreeList_start 0x8000
 Asize 112 FreeList_start 0x800002988
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000027a0
+Free block pointer 0x800002798
 Coalesce called 
 freeList start 0x800002988 block_free 0x800002798 block_f_next 0x8000027b8 block_p_next 0x8000026c8
 Case 1 entered 
@@ -183,7 +184,8 @@ csize 32 asize 32 min_block_size 32
 Asize 32 FreeList_start 0x800002988
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000026d0
+Free block pointer 0x8000026c8
 Coalesce called 
 freeList start 0x800002988 block_free 0x8000026c8 block_f_next 0x800002798 block_p_next 0x800000008
 Case 1 entered 
@@ -212,7 +214,8 @@ block 0x8000026c8 size 49 block next 0x8000026f8 size 160FreeList_start 0x800002
 Asize 48 FreeList_start 0x8000026f8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000010
+Free block pointer 0x800000008
 Coalesce called 
 freeList start 0x8000026f8 block_free 0x800000008 block_f_next 0x8000026c8 block_p_next 0x800000008
 Case 1 entered 
@@ -242,7 +245,8 @@ block 0x800000008 size 4801 block next 0x8000012c8 size 5120FreeList_start 0x800
 Asize 4800 FreeList_start 0x8000012c8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000027c0
+Free block pointer 0x8000027b8
 Coalesce called 
 freeList start 0x8000012c8 block_free 0x8000027b8 block_f_next 0x800002858 block_p_next 0x800002798
 Case 1 entered 
@@ -299,7 +303,8 @@ block 0x8000012c8 size 257 block next 0x8000013c8 size 4864FreeList_start 0x8000
 Asize 256 FreeList_start 0x8000013c8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000027a0
+Free block pointer 0x800002798
 Coalesce called 
 freeList start 0x8000013c8 block_free 0x800002798 block_f_next 0x8000027b8 block_p_next 0x8000026f8
 Case 3 entered 
@@ -332,7 +337,8 @@ block 0x8000026f8 size 33 block next 0x800002718 size 160FreeList_start 0x800002
 Asize 32 FreeList_start 0x800002718
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000012d0
+Free block pointer 0x8000012c8
 Coalesce called 
 freeList start 0x800002718 block_free 0x8000012c8 block_f_next 0x8000013c8 block_p_next 0x800000008
 Case 2 entered 
@@ -389,7 +395,8 @@ block 0x800001308 size 241 block next 0x8000013f8 size 4816FreeList_start 0x8000
 Asize 240 FreeList_start 0x8000013f8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000027c0
+Free block pointer 0x8000027b8
 Coalesce called 
 freeList start 0x8000013f8 block_free 0x8000027b8 block_f_next 0x800002818 block_p_next 0x800002718
 Case 4 entered 
@@ -421,7 +428,8 @@ block 0x800002718 size 33 block next 0x800002738 size 288FreeList_start 0x800002
 Asize 32 FreeList_start 0x800002738
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000026d0
+Free block pointer 0x8000026c8
 Coalesce called 
 freeList start 0x800002738 block_free 0x8000026c8 block_f_next 0x8000026f8 block_p_next 0x8000013f8
 Case 3 entered 
@@ -482,7 +490,8 @@ block 0x800001428 size 129 block next 0x8000014a8 size 4688FreeList_start 0x8000
 Asize 128 FreeList_start 0x8000014a8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001400
+Free block pointer 0x8000013f8
 Coalesce called 
 freeList start 0x8000014a8 block_free 0x8000013f8 block_f_next 0x800001428 block_p_next 0x800001308
 Case 1 entered 
@@ -544,7 +553,8 @@ block 0x800001598 size 49 block next 0x8000015c8 size 4400FreeList_start 0x80000
 Asize 48 FreeList_start 0x8000015c8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800002700
+Free block pointer 0x8000026f8
 Coalesce called 
 freeList start 0x8000015c8 block_free 0x8000026f8 block_f_next 0x800002718 block_p_next 0x8000015c8
 Case 3 entered 
@@ -636,7 +646,8 @@ FreeList Block 0x800011428 size 3392
 FreeList Block 0x8000015e8 size 4400
 FreeList Block 0x800002738 size 288
 Returning from checkheap 
-Free called 
+Free called 0x800002860
+Free block pointer 0x800002858
 Coalesce called 
 freeList start 0x800011428 block_free 0x800002858 block_f_next 0x8000028a8 block_p_next 0x800002738
 Case 3 entered 
@@ -703,7 +714,8 @@ block 0x8000027b8 size 177 block next 0x800002868 size 64FreeList_start 0x800002
 Asize 176 FreeList_start 0x800002868
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000015d0
+Free block pointer 0x8000015c8
 Coalesce called 
 freeList start 0x800002868 block_free 0x8000015c8 block_f_next 0x8000015e8 block_p_next 0x800001598
 Case 2 entered 
@@ -739,7 +751,8 @@ block 0x8000015c8 size 129 block next 0x800001648 size 4304FreeList_start 0x8000
 Asize 128 FreeList_start 0x800001648
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000028b0
+Free block pointer 0x8000028a8
 Coalesce called 
 freeList start 0x800001648 block_free 0x8000028a8 block_f_next 0x800002918 block_p_next 0x800002868
 Case 3 entered 
@@ -825,7 +838,8 @@ Heap Block 0x800002988 size 60064
 FreeList Block 0x800001728 size 4080
 FreeList Block 0x800011428 size 3392
 Returning from checkheap 
-Free called 
+Free called 0x8000027c0
+Free block pointer 0x8000027b8
 Coalesce called 
 freeList start 0x800001728 block_free 0x8000027b8 block_f_next 0x800002868 block_p_next 0x800002738
 Case 2 entered 
@@ -862,7 +876,8 @@ block 0x8000027b8 size 33 block next 0x8000027d8 size 320FreeList_start 0x800002
 Asize 32 FreeList_start 0x8000027d8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000014b0
+Free block pointer 0x8000014a8
 Coalesce called 
 freeList start 0x8000027d8 block_free 0x8000014a8 block_f_next 0x800001598 block_p_next 0x800001428
 Case 1 entered 
@@ -973,7 +988,8 @@ block 0x800011428 size 10289 block next 0x800013c58 size 3392FreeList_start 0x80
 Asize 10288 FreeList_start 0x800013c58
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001710
+Free block pointer 0x800001708
 Coalesce called 
 freeList start 0x800013c58 block_free 0x800001708 block_f_next 0x800001728 block_p_next 0x800001648
 Case 1 entered 
@@ -1042,7 +1058,8 @@ block 0x800013c58 size 145 block next 0x800013ce8 size 3248FreeList_start 0x8000
 Asize 144 FreeList_start 0x800013ce8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001710
+Free block pointer 0x800001708
 Coalesce called 
 freeList start 0x800013ce8 block_free 0x800001708 block_f_next 0x800001728 block_p_next 0x800001648
 Case 1 entered 
@@ -1117,7 +1134,8 @@ block 0x800013e98 size 33 block next 0x800013eb8 size 2784FreeList_start 0x80001
 Asize 32 FreeList_start 0x800013eb8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001310
+Free block pointer 0x800001308
 Coalesce called 
 freeList start 0x800013eb8 block_free 0x800001308 block_f_next 0x8000013f8 block_p_next 0x8000012c8
 Case 2 entered 
@@ -1237,7 +1255,8 @@ block 0x800016b58 size 593 block next 0x800016da8 size 2192FreeList_start 0x8000
 Asize 592 FreeList_start 0x800016da8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000015d0
+Free block pointer 0x8000015c8
 Coalesce called 
 freeList start 0x800016da8 block_free 0x8000015c8 block_f_next 0x800001648 block_p_next 0x800001598
 Case 1 entered 
@@ -1328,7 +1347,8 @@ block 0x800016e68 size 8145 block next 0x800018e38 size 2000FreeList_start 0x800
 Asize 8144 FreeList_start 0x800018e38
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800002720
+Free block pointer 0x800002718
 Coalesce called 
 freeList start 0x800018e38 block_free 0x800002718 block_f_next 0x800002738 block_p_next 0x800002578
 Case 3 entered 
@@ -1360,7 +1380,8 @@ Heap Block 0x800016e68 size 8144
 FreeList Block 0x800002578 size 448
 FreeList Block 0x800018e38 size 2000
 Returning from checkheap 
-Free called 
+Free called 0x800016db0
+Free block pointer 0x800016da8
 Coalesce called 
 freeList start 0x800002578 block_free 0x800016da8 block_f_next 0x800016e68 block_p_next 0x800016b58
 Case 1 entered 
@@ -1596,7 +1617,8 @@ block 0x800018f18 size 65 block next 0x800018f58 size 1712FreeList_start 0x80001
 Asize 64 FreeList_start 0x800018f58
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800002990
+Free block pointer 0x800002988
 Coalesce called 
 freeList start 0x800018f58 block_free 0x800002988 block_f_next 0x800011428 block_p_next 0x800002918
 Case 1 entered 
@@ -1728,7 +1750,8 @@ block 0x800002ae8 size 13761 block next 0x8000060a8 size 45952FreeList_start 0x8
 Asize 13760 FreeList_start 0x8000060a8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000015a0
+Free block pointer 0x800001598
 Coalesce called 
 freeList start 0x8000060a8 block_free 0x800001598 block_f_next 0x8000015c8 block_p_next 0x8000014a8
 Case 4 entered 
@@ -1778,7 +1801,8 @@ block 0x8000014a8 size 33 block next 0x8000014c8 size 384FreeList_start 0x800001
 Asize 32 FreeList_start 0x8000014c8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000010
+Free block pointer 0x800000008
 Coalesce called 
 freeList start 0x8000014c8 block_free 0x800000008 block_f_next 0x8000012c8 block_p_next 0x800000008
 Case 1 entered 
@@ -1830,7 +1854,8 @@ block 0x800000008 size 97 block next 0x800000068 size 4704FreeList_start 0x80000
 Asize 96 FreeList_start 0x800000068
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800002680
+Free block pointer 0x800002678
 Coalesce called 
 freeList start 0x800000068 block_free 0x800002678 block_f_next 0x8000026b8 block_p_next 0x800002648
 Case 2 entered 
@@ -1869,7 +1894,8 @@ FreeList Block 0x8000014c8 size 384
 FreeList Block 0x8000060a8 size 45952
 FreeList Block 0x800018f58 size 1712
 Returning from checkheap 
-Free called 
+Free called 0x800000010
+Free block pointer 0x800000008
 Coalesce called 
 freeList start 0x800002678 block_free 0x800000008 block_f_next 0x800000068 block_p_next 0x800000008
 Case 2 entered 
@@ -1920,7 +1946,8 @@ block 0x800000008 size 257 block next 0x800000108 size 4544FreeList_start 0x8000
 Asize 256 FreeList_start 0x800000108
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000027c0
+Free block pointer 0x8000027b8
 Coalesce called 
 freeList start 0x800000108 block_free 0x8000027b8 block_f_next 0x8000027d8 block_p_next 0x800002738
 Case 2 entered 
@@ -2018,7 +2045,8 @@ block 0x800000d08 size 225 block next 0x800000de8 size 1248FreeList_start 0x8000
 Asize 224 FreeList_start 0x800000de8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001730
+Free block pointer 0x800001728
 Coalesce called 
 freeList start 0x800000de8 block_free 0x800001728 block_f_next 0x800002558 block_p_next 0x800001708
 Case 3 entered 
@@ -2121,7 +2149,8 @@ block 0x8000060a8 size 4833 block next 0x800007388 size 41120FreeList_start 0x80
 Asize 4832 FreeList_start 0x800007388
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800016b60
+Free block pointer 0x800016b58
 Coalesce called 
 freeList start 0x800007388 block_free 0x800016b58 block_f_next 0x800016da8 block_p_next 0x800013eb8
 Case 2 entered 
@@ -2159,7 +2188,8 @@ FreeList Block 0x800016b58 size 784
 FreeList Block 0x800007388 size 41120
 FreeList Block 0x800018f58 size 1712
 Returning from checkheap 
-Free called 
+Free called 0x800000010
+Free block pointer 0x800000008
 Coalesce called 
 freeList start 0x800016b58 block_free 0x800000008 block_f_next 0x800000108 block_p_next 0x800000008
 Case 1 entered 
@@ -2211,7 +2241,8 @@ block 0x800000008 size 177 block next 0x8000000b8 size 80FreeList_start 0x800000
 Asize 176 FreeList_start 0x8000000b8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800018e40
+Free block pointer 0x800018e38
 Coalesce called 
 freeList start 0x8000000b8 block_free 0x800018e38 block_f_next 0x800018ef8 block_p_next 0x800016e68
 Case 1 entered 
@@ -2309,7 +2340,8 @@ block 0x800016c58 size 33 block next 0x800016c78 size 496FreeList_start 0x800016
 Asize 32 FreeList_start 0x800016c78
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000012d0
+Free block pointer 0x8000012c8
 Coalesce called 
 freeList start 0x800016c78 block_free 0x8000012c8 block_f_next 0x800001308 block_p_next 0x800000de8
 Case 3 entered 
@@ -2365,7 +2397,8 @@ block 0x800000de8 size 209 block next 0x800000eb8 size 1104FreeList_start 0x8000
 Asize 208 FreeList_start 0x800000eb8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800011430
+Free block pointer 0x800011428
 Coalesce called 
 freeList start 0x800000eb8 block_free 0x800011428 block_f_next 0x800013c58 block_p_next 0x800007388
 Case 3 entered 
@@ -2421,7 +2454,8 @@ block 0x800007388 size 81 block next 0x8000073d8 size 51328FreeList_start 0x8000
 Asize 80 FreeList_start 0x8000073d8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000df0
+Free block pointer 0x800000de8
 Coalesce called 
 freeList start 0x8000073d8 block_free 0x800000de8 block_f_next 0x800000eb8 block_p_next 0x800000d08
 Case 2 entered 
@@ -2475,7 +2509,8 @@ block 0x800000de8 size 33 block next 0x800000e08 size 1280FreeList_start 0x80000
 Asize 32 FreeList_start 0x800000e08
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800013cf0
+Free block pointer 0x800013ce8
 Coalesce called 
 freeList start 0x800000e08 block_free 0x800013ce8 block_f_next 0x800013e98 block_p_next 0x800013c58
 Case 1 entered 
@@ -2785,7 +2820,8 @@ block 0x800007568 size 33 block next 0x800007588 size 50896FreeList_start 0x8000
 Asize 32 FreeList_start 0x800007588
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800007390
+Free block pointer 0x800007388
 Coalesce called 
 freeList start 0x800007588 block_free 0x800007388 block_f_next 0x8000073d8 block_p_next 0x8000060a8
 Case 1 entered 
@@ -2831,7 +2867,8 @@ FreeList Block 0x800018f58 size 1712
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 78]: block 19 (at 0x800001310) has 8 garbled bytes, starting at byte 0
 ERROR [trace ./traces/syn-mix-realloc.rep, line 78]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800007490
+Free block pointer 0x800007488
 Coalesce called 
 freeList start 0x800007388 block_free 0x800007488 block_f_next 0x800007568 block_p_next 0x8000073d8
 Case 1 entered 
@@ -3051,7 +3088,8 @@ block 0x8000090c8 size 49 block next 0x8000090f8 size 43872FreeList_start 0x8000
 Asize 48 FreeList_start 0x8000090f8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000073e0
+Free block pointer 0x8000073d8
 Coalesce called 
 freeList start 0x8000090f8 block_free 0x8000073d8 block_f_next 0x800007488 block_p_next 0x800007388
 Case 3 entered 
@@ -3114,7 +3152,8 @@ block 0x800007388 size 33 block next 0x8000073a8 size 224FreeList_start 0x800007
 Asize 32 FreeList_start 0x8000073a8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001650
+Free block pointer 0x800001648
 Coalesce called 
 freeList start 0x8000073a8 block_free 0x800001648 block_f_next 0x800001708 block_p_next 0x8000014c8
 Case 3 entered 
@@ -3179,7 +3218,8 @@ block 0x8000014c8 size 385 block next 0x800001648 size 192FreeList_start 0x80000
 Asize 384 FreeList_start 0x800001648
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800002af0
+Free block pointer 0x800002ae8
 Coalesce called 
 freeList start 0x800001648 block_free 0x800002ae8 block_f_next 0x8000060a8 block_p_next 0x800002a68
 Case 1 entered 
@@ -3359,7 +3399,8 @@ block 0x8000090f8 size 27825 block next 0x80000fda8 size 16048FreeList_start 0x8
 Asize 27824 FreeList_start 0x80000fda8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800007390
+Free block pointer 0x800007388
 Coalesce called 
 freeList start 0x80000fda8 block_free 0x800007388 block_f_next 0x8000073a8 block_p_next 0x8000060a8
 Case 2 entered 
@@ -3467,7 +3508,8 @@ FreeList Block 0x800018f58 size 1712
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 89]: block 19 (at 0x800001310) has 8 garbled bytes, starting at byte 0
 ERROR [trace ./traces/syn-mix-realloc.rep, line 89]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800009100
+Free block pointer 0x8000090f8
 Coalesce called 
 freeList start 0x8000073e8 block_free 0x8000090f8 block_f_next 0x80000fda8 block_p_next 0x8000090c8
 Case 2 entered 
@@ -3530,7 +3572,8 @@ block 0x8000090f8 size 145 block next 0x800009188 size 43728FreeList_start 0x800
 Asize 144 FreeList_start 0x800009188
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800002af0
+Free block pointer 0x800002ae8
 Coalesce called 
 freeList start 0x800009188 block_free 0x800002ae8 block_f_next 0x800002b08 block_p_next 0x800002a68
 Case 1 entered 
@@ -3604,7 +3647,8 @@ block 0x800018f58 size 188641 block next 0x800047038 size 1712FreeList_start 0x8
 Asize 188640 FreeList_start 0x800047038
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800002650
+Free block pointer 0x800002648
 Coalesce called 
 freeList start 0x800047038 block_free 0x800002648 block_f_next 0x800002678 block_p_next 0x800002578
 Case 2 entered 
@@ -3656,7 +3700,8 @@ FreeList Block 0x800016c78 size 496
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 92]: block 19 (at 0x800001310) has 8 garbled bytes, starting at byte 0
 ERROR [trace ./traces/syn-mix-realloc.rep, line 92]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800018f60
+Free block pointer 0x800018f58
 Coalesce called 
 freeList start 0x800002648 block_free 0x800018f58 block_f_next 0x800047038 block_p_next 0x800018f18
 Case 2 entered 
@@ -3720,7 +3765,8 @@ block 0x800018f58 size 33 block next 0x800018f78 size 190320FreeList_start 0x800
 Asize 32 FreeList_start 0x800018f78
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800002b10
+Free block pointer 0x800002b08
 Coalesce called 
 freeList start 0x800018f78 block_free 0x800002b08 block_f_next 0x800002b68 block_p_next 0x800002ae8
 Case 4 entered 
@@ -3771,7 +3817,8 @@ FreeList Block 0x800016c78 size 496
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 94]: block 19 (at 0x800001310) has 8 garbled bytes, starting at byte 0
 ERROR [trace ./traces/syn-mix-realloc.rep, line 94]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800018f60
+Free block pointer 0x800018f58
 Coalesce called 
 freeList start 0x800002ae8 block_free 0x800018f58 block_f_next 0x800018f78 block_p_next 0x800018f18
 Case 2 entered 
@@ -3834,7 +3881,8 @@ block 0x800018f58 size 33 block next 0x800018f78 size 190320FreeList_start 0x800
 Asize 32 FreeList_start 0x800018f78
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800013c60
+Free block pointer 0x800013c58
 Coalesce called 
 freeList start 0x800018f78 block_free 0x800013c58 block_f_next 0x800013ce8 block_p_next 0x800009188
 Case 3 entered 
@@ -3899,7 +3947,8 @@ block 0x800009188 size 193 block next 0x800009248 size 43680FreeList_start 0x800
 Asize 192 FreeList_start 0x800009248
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800002990
+Free block pointer 0x800002988
 Coalesce called 
 freeList start 0x800009248 block_free 0x800002988 block_f_next 0x800002a68 block_p_next 0x800002918
 Case 1 entered 
@@ -3963,7 +4012,8 @@ block 0x800009248 size 657 block next 0x8000094d8 size 43024FreeList_start 0x800
 Asize 656 FreeList_start 0x8000094d8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800016c60
+Free block pointer 0x800016c58
 Coalesce called 
 freeList start 0x8000094d8 block_free 0x800016c58 block_f_next 0x800016c78 block_p_next 0x800016b58
 Case 2 entered 
@@ -4013,7 +4063,8 @@ FreeList Block 0x8000073e8 size 160
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 98]: block 19 (at 0x800001310) has 8 garbled bytes, starting at byte 0
 ERROR [trace ./traces/syn-mix-realloc.rep, line 98]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800009250
+Free block pointer 0x800009248
 Coalesce called 
 freeList start 0x800016c58 block_free 0x800009248 block_f_next 0x8000094d8 block_p_next 0x800009188
 Case 2 entered 
@@ -4075,7 +4126,8 @@ block 0x800009248 size 33 block next 0x800009268 size 43648FreeList_start 0x8000
 Asize 32 FreeList_start 0x800009268
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000010
+Free block pointer 0x800000008
 Coalesce called 
 freeList start 0x800009268 block_free 0x800000008 block_f_next 0x8000000b8 block_p_next 0x800000008
 Case 2 entered 
@@ -4178,7 +4230,8 @@ FreeList Block 0x800002ae8 size 13760
 FreeList Block 0x800002648 size 240
 FreeList Block 0x8000073e8 size 160
 Returning from checkheap 
-Free called 
+Free called 0x800009270
+Free block pointer 0x800009268
 Coalesce called 
 freeList start 0x80000b398 block_free 0x800009268 block_f_next 0x80000b398 block_p_next 0x800009248
 Case 2 entered 
@@ -4350,7 +4403,8 @@ block 0x800018f78 size 145153 block next 0x80003c678 size 45168FreeList_start 0x
 Asize 145152 FreeList_start 0x80003c678
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800013ec0
+Free block pointer 0x800013eb8
 Coalesce called 
 freeList start 0x80003c678 block_free 0x800013eb8 block_f_next 0x800016b58 block_p_next 0x800013e98
 Case 1 entered 
@@ -4525,7 +4579,8 @@ block 0x800013f38 size 65 block next 0x800013f78 size 11232FreeList_start 0x8000
 Asize 64 FreeList_start 0x800013f78
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800016b60
+Free block pointer 0x800016b58
 Coalesce called 
 freeList start 0x800013f78 block_free 0x800016b58 block_f_next 0x800016c58 block_p_next 0x800013f78
 Case 4 entered 
@@ -4575,7 +4630,8 @@ FreeList Block 0x800002ae8 size 13760
 FreeList Block 0x800002648 size 240
 FreeList Block 0x8000073e8 size 160
 Returning from checkheap 
-Free called 
+Free called 0x800013f40
+Free block pointer 0x800013f38
 Coalesce called 
 freeList start 0x800013f78 block_free 0x800013f38 block_f_next 0x800013f78 block_p_next 0x800013ee8
 Case 2 entered 
@@ -4638,7 +4694,8 @@ block 0x800013f38 size 33 block next 0x800013f58 size 12048FreeList_start 0x8000
 Asize 32 FreeList_start 0x800013f58
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001310
+Free block pointer 0x800001308
 Coalesce called 
 freeList start 0x800013f58 block_free 0x800001308 block_f_next 0x800001428 block_p_next 0x800001268
 Case 3 entered 
@@ -4705,7 +4762,8 @@ block 0x800013f58 size 2305 block next 0x800014858 size 9744FreeList_start 0x800
 Asize 2304 FreeList_start 0x800014858
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000110
+Free block pointer 0x800000108
 Coalesce called 
 freeList start 0x800014858 block_free 0x800000108 block_f_next 0x800000d08 block_p_next 0x800000008
 Case 3 entered 
@@ -4947,7 +5005,8 @@ block 0x800000168 size 33 block next 0x800000188 size 2944FreeList_start 0x80000
 Asize 32 FreeList_start 0x800000188
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000100
+Free block pointer 0x8000000f8
 Coalesce called 
 freeList start 0x800000188 block_free 0x8000000f8 block_f_next 0x800000168 block_p_next 0x8000000c8
 Case 1 entered 
@@ -5014,7 +5073,8 @@ block 0x800000188 size 2193 block next 0x800000a18 size 752FreeList_start 0x8000
 Asize 2192 FreeList_start 0x800000a18
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000090d0
+Free block pointer 0x8000090c8
 Coalesce called 
 freeList start 0x800000a18 block_free 0x8000090c8 block_f_next 0x8000090f8 block_p_next 0x800007658
 Case 1 entered 
@@ -5204,7 +5264,8 @@ block 0x800000b18 size 97 block next 0x800000b78 size 400FreeList_start 0x800000
 Asize 96 FreeList_start 0x800000b78
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800013ec0
+Free block pointer 0x800013eb8
 Coalesce called 
 freeList start 0x800000b78 block_free 0x800013eb8 block_f_next 0x800013ee8 block_p_next 0x800013e98
 Case 1 entered 
@@ -5397,7 +5458,8 @@ block 0x800000c78 size 113 block next 0x800000ce8 size 32FreeList_start 0x800000
 Asize 112 FreeList_start 0x800000ce8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800018f00
+Free block pointer 0x800018ef8
 Coalesce called 
 freeList start 0x800000ce8 block_free 0x800018ef8 block_f_next 0x800018f18 block_p_next 0x800018e38
 Case 3 entered 
@@ -5471,7 +5533,8 @@ block 0x800018e38 size 97 block next 0x800018e98 size 128FreeList_start 0x800018
 Asize 96 FreeList_start 0x800018e98
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800013ec0
+Free block pointer 0x800013eb8
 Coalesce called 
 freeList start 0x800018e98 block_free 0x800013eb8 block_f_next 0x800013ee8 block_p_next 0x800013e98
 Case 1 entered 
@@ -5554,7 +5617,8 @@ block 0x80003c678 size 150545 block next 0x800061288 size 45168FreeList_start 0x
 Asize 150544 FreeList_start 0x800061288
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000a20
+Free block pointer 0x800000a18
 Coalesce called 
 freeList start 0x800061288 block_free 0x800000a18 block_f_next 0x800000ac8 block_p_next 0x800000188
 Case 1 entered 
@@ -5695,7 +5759,8 @@ block 0x800000a78 size 33 block next 0x800000a98 size 48FreeList_start 0x800000a
 Asize 32 FreeList_start 0x800000a98
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800013ea0
+Free block pointer 0x800013e98
 Coalesce called 
 freeList start 0x800000a98 block_free 0x800013e98 block_f_next 0x800013eb8 block_p_next 0x800013e38
 Case 4 entered 
@@ -5915,7 +5980,8 @@ FreeList Block 0x800002ae8 size 13760
 FreeList Block 0x800002648 size 240
 FreeList Block 0x8000073e8 size 160
 Returning from checkheap 
-Free called 
+Free called 0x800061290
+Free block pointer 0x800061288
 Coalesce called 
 freeList start 0x8000927a8 block_free 0x800061288 block_f_next 0x80006c678 block_p_next 0x80003c678
 Case 1 entered 
@@ -6134,7 +6200,8 @@ block 0x800061368 size 49 block next 0x800061398 size 45792FreeList_start 0x8000
 Asize 48 FreeList_start 0x800061398
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x80003c680
+Free block pointer 0x80003c678
 Coalesce called 
 freeList start 0x800061398 block_free 0x80003c678 block_f_next 0x800061288 block_p_next 0x800018f78
 Case 1 entered 
@@ -6425,7 +6492,8 @@ FreeList Block 0x800002ae8 size 13760
 FreeList Block 0x800002648 size 240
 FreeList Block 0x8000073e8 size 160
 Returning from checkheap 
-Free called 
+Free called 0x80003c7a0
+Free block pointer 0x80003c798
 Coalesce called 
 freeList start 0x80003c7b8 block_free 0x80003c798 block_f_next 0x80003c7b8 block_p_next 0x80003c758
 Case 2 entered 
@@ -6506,7 +6574,8 @@ block 0x80003c798 size 113 block next 0x80003c808 size 150144FreeList_start 0x80
 Asize 112 FreeList_start 0x80003c808
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800013db0
+Free block pointer 0x800013da8
 Coalesce called 
 freeList start 0x80003c808 block_free 0x800013da8 block_f_next 0x800013e38 block_p_next 0x800013ce8
 Case 2 entered 
@@ -6574,7 +6643,8 @@ FreeList Block 0x800002ae8 size 13760
 FreeList Block 0x800002648 size 240
 FreeList Block 0x8000073e8 size 160
 Returning from checkheap 
-Free called 
+Free called 0x80003c7a0
+Free block pointer 0x80003c798
 Coalesce called 
 freeList start 0x800013da8 block_free 0x80003c798 block_f_next 0x80003c808 block_p_next 0x80003c758
 Case 2 entered 
@@ -6792,7 +6862,8 @@ FreeList Block 0x800002ae8 size 13760
 FreeList Block 0x800002648 size 240
 FreeList Block 0x8000073e8 size 160
 Returning from checkheap 
-Free called 
+Free called 0x80003c7e0
+Free block pointer 0x80003c7d8
 Coalesce called 
 freeList start 0x80003c858 block_free 0x80003c7d8 block_f_next 0x80003c858 block_p_next 0x80003c798
 Case 2 entered 
@@ -6873,7 +6944,8 @@ block 0x80003c7d8 size 4353 block next 0x80003d8d8 size 145840FreeList_start 0x8
 Asize 4352 FreeList_start 0x80003d8d8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800016e70
+Free block pointer 0x800016e68
 Coalesce called 
 freeList start 0x80003d8d8 block_free 0x800016e68 block_f_next 0x800018e38 block_p_next 0x800014858
 Case 3 entered 
@@ -7096,7 +7168,8 @@ FreeList Block 0x800002ae8 size 13760
 FreeList Block 0x800002648 size 240
 FreeList Block 0x8000073e8 size 160
 Returning from checkheap 
-Free called 
+Free called 0x800015640
+Free block pointer 0x800015638
 Coalesce called 
 freeList start 0x800015698 block_free 0x800015638 block_f_next 0x800015698 block_p_next 0x800014858
 Case 2 entered 
@@ -7333,7 +7406,8 @@ block 0x8000156a8 size 33 block next 0x8000156c8 size 14192FreeList_start 0x8000
 Asize 32 FreeList_start 0x8000156c8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800015640
+Free block pointer 0x800015638
 Coalesce called 
 freeList start 0x8000156c8 block_free 0x800015638 block_f_next 0x800015658 block_p_next 0x800014858
 Case 1 entered 
@@ -7484,7 +7558,8 @@ FreeList Block 0x800002ae8 size 13760
 FreeList Block 0x800002648 size 240
 FreeList Block 0x8000073e8 size 160
 Returning from checkheap 
-Free called 
+Free called 0x8000156d0
+Free block pointer 0x8000156c8
 Coalesce called 
 freeList start 0x8000156f8 block_free 0x8000156c8 block_f_next 0x8000156f8 block_p_next 0x8000156a8
 Case 2 entered 
@@ -7647,7 +7722,8 @@ block 0x8000156f8 size 193 block next 0x8000157b8 size 13952FreeList_start 0x800
 Asize 192 FreeList_start 0x8000157b8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800015660
+Free block pointer 0x800015658
 Coalesce called 
 freeList start 0x8000157b8 block_free 0x800015658 block_f_next 0x8000156a8 block_p_next 0x800015638
 Case 3 entered 
@@ -7736,7 +7812,8 @@ block 0x8000157b8 size 9265 block next 0x800017be8 size 4688FreeList_start 0x800
 Asize 9264 FreeList_start 0x800017be8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000000d0
+Free block pointer 0x8000000c8
 Coalesce called 
 freeList start 0x800017be8 block_free 0x8000000c8 block_f_next 0x8000000f8 block_p_next 0x800000008
 Case 2 entered 
@@ -8055,7 +8132,8 @@ FreeList Block 0x800002648 size 240
 FreeList Block 0x8000073e8 size 160
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 156]: block 55 (at 0x800000a28) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x8000000d0
+Free block pointer 0x8000000c8
 Coalesce called 
 freeList start 0x800041bf8 block_free 0x8000000c8 block_f_next 0x8000000f8 block_p_next 0x800000008
 Case 2 entered 
@@ -8143,7 +8221,8 @@ block 0x8000000c8 size 65 block next 0x800000108 size 96FreeList_start 0x8000001
 Asize 64 FreeList_start 0x800000108
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000ad0
+Free block pointer 0x800000ac8
 Coalesce called 
 freeList start 0x800000108 block_free 0x800000ac8 block_f_next 0x800000b18 block_p_next 0x800000a98
 Case 3 entered 
@@ -8220,7 +8299,8 @@ FreeList Block 0x800002648 size 240
 FreeList Block 0x8000073e8 size 160
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 158]: block 55 (at 0x800000a28) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x8000000d0
+Free block pointer 0x8000000c8
 Coalesce called 
 freeList start 0x800000a98 block_free 0x8000000c8 block_f_next 0x800000108 block_p_next 0x800000008
 Case 2 entered 
@@ -8307,7 +8387,8 @@ block 0x8000000c8 size 81 block next 0x800000118 size 80FreeList_start 0x8000001
 Asize 80 FreeList_start 0x800000118
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800061370
+Free block pointer 0x800061368
 Coalesce called 
 freeList start 0x800000118 block_free 0x800061368 block_f_next 0x800061398 block_p_next 0x800061308
 Case 2 entered 
@@ -8381,7 +8462,8 @@ FreeList Block 0x800002648 size 240
 FreeList Block 0x8000073e8 size 160
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 160]: block 55 (at 0x800000a28) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x8000000d0
+Free block pointer 0x8000000c8
 Coalesce called 
 freeList start 0x800061368 block_free 0x8000000c8 block_f_next 0x800000118 block_p_next 0x800000008
 Case 2 entered 
@@ -8467,7 +8549,8 @@ block 0x8000000c8 size 33 block next 0x8000000e8 size 128FreeList_start 0x800000
 Asize 32 FreeList_start 0x8000000e8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000170
+Free block pointer 0x800000168
 Coalesce called 
 freeList start 0x8000000e8 block_free 0x800000168 block_f_next 0x800000188 block_p_next 0x8000000e8
 Case 3 entered 
@@ -8556,7 +8639,8 @@ block 0x8000000e8 size 65 block next 0x800000128 size 96FreeList_start 0x8000001
 Asize 64 FreeList_start 0x800000128
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000a20
+Free block pointer 0x800000a18
 Coalesce called 
 freeList start 0x800000128 block_free 0x800000a18 block_f_next 0x800000a78 block_p_next 0x800000188
 Case 1 entered 
@@ -8643,7 +8727,8 @@ block 0x800061368 size 193 block next 0x800061428 size 45648FreeList_start 0x800
 Asize 192 FreeList_start 0x800061428
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000156d0
+Free block pointer 0x8000156c8
 Coalesce called 
 freeList start 0x800061428 block_free 0x8000156c8 block_f_next 0x8000156f8 block_p_next 0x8000156a8
 Case 1 entered 
@@ -8794,7 +8879,8 @@ FreeList Block 0x800002ae8 size 13760
 FreeList Block 0x800002648 size 240
 FreeList Block 0x8000073e8 size 160
 Returning from checkheap 
-Free called 
+Free called 0x800061430
+Free block pointer 0x800061428
 Coalesce called 
 freeList start 0x80006a198 block_free 0x800061428 block_f_next 0x80006a198 block_p_next 0x800061368
 Case 2 entered 
@@ -8878,7 +8964,8 @@ block 0x800061428 size 65 block next 0x800061468 size 45584FreeList_start 0x8000
 Asize 64 FreeList_start 0x800061468
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800061290
+Free block pointer 0x800061288
 Coalesce called 
 freeList start 0x800061468 block_free 0x800061288 block_f_next 0x800061308 block_p_next 0x800041bf8
 Case 3 entered 
@@ -8964,7 +9051,8 @@ block 0x800041bf8 size 81 block next 0x800041c48 size 128704FreeList_start 0x800
 Asize 80 FreeList_start 0x800041c48
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800007660
+Free block pointer 0x800007658
 Coalesce called 
 freeList start 0x800041c48 block_free 0x800007658 block_f_next 0x8000090c8 block_p_next 0x800007588
 Case 2 entered 
@@ -9050,7 +9138,8 @@ block 0x800007658 size 161 block next 0x8000076f8 size 6656FreeList_start 0x8000
 Asize 160 FreeList_start 0x8000076f8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800007490
+Free block pointer 0x800007488
 Coalesce called 
 freeList start 0x8000076f8 block_free 0x800007488 block_f_next 0x800007518 block_p_next 0x8000073e8
 Case 4 entered 
@@ -9204,7 +9293,8 @@ FreeList Block 0x800002ae8 size 13760
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 170]: block 54 (at 0x800000b88) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800041c00
+Free block pointer 0x800041bf8
 Coalesce called 
 freeList start 0x800007448 block_free 0x800041bf8 block_f_next 0x800041c48 block_p_next 0x800041bd8
 Case 2 entered 
@@ -9290,7 +9380,8 @@ block 0x800041bf8 size 3953 block next 0x800042b68 size 124832FreeList_start 0x8
 Asize 3952 FreeList_start 0x800042b68
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800013f40
+Free block pointer 0x800013f38
 Coalesce called 
 freeList start 0x800042b68 block_free 0x800013f38 block_f_next 0x800013f58 block_p_next 0x800013ee8
 Case 1 entered 
@@ -9377,7 +9468,8 @@ block 0x800042b68 size 49 block next 0x800042b98 size 124784FreeList_start 0x800
 Asize 48 FreeList_start 0x800042b98
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001710
+Free block pointer 0x800001708
 Coalesce called 
 freeList start 0x800042b98 block_free 0x800001708 block_f_next 0x800001728 block_p_next 0x800001648
 Case 4 entered 
@@ -9451,7 +9543,8 @@ FreeList Block 0x800002ae8 size 13760
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 173]: block 54 (at 0x800000b88) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x8000000d0
+Free block pointer 0x8000000c8
 Coalesce called 
 freeList start 0x800001648 block_free 0x8000000c8 block_f_next 0x8000000e8 block_p_next 0x800000008
 Case 1 entered 
@@ -9606,7 +9699,8 @@ FreeList Block 0x800002ae8 size 13760
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 175]: block 54 (at 0x800000b88) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800042b70
+Free block pointer 0x800042b68
 Coalesce called 
 freeList start 0x800001698 block_free 0x800042b68 block_f_next 0x800042b98 block_p_next 0x800041bf8
 Case 2 entered 
@@ -9855,7 +9949,8 @@ block 0x8000435d8 size 4929 block next 0x800044918 size 117232FreeList_start 0x8
 Asize 4928 FreeList_start 0x800044918
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800061370
+Free block pointer 0x800061368
 Coalesce called 
 freeList start 0x800044918 block_free 0x800061368 block_f_next 0x800061428 block_p_next 0x800061308
 Case 1 entered 
@@ -9944,7 +10039,8 @@ block 0x800061368 size 81 block next 0x8000613b8 size 112FreeList_start 0x800061
 Asize 80 FreeList_start 0x8000613b8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000014b0
+Free block pointer 0x8000014a8
 Coalesce called 
 freeList start 0x8000613b8 block_free 0x8000014a8 block_f_next 0x8000014c8 block_p_next 0x800001428
 Case 1 entered 
@@ -10021,7 +10117,8 @@ FreeList Block 0x800002ae8 size 13760
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 180]: block 54 (at 0x800000b88) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800001650
+Free block pointer 0x800001648
 Coalesce called 
 freeList start 0x8000014a8 block_free 0x800001648 block_f_next 0x800001698 block_p_next 0x8000014c8
 Case 2 entered 
@@ -10110,7 +10207,8 @@ block 0x800001648 size 177 block next 0x8000016f8 size 3680FreeList_start 0x8000
 Asize 176 FreeList_start 0x8000016f8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000000f0
+Free block pointer 0x8000000e8
 Coalesce called 
 freeList start 0x8000016f8 block_free 0x8000000e8 block_f_next 0x800000128 block_p_next 0x8000000c8
 Case 4 entered 
@@ -10271,7 +10369,8 @@ FreeList Block 0x800002ae8 size 13760
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 183]: block 54 (at 0x800000b88) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800001650
+Free block pointer 0x800001648
 Coalesce called 
 freeList start 0x8000017f8 block_free 0x800001648 block_f_next 0x8000016f8 block_p_next 0x8000014c8
 Case 1 entered 
@@ -10446,7 +10545,8 @@ block 0x800044918 size 77329 block next 0x800057728 size 39904FreeList_start 0x8
 Asize 77328 FreeList_start 0x800057728
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000190
+Free block pointer 0x800000188
 Coalesce called 
 freeList start 0x800057728 block_free 0x800000188 block_f_next 0x800000a18 block_p_next 0x8000000c8
 Case 4 entered 
@@ -10701,7 +10801,8 @@ block 0x800000158 size 193 block next 0x800000218 size 2144FreeList_start 0x8000
 Asize 192 FreeList_start 0x800000218
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800041c00
+Free block pointer 0x800041bf8
 Coalesce called 
 freeList start 0x800000218 block_free 0x800041bf8 block_f_next 0x800042b68 block_p_next 0x800041bd8
 Case 1 entered 
@@ -10792,7 +10893,8 @@ block 0x800041bf8 size 209 block next 0x800041cc8 size 3744FreeList_start 0x8000
 Asize 208 FreeList_start 0x800041cc8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000060b0
+Free block pointer 0x8000060a8
 Coalesce called 
 freeList start 0x800041cc8 block_free 0x8000060a8 block_f_next 0x800007388 block_p_next 0x800002ae8
 Case 3 entered 
@@ -10971,7 +11073,8 @@ block 0x800002bd8 size 33 block next 0x800002bf8 size 18320FreeList_start 0x8000
 Asize 32 FreeList_start 0x800002bf8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000073f0
+Free block pointer 0x8000073e8
 Coalesce called 
 freeList start 0x800002bf8 block_free 0x8000073e8 block_f_next 0x800007448 block_p_next 0x800007388
 Case 2 entered 
@@ -11050,7 +11153,8 @@ FreeList Block 0x800000ce8 size 32
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 192]: block 54 (at 0x800000b88) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800041c00
+Free block pointer 0x800041bf8
 Coalesce called 
 freeList start 0x8000073e8 block_free 0x800041bf8 block_f_next 0x800041cc8 block_p_next 0x800041bd8
 Case 2 entered 
@@ -11237,7 +11341,8 @@ block 0x8000cc728 size 33 block next 0x8000cc748 size 45136FreeList_start 0x8000
 Asize 32 FreeList_start 0x8000cc748
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000d10
+Free block pointer 0x800000d08
 Coalesce called 
 freeList start 0x8000cc748 block_free 0x800000d08 block_f_next 0x800000de8 block_p_next 0x800000ce8
 Case 3 entered 
@@ -11330,7 +11435,8 @@ block 0x800000ce8 size 113 block next 0x800000d58 size 144FreeList_start 0x80000
 Asize 112 FreeList_start 0x800000d58
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800018e40
+Free block pointer 0x800018e38
 Coalesce called 
 freeList start 0x800000d58 block_free 0x800018e38 block_f_next 0x800018e98 block_p_next 0x800017be8
 Case 4 entered 
@@ -11581,7 +11687,8 @@ FreeList Block 0x800000a98 size 128
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800017bf0
+Free block pointer 0x800017be8
 Coalesce called 
 freeList start 0x800017d78 block_free 0x800017be8 block_f_next 0x800017ce8 block_p_next 0x8000157b8
 Case 1 entered 
@@ -11675,7 +11782,8 @@ block 0x800017be8 size 129 block next 0x800017c68 size 128FreeList_start 0x80001
 Asize 128 FreeList_start 0x800017c68
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800009100
+Free block pointer 0x8000090f8
 Coalesce called 
 freeList start 0x800017c68 block_free 0x8000090f8 block_f_next 0x800009188 block_p_next 0x8000076f8
 Case 3 entered 
@@ -11771,7 +11879,8 @@ block 0x8000076f8 size 6113 block next 0x800008ed8 size 688FreeList_start 0x8000
 Asize 6112 FreeList_start 0x800008ed8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000000d0
+Free block pointer 0x8000000c8
 Coalesce called 
 freeList start 0x800008ed8 block_free 0x8000000c8 block_f_next 0x8000000f8 block_p_next 0x800000008
 Case 1 entered 
@@ -11940,7 +12049,8 @@ FreeList Block 0x800000a98 size 128
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800017bf0
+Free block pointer 0x800017be8
 Coalesce called 
 freeList start 0x800009028 block_free 0x800017be8 block_f_next 0x800017c68 block_p_next 0x8000157b8
 Case 2 entered 
@@ -12033,7 +12143,8 @@ block 0x8000cc748 size 12209 block next 0x8000cf6f8 size 32928FreeList_start 0x8
 Asize 12208 FreeList_start 0x8000cf6f8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x80003c7e0
+Free block pointer 0x80003c7d8
 Coalesce called 
 freeList start 0x8000cf6f8 block_free 0x80003c7d8 block_f_next 0x80003d8d8 block_p_next 0x80003c798
 Case 1 entered 
@@ -12281,7 +12392,8 @@ FreeList Block 0x800000a98 size 128
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x80003c820
+Free block pointer 0x80003c818
 Coalesce called 
 freeList start 0x80003c838 block_free 0x80003c818 block_f_next 0x80003c838 block_p_next 0x80003c7d8
 Case 2 entered 
@@ -12445,7 +12557,8 @@ FreeList Block 0x800000a98 size 128
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x80003c7e0
+Free block pointer 0x80003c7d8
 Coalesce called 
 freeList start 0x80003c838 block_free 0x80003c7d8 block_f_next 0x80003c818 block_p_next 0x80003c798
 Case 1 entered 
@@ -12537,7 +12650,8 @@ block 0x80003c838 size 97 block next 0x80003c898 size 4160FreeList_start 0x80003
 Asize 96 FreeList_start 0x80003c898
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000a80
+Free block pointer 0x800000a78
 Coalesce called 
 freeList start 0x80003c898 block_free 0x800000a78 block_f_next 0x800000a98 block_p_next 0x800000218
 Case 4 entered 
@@ -12876,7 +12990,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000d4aa0
+Free block pointer 0x8000d4a98
 Coalesce called 
 freeList start 0x8000f0748 block_free 0x8000d4a98 block_f_next 0x8000f0748 block_p_next 0x8000d4a48
 Case 2 entered 
@@ -12967,7 +13082,8 @@ block 0x8000d4a98 size 129 block next 0x8000d4b18 size 125232FreeList_start 0x80
 Asize 128 FreeList_start 0x8000d4b18
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800007390
+Free block pointer 0x800007388
 Coalesce called 
 freeList start 0x8000d4b18 block_free 0x800007388 block_f_next 0x8000073e8 block_p_next 0x800002bf8
 Case 4 entered 
@@ -13141,7 +13257,8 @@ block 0x800002c38 size 145 block next 0x800002cc8 size 18592FreeList_start 0x800
 Asize 144 FreeList_start 0x800002cc8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000160
+Free block pointer 0x800000158
 Coalesce called 
 freeList start 0x800002cc8 block_free 0x800000158 block_f_next 0x800000218 block_p_next 0x8000000f8
 Case 2 entered 
@@ -13219,7 +13336,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800002c40
+Free block pointer 0x800002c38
 Coalesce called 
 freeList start 0x800000158 block_free 0x800002c38 block_f_next 0x800002cc8 block_p_next 0x800002bf8
 Case 2 entered 
@@ -13394,7 +13512,8 @@ block 0x800002c88 size 49 block next 0x800002cb8 size 18608FreeList_start 0x8000
 Asize 48 FreeList_start 0x800002cb8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x80003c840
+Free block pointer 0x80003c838
 Coalesce called 
 freeList start 0x800002cb8 block_free 0x80003c838 block_f_next 0x80003c898 block_p_next 0x80003c818
 Case 2 entered 
@@ -13473,7 +13592,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800002c00
+Free block pointer 0x800002bf8
 Coalesce called 
 freeList start 0x80003c838 block_free 0x800002bf8 block_f_next 0x800002c38 block_p_next 0x800002bd8
 Case 1 entered 
@@ -13651,7 +13771,8 @@ block 0x800002cb8 size 14337 block next 0x8000064b8 size 4272FreeList_start 0x80
 Asize 14336 FreeList_start 0x8000064b8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001700
+Free block pointer 0x8000016f8
 Coalesce called 
 freeList start 0x8000064b8 block_free 0x8000016f8 block_f_next 0x8000017f8 block_p_next 0x800001668
 Case 4 entered 
@@ -14094,7 +14215,8 @@ block 0x8000dd468 size 81 block next 0x8000dd4b8 size 90000FreeList_start 0x8000
 Asize 80 FreeList_start 0x8000dd4b8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800007660
+Free block pointer 0x800007658
 Coalesce called 
 freeList start 0x8000dd4b8 block_free 0x800007658 block_f_next 0x8000076f8 block_p_next 0x800007588
 Case 1 entered 
@@ -14175,7 +14297,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000dd470
+Free block pointer 0x8000dd468
 Coalesce called 
 freeList start 0x800007658 block_free 0x8000dd468 block_f_next 0x8000dd4b8 block_p_next 0x8000d4b18
 Case 2 entered 
@@ -14432,7 +14555,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000dd490
+Free block pointer 0x8000dd488
 Coalesce called 
 freeList start 0x8000dd568 block_free 0x8000dd488 block_f_next 0x8000dd568 block_p_next 0x8000dd468
 Case 2 entered 
@@ -14526,7 +14650,8 @@ block 0x8000dd488 size 9393 block next 0x8000df938 size 80656FreeList_start 0x80
 Asize 9392 FreeList_start 0x8000df938
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800018f20
+Free block pointer 0x800018f18
 Coalesce called 
 freeList start 0x8000df938 block_free 0x800018f18 block_f_next 0x800018f58 block_p_next 0x800017d78
 Case 3 entered 
@@ -14791,7 +14916,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800017d80
+Free block pointer 0x800017d78
 Coalesce called 
 freeList start 0x800017f28 block_free 0x800017d78 block_f_next 0x800017f08 block_p_next 0x800017ce8
 Case 1 entered 
@@ -14888,7 +15014,8 @@ block 0x800017d78 size 289 block next 0x800017e98 size 112FreeList_start 0x80001
 Asize 288 FreeList_start 0x800017e98
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000e10
+Free block pointer 0x800000e08
 Coalesce called 
 freeList start 0x800017e98 block_free 0x800000e08 block_f_next 0x800001268 block_p_next 0x800000de8
 Case 2 entered 
@@ -15077,7 +15204,8 @@ block 0x800018658 size 113 block next 0x8000186c8 size 2192FreeList_start 0x8000
 Asize 112 FreeList_start 0x8000186c8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x80003d8e0
+Free block pointer 0x80003d8d8
 Coalesce called 
 freeList start 0x8000186c8 block_free 0x80003d8d8 block_f_next 0x800041bd8 block_p_next 0x80003c8c8
 Case 3 entered 
@@ -15278,7 +15406,8 @@ block 0x8000ea0b8 size 74225 block next 0x8000fc2a8 size 37776FreeList_start 0x8
 Asize 74224 FreeList_start 0x8000fc2a8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800044920
+Free block pointer 0x800044918
 Coalesce called 
 freeList start 0x8000fc2a8 block_free 0x800044918 block_f_next 0x800057728 block_p_next 0x8000435d8
 Case 2 entered 
@@ -15362,7 +15491,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000df940
+Free block pointer 0x8000df938
 Coalesce called 
 freeList start 0x800044918 block_free 0x8000df938 block_f_next 0x8000ea0b8 block_p_next 0x8000dd488
 Case 1 entered 
@@ -15538,7 +15668,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000ea0c0
+Free block pointer 0x8000ea0b8
 Coalesce called 
 freeList start 0x8000e2b38 block_free 0x8000ea0b8 block_f_next 0x8000fc2a8 block_p_next 0x8000e2b38
 Case 4 entered 
@@ -15634,7 +15765,8 @@ block 0x8000e2b38 size 49 block next 0x8000e2b68 size 142032FreeList_start 0x800
 Asize 48 FreeList_start 0x8000e2b68
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001670
+Free block pointer 0x800001668
 Coalesce called 
 freeList start 0x8000e2b68 block_free 0x800001668 block_f_next 0x800001778 block_p_next 0x800001648
 Case 1 entered 
@@ -15823,7 +15955,8 @@ block 0x8000016a8 size 65 block next 0x8000016e8 size 144FreeList_start 0x800001
 Asize 64 FreeList_start 0x8000016e8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000e2b40
+Free block pointer 0x8000e2b38
 Coalesce called 
 freeList start 0x8000016e8 block_free 0x8000e2b38 block_f_next 0x8000e2b68 block_p_next 0x8000df938
 Case 2 entered 
@@ -15908,7 +16041,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000016b0
+Free block pointer 0x8000016a8
 Coalesce called 
 freeList start 0x8000e2b38 block_free 0x8000016a8 block_f_next 0x8000016e8 block_p_next 0x800001668
 Case 2 entered 
@@ -16005,7 +16139,8 @@ block 0x8000016a8 size 65 block next 0x8000016e8 size 144FreeList_start 0x800001
 Asize 64 FreeList_start 0x8000016e8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000cc730
+Free block pointer 0x8000cc728
 Coalesce called 
 freeList start 0x8000016e8 block_free 0x8000cc728 block_f_next 0x8000cc748 block_p_next 0x8000927a8
 Case 1 entered 
@@ -16090,7 +16225,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000df940
+Free block pointer 0x8000df938
 Coalesce called 
 freeList start 0x8000cc728 block_free 0x8000df938 block_f_next 0x8000e2b38 block_p_next 0x8000dd488
 Case 2 entered 
@@ -16187,7 +16323,8 @@ block 0x8000df938 size 49 block next 0x8000df968 size 154832FreeList_start 0x800
 Asize 48 FreeList_start 0x8000df968
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000435e0
+Free block pointer 0x8000435d8
 Coalesce called 
 freeList start 0x8000df968 block_free 0x8000435d8 block_f_next 0x800044918 block_p_next 0x800042c38
 Case 2 entered 
@@ -16363,7 +16500,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000df940
+Free block pointer 0x8000df938
 Coalesce called 
 freeList start 0x8000435f8 block_free 0x8000df938 block_f_next 0x8000df968 block_p_next 0x8000dd488
 Case 2 entered 
@@ -16461,7 +16599,8 @@ block 0x8000df938 size 193 block next 0x8000df9f8 size 154688FreeList_start 0x80
 Asize 192 FreeList_start 0x8000df9f8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000b80
+Free block pointer 0x800000b78
 Coalesce called 
 freeList start 0x8000df9f8 block_free 0x800000b78 block_f_next 0x800000c78 block_p_next 0x800000b18
 Case 1 entered 
@@ -16560,7 +16699,8 @@ block 0x800000b78 size 81 block next 0x800000bc8 size 176FreeList_start 0x800000
 Asize 80 FreeList_start 0x800000bc8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800002cc0
+Free block pointer 0x800002cb8
 Coalesce called 
 freeList start 0x800000bc8 block_free 0x800002cb8 block_f_next 0x8000064b8 block_p_next 0x800002c88
 Case 2 entered 
@@ -16646,7 +16786,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800000b80
+Free block pointer 0x800000b78
 Coalesce called 
 freeList start 0x800002cb8 block_free 0x800000b78 block_f_next 0x800000bc8 block_p_next 0x800000b18
 Case 2 entered 
@@ -16744,7 +16885,8 @@ block 0x800002cb8 size 673 block next 0x800002f58 size 17936FreeList_start 0x800
 Asize 672 FreeList_start 0x800002f58
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001650
+Free block pointer 0x800001648
 Coalesce called 
 freeList start 0x800002f58 block_free 0x800001648 block_f_next 0x800001668 block_p_next 0x8000014c8
 Case 1 entered 
@@ -16829,7 +16971,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000df940
+Free block pointer 0x8000df938
 Coalesce called 
 freeList start 0x800001648 block_free 0x8000df938 block_f_next 0x8000df9f8 block_p_next 0x8000dd488
 Case 2 entered 
@@ -17005,7 +17148,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800002cc0
+Free block pointer 0x800002cb8
 Coalesce called 
 freeList start 0x8000df9d8 block_free 0x800002cb8 block_f_next 0x800002f58 block_p_next 0x800002c88
 Case 2 entered 
@@ -17274,7 +17418,8 @@ FreeList Block 0x800061468 size 45584
 FreeList Block 0x800013da8 size 320
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800002ce0
+Free block pointer 0x800002cd8
 Coalesce called 
 freeList start 0x800002d08 block_free 0x800002cd8 block_f_next 0x800002d08 block_p_next 0x800002cb8
 Case 2 entered 
@@ -17372,7 +17517,8 @@ block 0x800002cd8 size 193 block next 0x800002d98 size 18384FreeList_start 0x800
 Asize 192 FreeList_start 0x800002d98
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000016b0
+Free block pointer 0x8000016a8
 Coalesce called 
 freeList start 0x800002d98 block_free 0x8000016a8 block_f_next 0x8000016e8 block_p_next 0x800001668
 Case 2 entered 
@@ -17470,7 +17616,8 @@ block 0x8000016a8 size 65 block next 0x8000016e8 size 144FreeList_start 0x800001
 Asize 64 FreeList_start 0x8000016e8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000014d0
+Free block pointer 0x8000014c8
 Coalesce called 
 freeList start 0x8000016e8 block_free 0x8000014c8 block_f_next 0x800001648 block_p_next 0x8000014a8
 Case 4 entered 
@@ -17662,7 +17809,8 @@ block 0x8000014c8 size 33 block next 0x8000014e8 size 384FreeList_start 0x800001
 Asize 32 FreeList_start 0x8000014e8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800007590
+Free block pointer 0x800007588
 Coalesce called 
 freeList start 0x8000014e8 block_free 0x800007588 block_f_next 0x800007658 block_p_next 0x800007568
 Case 2 entered 
@@ -17950,7 +18098,8 @@ block 0x800001568 size 33 block next 0x800001588 size 224FreeList_start 0x800001
 Asize 32 FreeList_start 0x800001588
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800013ef0
+Free block pointer 0x800013ee8
 Coalesce called 
 freeList start 0x800001588 block_free 0x800013ee8 block_f_next 0x800013f38 block_p_next 0x800013da8
 Case 4 entered 
@@ -18037,7 +18186,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800061468 size 45584
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800001570
+Free block pointer 0x800001568
 Coalesce called 
 freeList start 0x800013da8 block_free 0x800001568 block_f_next 0x800001588 block_p_next 0x8000014e8
 Case 2 entered 
@@ -18325,7 +18475,8 @@ block 0x800013da8 size 161 block next 0x800013e48 size 272FreeList_start 0x80001
 Asize 160 FreeList_start 0x800013e48
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800008ee0
+Free block pointer 0x800008ed8
 Coalesce called 
 freeList start 0x800013e48 block_free 0x800008ed8 block_f_next 0x800009028 block_p_next 0x8000076f8
 Case 2 entered 
@@ -18519,7 +18670,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800061468 size 45584
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000015f0
+Free block pointer 0x8000015e8
 Coalesce called 
 freeList start 0x8001103a8 block_free 0x8000015e8 block_f_next 0x800001608 block_p_next 0x800001568
 Case 2 entered 
@@ -18704,7 +18856,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800061468 size 45584
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000df9e0
+Free block pointer 0x8000df9d8
 Coalesce called 
 freeList start 0x800110468 block_free 0x8000df9d8 block_f_next 0x8001103a8 block_p_next 0x8000df938
 Case 1 entered 
@@ -18988,7 +19141,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800061468 size 45584
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000df9e0
+Free block pointer 0x8000df9d8
 Coalesce called 
 freeList start 0x8000dfa98 block_free 0x8000df9d8 block_f_next 0x8000dfa78 block_p_next 0x8000df938
 Case 1 entered 
@@ -19190,7 +19344,8 @@ block 0x8000dfb78 size 97 block next 0x8000dfbd8 size 198608FreeList_start 0x800
 Asize 96 FreeList_start 0x8000dfbd8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000014d0
+Free block pointer 0x8000014c8
 Coalesce called 
 freeList start 0x8000dfbd8 block_free 0x8000014c8 block_f_next 0x8000014e8 block_p_next 0x8000014a8
 Case 1 entered 
@@ -19282,7 +19437,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800061468 size 45584
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000dfb80
+Free block pointer 0x8000dfb78
 Coalesce called 
 freeList start 0x8000014c8 block_free 0x8000dfb78 block_f_next 0x8000dfbd8 block_p_next 0x8000dfa98
 Case 2 entered 
@@ -19485,7 +19641,8 @@ block 0x8000dfbb8 size 5153 block next 0x8000e0fd8 size 193488FreeList_start 0x8
 Asize 5152 FreeList_start 0x8000e0fd8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000d4b20
+Free block pointer 0x8000d4b18
 Coalesce called 
 freeList start 0x8000e0fd8 block_free 0x8000d4b18 block_f_next 0x8000dd468 block_p_next 0x8000d4a98
 Case 1 entered 
@@ -19692,7 +19849,8 @@ block 0x8000d4b38 size 49 block next 0x8000d4b68 size 35072FreeList_start 0x8000
 Asize 48 FreeList_start 0x8000d4b68
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800007570
+Free block pointer 0x800007568
 Coalesce called 
 freeList start 0x8000d4b68 block_free 0x800007568 block_f_next 0x800007588 block_p_next 0x800002d98
 Case 3 entered 
@@ -19801,7 +19959,8 @@ block 0x800002d98 size 33 block next 0x800002db8 size 18384FreeList_start 0x8000
 Asize 32 FreeList_start 0x800002db8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800018f60
+Free block pointer 0x800018f58
 Coalesce called 
 freeList start 0x800002db8 block_free 0x800018f58 block_f_next 0x800018f78 block_p_next 0x8000186c8
 Case 3 entered 
@@ -19898,7 +20057,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800061468 size 45584
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000d4b40
+Free block pointer 0x8000d4b38
 Coalesce called 
 freeList start 0x8000186c8 block_free 0x8000d4b38 block_f_next 0x8000d4b68 block_p_next 0x8000d4b18
 Case 2 entered 
@@ -20005,7 +20165,8 @@ block 0x8000d4b38 size 65 block next 0x8000d4b78 size 35056FreeList_start 0x8000
 Asize 64 FreeList_start 0x8000d4b78
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800002be0
+Free block pointer 0x800002bd8
 Coalesce called 
 freeList start 0x8000d4b78 block_free 0x800002bd8 block_f_next 0x800002bf8 block_p_next 0x800002ae8
 Case 2 entered 
@@ -20100,7 +20261,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800061468 size 45584
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800002da0
+Free block pointer 0x800002d98
 Coalesce called 
 freeList start 0x800002bd8 block_free 0x800002d98 block_f_next 0x800002db8 block_p_next 0x800002cd8
 Case 2 entered 
@@ -20296,7 +20458,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800061468 size 45584
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800002da0
+Free block pointer 0x800002d98
 Coalesce called 
 freeList start 0x800002e48 block_free 0x800002d98 block_f_next 0x800002e48 block_p_next 0x800002cd8
 Case 2 entered 
@@ -20492,7 +20655,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800061468 size 45584
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800002da0
+Free block pointer 0x800002d98
 Coalesce called 
 freeList start 0x800002e08 block_free 0x800002d98 block_f_next 0x800002e08 block_p_next 0x800002cd8
 Case 2 entered 
@@ -20599,7 +20763,8 @@ block 0x8000e0fd8 size 80321 block next 0x8000f4998 size 113168FreeList_start 0x
 Asize 80320 FreeList_start 0x8000f4998
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800000010
+Free block pointer 0x800000008
 Coalesce called 
 freeList start 0x8000f4998 block_free 0x800000008 block_f_next 0x8000000c8 block_p_next 0x800000008
 Case 2 entered 
@@ -20788,7 +20953,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800061468 size 45584
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000f49a0
+Free block pointer 0x8000f4998
 Coalesce called 
 freeList start 0x8000f50a8 block_free 0x8000f4998 block_f_next 0x8000f50a8 block_p_next 0x8000e0fd8
 Case 2 entered 
@@ -20891,7 +21057,8 @@ block 0x8000f4998 size 177 block next 0x8000f4a48 size 112992FreeList_start 0x80
 Asize 176 FreeList_start 0x8000f4a48
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000927b0
+Free block pointer 0x8000927a8
 Coalesce called 
 freeList start 0x8000f4a48 block_free 0x8000927a8 block_f_next 0x8000cc728 block_p_next 0x80006c678
 Case 2 entered 
@@ -20981,7 +21148,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800061468 size 45584
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000f49a0
+Free block pointer 0x8000f4998
 Coalesce called 
 freeList start 0x8000927a8 block_free 0x8000f4998 block_f_next 0x8000f4a48 block_p_next 0x8000e0fd8
 Case 2 entered 
@@ -21083,7 +21251,8 @@ block 0x8000f4998 size 33 block next 0x8000f49b8 size 113136FreeList_start 0x800
 Asize 32 FreeList_start 0x8000f49b8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x80003c7a0
+Free block pointer 0x80003c798
 Coalesce called 
 freeList start 0x8000f49b8 block_free 0x80003c798 block_f_next 0x80003c7d8 block_p_next 0x80003c758
 Case 2 entered 
@@ -21281,7 +21450,8 @@ csize 96 asize 96 min_block_size 32
 Asize 96 FreeList_start 0x8000f49b8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000016b0
+Free block pointer 0x8000016a8
 Coalesce called 
 freeList start 0x8000f49b8 block_free 0x8000016a8 block_f_next 0x8000016e8 block_p_next 0x800001668
 Case 2 entered 
@@ -21384,7 +21554,8 @@ block 0x8000016a8 size 81 block next 0x8000016f8 size 128FreeList_start 0x800001
 Asize 80 FreeList_start 0x8000016f8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001570
+Free block pointer 0x800001568
 Coalesce called 
 freeList start 0x8000016f8 block_free 0x800001568 block_f_next 0x8000015e8 block_p_next 0x8000014e8
 Case 2 entered 
@@ -21572,7 +21743,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800061468 size 45584
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000016b0
+Free block pointer 0x8000016a8
 Coalesce called 
 freeList start 0x8000f4ac8 block_free 0x8000016a8 block_f_next 0x8000016f8 block_p_next 0x800001668
 Case 2 entered 
@@ -21773,7 +21945,8 @@ block 0x8000016e8 size 33 block next 0x800001708 size 112FreeList_start 0x800001
 Asize 32 FreeList_start 0x800001708
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001850
+Free block pointer 0x800001848
 Coalesce called 
 freeList start 0x800001708 block_free 0x800001848 block_f_next 0x800001898 block_p_next 0x800001778
 Case 2 entered 
@@ -21865,7 +22038,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800061468 size 45584
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x8000016f0
+Free block pointer 0x8000016e8
 Coalesce called 
 freeList start 0x800001848 block_free 0x8000016e8 block_f_next 0x800001708 block_p_next 0x8000016a8
 Case 2 entered 
@@ -21969,7 +22143,8 @@ block 0x8000016e8 size 65 block next 0x800001728 size 80FreeList_start 0x8000017
 Asize 64 FreeList_start 0x800001728
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x80006c680
+Free block pointer 0x80006c678
 Coalesce called 
 freeList start 0x800001728 block_free 0x80006c678 block_f_next 0x8000927a8 block_p_next 0x800061468
 Case 4 entered 
@@ -22157,7 +22332,8 @@ FreeList Block 0x8000435f8 size 122128
 FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800061470
+Free block pointer 0x800061468
 Coalesce called 
 freeList start 0x800061488 block_free 0x800061468 block_f_next 0x800061488 block_p_next 0x800061428
 Case 2 entered 
@@ -22544,7 +22720,8 @@ FreeList Block 0x8000435f8 size 122128
 FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800061510
+Free block pointer 0x800061508
 Coalesce called 
 freeList start 0x8000615b8 block_free 0x800061508 block_f_next 0x8000615b8 block_p_next 0x800061488
 Case 2 entered 
@@ -22649,7 +22826,8 @@ block 0x800061508 size 2113 block next 0x800061d48 size 436736FreeList_start 0x8
 Asize 2112 FreeList_start 0x800061d48
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800061470
+Free block pointer 0x800061468
 Coalesce called 
 freeList start 0x800061d48 block_free 0x800061468 block_f_next 0x800061488 block_p_next 0x800061428
 Case 1 entered 
@@ -22742,7 +22920,8 @@ FreeList Block 0x8000435f8 size 122128
 FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
-Free called 
+Free called 0x800061510
+Free block pointer 0x800061508
 Coalesce called 
 freeList start 0x800061468 block_free 0x800061508 block_f_next 0x800061d48 block_p_next 0x800061488
 Case 2 entered 
@@ -22847,7 +23026,8 @@ block 0x800061508 size 161 block next 0x8000615a8 size 438688FreeList_start 0x80
 Asize 160 FreeList_start 0x8000615a8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000d4aa0
+Free block pointer 0x8000d4a98
 Coalesce called 
 freeList start 0x8000615a8 block_free 0x8000d4a98 block_f_next 0x8000d4b18 block_p_next 0x8000d4a48
 Case 1 entered 
@@ -23054,7 +23234,8 @@ block 0x8000d4ab8 size 33 block next 0x8000d4ad8 size 64FreeList_start 0x8000d4a
 Asize 32 FreeList_start 0x8000d4ad8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000016b0
+Free block pointer 0x8000016a8
 Coalesce called 
 freeList start 0x8000d4ad8 block_free 0x8000016a8 block_f_next 0x8000016e8 block_p_next 0x800001668
 Case 1 entered 
@@ -23162,7 +23343,8 @@ block 0x8000016a8 size 33 block next 0x8000016c8 size 32FreeList_start 0x8000016
 Asize 32 FreeList_start 0x8000016c8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000d4b20
+Free block pointer 0x8000d4b18
 Coalesce called 
 freeList start 0x8000016c8 block_free 0x8000d4b18 block_f_next 0x8000d4b38 block_p_next 0x8000d4ad8
 Case 3 entered 
@@ -23373,7 +23555,8 @@ block 0x800061ca8 size 241 block next 0x800061d98 size 436656FreeList_start 0x80
 Asize 240 FreeList_start 0x800061d98
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001430
+Free block pointer 0x800001428
 Coalesce called 
 freeList start 0x800061d98 block_free 0x800001428 block_f_next 0x8000014a8 block_p_next 0x800000e08
 Case 3 entered 
@@ -23471,7 +23654,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 325]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800061cb0
+Free block pointer 0x800061ca8
 Coalesce called 
 freeList start 0x800000e08 block_free 0x800061ca8 block_f_next 0x800061d98 block_p_next 0x8000615a8
 Case 2 entered 
@@ -23579,7 +23763,8 @@ block 0x800061ca8 size 257 block next 0x800061da8 size 436640FreeList_start 0x80
 Asize 256 FreeList_start 0x800061da8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000dfb80
+Free block pointer 0x8000dfb78
 Coalesce called 
 freeList start 0x800061da8 block_free 0x8000dfb78 block_f_next 0x8000dfbb8 block_p_next 0x8000dfa98
 Case 1 entered 
@@ -23675,7 +23860,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 327]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800061cb0
+Free block pointer 0x800061ca8
 Coalesce called 
 freeList start 0x8000dfb78 block_free 0x800061ca8 block_f_next 0x800061da8 block_p_next 0x8000615a8
 Case 2 entered 
@@ -23873,7 +24059,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 329]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800061cb0
+Free block pointer 0x800061ca8
 Coalesce called 
 freeList start 0x800061cc8 block_free 0x800061ca8 block_f_next 0x800061cc8 block_p_next 0x8000615a8
 Case 2 entered 
@@ -24071,7 +24258,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 331]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800061cb0
+Free block pointer 0x800061ca8
 Coalesce called 
 freeList start 0x80006de38 block_free 0x800061ca8 block_f_next 0x80006de38 block_p_next 0x8000615a8
 Case 2 entered 
@@ -24269,7 +24457,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 333]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800061cb0
+Free block pointer 0x800061ca8
 Coalesce called 
 freeList start 0x800061ec8 block_free 0x800061ca8 block_f_next 0x800061ec8 block_p_next 0x8000615a8
 Case 2 entered 
@@ -24378,7 +24567,8 @@ block 0x800061ca8 size 257 block next 0x800061da8 size 436640FreeList_start 0x80
 Asize 256 FreeList_start 0x800061da8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800061430
+Free block pointer 0x800061428
 Coalesce called 
 freeList start 0x800061da8 block_free 0x800061428 block_f_next 0x800061468 block_p_next 0x8000613b8
 Case 4 entered 
@@ -24474,7 +24664,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 335]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800061cb0
+Free block pointer 0x800061ca8
 Coalesce called 
 freeList start 0x8000613b8 block_free 0x800061ca8 block_f_next 0x800061da8 block_p_next 0x8000615a8
 Case 2 entered 
@@ -24581,7 +24772,8 @@ block 0x800061ca8 size 561 block next 0x800061ed8 size 436336FreeList_start 0x80
 Asize 560 FreeList_start 0x800061ed8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800002ce0
+Free block pointer 0x800002cd8
 Coalesce called 
 freeList start 0x800061ed8 block_free 0x800002cd8 block_f_next 0x800002d98 block_p_next 0x800002cb8
 Case 2 entered 
@@ -24676,7 +24868,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 337]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800061cb0
+Free block pointer 0x800061ca8
 Coalesce called 
 freeList start 0x800002cd8 block_free 0x800061ca8 block_f_next 0x800061ed8 block_p_next 0x8000615a8
 Case 2 entered 
@@ -24783,7 +24976,8 @@ block 0x800061ca8 size 33 block next 0x800061cc8 size 436864FreeList_start 0x800
 Asize 32 FreeList_start 0x800061cc8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800042c40
+Free block pointer 0x800042c38
 Coalesce called 
 freeList start 0x800061cc8 block_free 0x800042c38 block_f_next 0x8000435d8 block_p_next 0x800042b68
 Case 1 entered 
@@ -24878,7 +25072,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 339]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800061cb0
+Free block pointer 0x800061ca8
 Coalesce called 
 freeList start 0x800042c38 block_free 0x800061ca8 block_f_next 0x800061cc8 block_p_next 0x8000615a8
 Case 2 entered 
@@ -24985,7 +25180,8 @@ block 0x800061ca8 size 225 block next 0x800061d88 size 436672FreeList_start 0x80
 Asize 224 FreeList_start 0x800061d88
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000014b0
+Free block pointer 0x8000014a8
 Coalesce called 
 freeList start 0x800061d88 block_free 0x8000014a8 block_f_next 0x8000014c8 block_p_next 0x800000e08
 Case 4 entered 
@@ -25192,7 +25388,8 @@ block 0x800061d88 size 38129 block next 0x80006b278 size 398544FreeList_start 0x
 Asize 38128 FreeList_start 0x80006b278
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800007590
+Free block pointer 0x800007588
 Coalesce called 
 freeList start 0x80006b278 block_free 0x800007588 block_f_next 0x800007688 block_p_next 0x800002cd8
 Case 4 entered 
@@ -25285,7 +25482,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 343]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x800061d90
+Free block pointer 0x800061d88
 Coalesce called 
 freeList start 0x800002cd8 block_free 0x800061d88 block_f_next 0x80006b278 block_p_next 0x800061ca8
 Case 2 entered 
@@ -25490,7 +25688,8 @@ block 0x8000621a8 size 49 block next 0x8000621d8 size 435568FreeList_start 0x800
 Asize 48 FreeList_start 0x8000621d8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000d4aa0
+Free block pointer 0x8000d4a98
 Coalesce called 
 freeList start 0x8000621d8 block_free 0x8000d4a98 block_f_next 0x8000d4ab8 block_p_next 0x8000d4a48
 Case 1 entered 
@@ -25685,7 +25884,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 347]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x8000621e0
+Free block pointer 0x8000621d8
 Coalesce called 
 freeList start 0x800062238 block_free 0x8000621d8 block_f_next 0x800062238 block_p_next 0x8000621a8
 Case 2 entered 
@@ -25791,7 +25991,8 @@ block 0x8000621d8 size 161 block next 0x800062278 size 435408FreeList_start 0x80
 Asize 160 FreeList_start 0x800062278
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800002a70
+Free block pointer 0x800002a68
 Coalesce called 
 freeList start 0x800062278 block_free 0x800002a68 block_f_next 0x800002ae8 block_p_next 0x800002988
 Case 3 entered 
@@ -25887,7 +26088,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 349]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x8000621e0
+Free block pointer 0x8000621d8
 Coalesce called 
 freeList start 0x800002988 block_free 0x8000621d8 block_f_next 0x800062278 block_p_next 0x8000621a8
 Case 2 entered 
@@ -25993,7 +26195,8 @@ block 0x8000621d8 size 95761 block next 0x8000797e8 size 339808FreeList_start 0x
 Asize 95760 FreeList_start 0x8000797e8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x80003c7a0
+Free block pointer 0x80003c798
 Coalesce called 
 freeList start 0x8000797e8 block_free 0x80003c798 block_f_next 0x80003c7b8 block_p_next 0x80003c758
 Case 1 entered 
@@ -26087,7 +26290,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 351]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x8000621e0
+Free block pointer 0x8000621d8
 Coalesce called 
 freeList start 0x80003c798 block_free 0x8000621d8 block_f_next 0x8000797e8 block_p_next 0x8000621a8
 Case 2 entered 
@@ -26281,7 +26485,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 353]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x8000621e0
+Free block pointer 0x8000621d8
 Coalesce called 
 freeList start 0x800062338 block_free 0x8000621d8 block_f_next 0x800062338 block_p_next 0x8000621a8
 Case 2 entered 
@@ -26387,7 +26592,8 @@ block 0x8000621d8 size 513 block next 0x8000623d8 size 435056FreeList_start 0x80
 Asize 512 FreeList_start 0x8000623d8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x8000621b0
+Free block pointer 0x8000621a8
 Coalesce called 
 freeList start 0x8000623d8 block_free 0x8000621a8 block_f_next 0x8000621d8 block_p_next 0x800061d88
 Case 1 entered 
@@ -26481,7 +26687,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 355]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x8000621e0
+Free block pointer 0x8000621d8
 Coalesce called 
 freeList start 0x8000621a8 block_free 0x8000621d8 block_f_next 0x8000623d8 block_p_next 0x8000621a8
 Case 4 entered 
@@ -26587,7 +26794,8 @@ block 0x8000621a8 size 33 block next 0x8000621c8 size 435584FreeList_start 0x800
 Asize 32 FreeList_start 0x8000621c8
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800001780
+Free block pointer 0x800001778
 Coalesce called 
 freeList start 0x8000621c8 block_free 0x800001778 block_f_next 0x800001848 block_p_next 0x800001728
 Case 4 entered 
@@ -26679,7 +26887,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 357]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x8000621b0
+Free block pointer 0x8000621a8
 Coalesce called 
 freeList start 0x800001728 block_free 0x8000621a8 block_f_next 0x8000621c8 block_p_next 0x800061d88
 Case 2 entered 
@@ -26869,7 +27078,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 359]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x8000621b0
+Free block pointer 0x8000621a8
 Coalesce called 
 freeList start 0x8000622b8 block_free 0x8000621a8 block_f_next 0x8000622b8 block_p_next 0x800061d88
 Case 2 entered 
@@ -27059,7 +27269,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 361]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x8000621b0
+Free block pointer 0x8000621a8
 Coalesce called 
 freeList start 0x800062278 block_free 0x8000621a8 block_f_next 0x800062278 block_p_next 0x800061d88
 Case 2 entered 
@@ -27163,7 +27374,8 @@ block 0x8000621a8 size 145 block next 0x800062238 size 435472FreeList_start 0x80
 Asize 144 FreeList_start 0x800062238
 Returned to malloc from place 
 Returning from malloc 
-Free called 
+Free called 0x800002c90
+Free block pointer 0x800002c88
 Coalesce called 
 freeList start 0x800062238 block_free 0x800002c88 block_f_next 0x800002cb8 block_p_next 0x800002c38
 Case 1 entered 
@@ -27454,7 +27666,8 @@ FreeList Block 0x800041bf8 size 3952
 FreeList Block 0x800002648 size 240
 Returning from checkheap 
 ERROR [trace ./traces/syn-mix-realloc.rep, line 365]: block 22 (at 0x800002588) has 8 garbled bytes, starting at byte 8
-Free called 
+Free called 0x8000622b0
+Free block pointer 0x8000622a8
 Coalesce called 
 freeList start 0x800062338 block_free 0x8000622a8 block_f_next 0x800062338 block_p_next 0x800062238
 Case 2 entered 
