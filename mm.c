@@ -367,6 +367,7 @@ static void place(block_t *block, size_t asize)
     { 
         write_header(block, csize, true);
         write_footer(block, csize, true);
+		freeList_start->prev_free=NULL;
         freeList_start=freeList_start->next_free;
     }
      printf("Asize %zu FreeList_start %p\n",asize, freeList_start);
