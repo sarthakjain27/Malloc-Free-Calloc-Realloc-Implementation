@@ -479,6 +479,7 @@ static block_t *find_fit(size_t asize)
 
     for (block = freeList_start; block!=NULL && get_free_size(block)>0; block = block->next_free)
     {
+        printf("block %p size %zu \n",block,get_free_size(block));
         if (asize <= get_free_size(block))
         {
             return (block_t *)block;
