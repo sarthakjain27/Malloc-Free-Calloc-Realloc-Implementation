@@ -476,10 +476,9 @@ static block_t *coalesce(block_t * block)
 static block_t *find_fit(size_t asize)
 {
     block_f *block;
-
+	printf("block %p size %zu block_next %p block next size %zu\n",freeList_start,get_free_size(freeList_start),freeList_start->next_free,get_free_size(freeList_start->next_free));
     for (block = freeList_start; block!=NULL && get_free_size(block)>0; block = block->next_free)
     {
-        printf("block %p size %zu \n",block,get_free_size(block));
         if (asize <= get_free_size(block))
         {
             return (block_t *)block;
