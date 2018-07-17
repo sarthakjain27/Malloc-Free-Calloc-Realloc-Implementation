@@ -89,7 +89,8 @@ typedef struct free_block
     struct free_block *prev_free;
 } block_f;
 
-static block_f *heap_start=NULL;
+static block_f *freeList_start=NULL;
+static block_t *heap_start = NULL;
 
 /* rounds up to the nearest multiple of ALIGNMENT */
 static size_t align(size_t x) {
@@ -140,9 +141,10 @@ bool mm_init(void) {
     start[0] = pack(0, true); // Prologue footer
     start[1] = pack(0, true); // Epilogue header
     // Heap starts with first "block header", currently the epilogue footer
-    heap_start = (block_f *) &(start[1]);
-    heap_start->next_free=NULL;
-    heap_start->prev_free=NULL;
+    heap_start=(block_t *) &(start[1]);
+    freeList_start = (block_f *) &(start[1]);
+    freeList_start->next_free=NULL;
+    freeList_start->prev_free=NULL;
     // Extend the empty heap with a free block of chunksize bytes
     if (extend_heap(chunksize) == NULL)
     {
@@ -201,7 +203,18 @@ void *malloc (size_t size) {
  * free
  */
 void free (void *ptr) {
-    return;
+    if (bp == NULL)
+    {
+        return;
+    }
+
+    block_t *block = payload_to_header(bp);
+    size_t size = get_size(block);
+
+    write_header(block, size, false);
+    write_footer(block, size, false);
+
+    coalesce(block);
 }
 
 /*
@@ -319,6 +332,7 @@ static void place(block_t *block, size_t asize)
         block_next = find_next(block);
         write_header(block_next, csize-asize, false);
         write_footer(block_next, csize-asize, false);
+        
         block_f* block_free=(block_f *)block;
         block_f* block_next_free=(block_f *)block_next;
         
@@ -326,12 +340,14 @@ static void place(block_t *block, size_t asize)
         block_free->prev_free->next_free=block_next_free;
         block_next_free->prev_free=block_free->prev_free;
         block_next_free->next_free->prev_free=block_next_free;
+        freeList_start=block_next_free;
     }
 
     else
     { 
         write_header(block, csize, true);
         write_footer(block, csize, true);
+        freeList_start+=csize;
     }
 }
 
@@ -379,6 +395,11 @@ static block_t *coalesce(block_t * block)
 
     if (prev_alloc && next_alloc)              // Case 1
     {
+        block_free=(block_f *)block;
+        block_free->next_free=heapList_start;
+        block_free->prev_free=NULL;
+        heapList_start->prev_free=block_free;
+        heapList_start=block_free;
         return block;
     }
 
@@ -387,14 +408,19 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next);
         write_header(block, size, false);
         write_footer(block, size, false);
+        
         block_f* block_free=(block_f *)block;
         block_f* block_next_free=(block_f *) block_next;
-        block_free->next_free=heap_start;
-        heap_start->prev_free=block_free;
+        
+        block_free->next_free=heapList_start;
+        heapList_start->prev_free=block_free;
         block_free->prev_free=NULL;
-        heap_start=block_free;
+        heapList_start=block_free;
+        
         block_next_free->prev_free->next_free=block_next_free->next_free;
         block_next_free->next_free->prev_free=block_next_free->prev_free;
+        block_next_free->next_free=NULL;
+        block_next_free->prev_free=NULL;
     }
 
     else if (!prev_alloc && next_alloc)        // Case 3
@@ -402,13 +428,17 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
+        
         block_f* block_prev_free=(block_f *)block_prev;
+        
         block_prev_free->prev_free->next_free=block_prev_free->next_free;
         block_prev_free->next_free->prev_free=block_prev_free->prev_free;
-        block_prev_free->next_free=heap_start;
-        heap_start->prev_free=block_prev_free;
-        heap_start=block_prev_free;
+        
+        block_prev_free->next_free=heapList_start;
         block_prev_free->prev_free=NULL;
+        heapList_start->prev_free=block_prev_free;
+        heapList_start=block_prev_free;
+       
         block=(block_t *)block_prev_free;
     }
 
@@ -417,16 +447,21 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next) + get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
+        
         block_f* block_prev_free=(block_f *)block_prev;
         block_f* block_next_free=(block_f *)block_next;
+        
         block_prev_free->prev_free->next_free=block_prev_free->next_free;
         block_prev_free->next_free->prev_free=block_prev_free->prev_free;
-        block_prev_free->next_free=heap_start;
-        heap_start->prev_free=block_prev_free;
-        heap_start=block_prev_free;
+        
+        block_prev_free->next_free=heapList_start;
+        heapList_start->prev_free=block_prev_free;
+        heapList_start=block_prev_free;
         block_prev_free->prev_free=NULL;
+        
         block_next_free->prev_free->next_free=block_next_free->next_free;
         block_next_free->next_free->prev_free=block_next_free->prev_free;
+        
         block=(block_t *)block_prev_free;
     }
     return (block_t *)block;
@@ -436,10 +471,9 @@ static block_t *find_fit(size_t asize)
 {
     block_f *block;
 
-    for (block = heap_start; get_size((block_t *)block) > 0;
-                             block = block->next_free)
+    for (block = heap_start; block!=NULL && get_free_size(block)>0; block = block->next_free)
     {
-        if (!(get_alloc((block_t *)block)) && (asize <= get_size((block_t *)block)))
+        if (asize <= get_size((block_t *)block))
         {
             return (block_t *)block;
         }
@@ -491,6 +525,12 @@ static size_t get_size(block_t *block)
 {
     return extract_size(block->header);
 }
+
+static size_t get_free_size(block_f *block)
+{
+    return ((block->header) & size_mask);    
+}
+
 
 /*
  * get_payload_size: returns the payload size of a given block, equal to
