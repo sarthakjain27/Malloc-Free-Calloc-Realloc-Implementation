@@ -59,11 +59,6 @@
 typedef uint64_t word_t;
 static const size_t wsize = sizeof(word_t);   // word and header size (bytes)
 static const size_t dsize = 2*wsize;          // double word size (bytes)
-static const size_t min_block_size = 2*dsize; // Minimum block size
-static const size_t chunksize = (1 << 12);    // requires (chunksize % 16 == 0)
-
-static const word_t alloc_mask = 0x1;
-static const word_t size_mask = ~(word_t)0xF;
 
 typedef struct block hblock;
 
@@ -74,7 +69,7 @@ struct block {
     size_t footer;
 };
 
-#define ALIGNMENT 2*dsize;
+#define ALIGNMENT 2*dsize
 
 static size_t ALIGN(size_t x) {
     return ((x + (ALIGNMENT - 1)) & ~0XF);
@@ -102,7 +97,7 @@ static size_t round_up(size_t size, size_t n)
  * pack: returns a header reflecting a specified size and its alloc status.
  *       If the block is allocated, the lowest bit is set to 1, and 0 otherwise.
  */
-static word_t pack(size_t size, size_t alloc)
+static size_t pack(size_t size, size_t alloc)
 {
     return ((size) | (alloc));
 }
@@ -118,37 +113,37 @@ static size_t GET(hblock *p)
  */
 static size_t GET_SIZE(hblock *block)
 {
-    return (GET(p) & ~0x1);
+    return (GET(block) & ~0x1);
 }
 
 static hblock* HDRP(hblock *bp)
 {
-    return ((char *)(bp));   
+    return bp;   
 }
 
 static hblock* FTRP(hblock *bp)
 {
-    return ((char *)(bp) + GET_SIZE((bp));   
+    return (hblock*)((char *)(bp) + GET_SIZE((bp)));   
 }
 
 
 static hblock *NEXT_BLKP(hblock *bp)
 {
-    return ((char *)(bp) + GET_SIZE(bp));    
+    return (hblock *)((char *)(bp) + GET_SIZE(bp));    
 }
 
 static hblock *PREV_BLKP(hblock *bp)
 {
-    return ((char *)(bp) - GET_SIZE(bp));   
+    return (hblock *)((char *)(bp) - GET_SIZE(bp));   
 }
 
 /*
  * get_alloc: returns true when the block is allocated based on the
  *            block header's lowest bit, and false otherwise.
  */
-static bool GET_ALLOC(hblock *block)
+static size_t GET_ALLOC(hblock *block)
 {
-    return (GET(p) & 0x1);
+    return (GET(block) & 0x1);
 }
 
 /* rounds up to the nearest multiple of ALIGNMENT */
@@ -243,7 +238,7 @@ static void *coalesce(hblock *bp)
 
 static void place(hblock *bp, size_t newsize)
 {  
-    size_t csize = GET_SIZE(bp->header);
+    size_t csize = GET_SIZE(bp);
 
     if ((csize - newsize) >= HSIZE) {
         bp->header = newsize | 0x1;
@@ -345,7 +340,7 @@ void *realloc(void *oldptr, size_t size) {
  * calloc
  * This function is not tested by mdriver
  */
-void *calloc (size_t nmemb, size_t size) {
+void *calloc (size_t elements, size_t size) {
     void *bp;
     size_t asize = elements * size;
 
