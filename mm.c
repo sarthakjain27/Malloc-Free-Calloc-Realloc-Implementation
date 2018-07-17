@@ -343,7 +343,9 @@ static void place(block_t *block, size_t asize)
         block_next = find_next(block);
         write_header(block_next, csize-asize, false);
         write_footer(block_next, csize-asize, false);
-        
+       
+		printf("New block created with size %zu\n",csize-asize);
+		 
         block_f* block_free=(block_f *)block;
         block_f* block_next_free=(block_f *)block_next;
         printf("block %p size %zu block next %p size %zu",block_free,block_free->header,block_next_free,block_next_free->header);
@@ -373,15 +375,16 @@ bool mm_checkheap(int lineno) {
     printf("Printing Heap blocks \n");
     block_t *i;
 	block_f *j;
-	for(i=heap_start;get_size(block) > 0; block = find_next(block))
+	for(i=heap_start;get_size(i) > 0; i = find_next(i))
 	{
-		if(get_alloc(block))
-			printf("Heap Block %p \n",i);
+		if(get_alloc(i))
+			printf("Heap Block %p size %zu\n",i,get_size(i));
 	}
-	for(j=freeList_start;block!=NULL && get_free_size(block)>0; block = block->next_free)
+	for(j=freeList_start;j!=NULL && get_free_size(j)>0; j = j->next_free)
 	{
-		printf("FreeList Block %p \n",j);	
+		printf("FreeList Block %p size %zu\n",j,get_free_size(j));	
 	}
+	printf("Returning from checkheap \n");
     return true;
 }
 
