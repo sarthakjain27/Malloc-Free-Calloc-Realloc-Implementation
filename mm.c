@@ -202,7 +202,7 @@ void *malloc (size_t size) {
 /*
  * free
  */
-void free (void *ptr) {
+void free (void *bp) {
     if (bp == NULL)
     {
         return;
@@ -395,11 +395,11 @@ static block_t *coalesce(block_t * block)
 
     if (prev_alloc && next_alloc)              // Case 1
     {
-        block_free=(block_f *)block;
-        block_free->next_free=heapList_start;
+        block_f* block_free=(block_f *)block;
+        block_free->next_free=freeList_start;
         block_free->prev_free=NULL;
-        heapList_start->prev_free=block_free;
-        heapList_start=block_free;
+        freeList_start->prev_free=block_free;
+        freeList_start=block_free;
         return block;
     }
 
@@ -412,10 +412,10 @@ static block_t *coalesce(block_t * block)
         block_f* block_free=(block_f *)block;
         block_f* block_next_free=(block_f *) block_next;
         
-        block_free->next_free=heapList_start;
-        heapList_start->prev_free=block_free;
+        block_free->next_free=freeList_start;
+        freeList_start->prev_free=block_free;
         block_free->prev_free=NULL;
-        heapList_start=block_free;
+        freeList_start=block_free;
         
         block_next_free->prev_free->next_free=block_next_free->next_free;
         block_next_free->next_free->prev_free=block_next_free->prev_free;
@@ -434,10 +434,10 @@ static block_t *coalesce(block_t * block)
         block_prev_free->prev_free->next_free=block_prev_free->next_free;
         block_prev_free->next_free->prev_free=block_prev_free->prev_free;
         
-        block_prev_free->next_free=heapList_start;
+        block_prev_free->next_free=freeList_start;
         block_prev_free->prev_free=NULL;
-        heapList_start->prev_free=block_prev_free;
-        heapList_start=block_prev_free;
+        freeList_start->prev_free=block_prev_free;
+        freeList_start=block_prev_free;
        
         block=(block_t *)block_prev_free;
     }
@@ -454,9 +454,9 @@ static block_t *coalesce(block_t * block)
         block_prev_free->prev_free->next_free=block_prev_free->next_free;
         block_prev_free->next_free->prev_free=block_prev_free->prev_free;
         
-        block_prev_free->next_free=heapList_start;
-        heapList_start->prev_free=block_prev_free;
-        heapList_start=block_prev_free;
+        block_prev_free->next_free=freeList_start;
+        freeList_start->prev_free=block_prev_free;
+        freeList_start=block_prev_free;
         block_prev_free->prev_free=NULL;
         
         block_next_free->prev_free->next_free=block_next_free->next_free;
@@ -471,7 +471,7 @@ static block_t *find_fit(size_t asize)
 {
     block_f *block;
 
-    for (block = heap_start; block!=NULL && get_free_size(block)>0; block = block->next_free)
+    for (block = freeList_start; block!=NULL && get_free_size(block)>0; block = block->next_free)
     {
         if (asize <= get_size((block_t *)block))
         {
