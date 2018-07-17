@@ -132,6 +132,7 @@ static block_t *find_prev(block_t *block);
  */
 bool mm_init(void) {
     // Create the initial empty heap 
+    printf("mm_init called \n");
     word_t *start = (word_t *)(mem_sbrk(2*wsize));
 
     if (start == (void *)-1) 
@@ -153,12 +154,14 @@ bool mm_init(void) {
         return false;
     }
     return true;
+    printf("Returned from init \n");
 }
 
 /*
  * malloc
  */
 void *malloc (size_t size) {
+    printf("Malloc called with size %zu\n",size);
    dbg_requires(mm_checkheap(__LINE__));
     size_t asize;      // Adjusted block size
     size_t extendsize; // Amount to extend heap if no fit is found
@@ -178,9 +181,11 @@ void *malloc (size_t size) {
 
     // Adjust block size to include overhead and to meet alignment requirements
     asize = round_up(size + dsize, dsize);
-
+    printf("Size %zu Asize %zu\n",size,asize);
     // Search the free list for a fit
+    printf("Calling find_fit from malloc \n");
     block = find_fit(asize);
+    printf("Returned from find_fit from malloc \n");
 
     // If no fit is found, request more memory, and then and place the block
     if (block == NULL)
@@ -193,11 +198,12 @@ void *malloc (size_t size) {
         }
 
     }
-
+    printf("Calling place from malloc \n");
     place(block, asize);
+    printf("Returned to malloc from place \n");
     bp = header_to_payload(block);
-
     dbg_ensures(mm_checkheap(__LINE__));
+    printf("Returning from malloc \n");
     return bp;
 }
 
@@ -343,6 +349,7 @@ static void place(block_t *block, size_t asize)
         block_next_free->prev_free=block_free->prev_free;
         block_next_free->next_free->prev_free=block_next_free;
         freeList_start=block_next_free;
+        printf("FreeList_start %p\n",freeList_start);
     }
 
     else
@@ -351,6 +358,7 @@ static void place(block_t *block, size_t asize)
         write_footer(block, csize, true);
         freeList_start+=csize;
     }
+     printf("Asize %zu FreeList_start %p\n",asize, freeList_start);
 }
 
 /*
