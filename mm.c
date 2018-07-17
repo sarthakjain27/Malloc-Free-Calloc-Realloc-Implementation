@@ -329,10 +329,12 @@ static bool aligned(const void *p) {
 
 static void place(block_t *block, size_t asize)
 {
-    size_t csize = get_size(block);
-
+    printf("Place entered\n");
+	size_t csize = get_size(block);
+	printf("csize %zu asize %zu min_block_size %zu\n",csize,asize,min_block_size);
     if ((csize - asize) >= min_block_size)
     {
+		printf("If entered \n");	
         block_t *block_next;
         write_header(block, asize, true);
         write_footer(block, asize, true);
@@ -343,11 +345,13 @@ static void place(block_t *block, size_t asize)
         
         block_f* block_free=(block_f *)block;
         block_f* block_next_free=(block_f *)block_next;
-        
+        printf("block %p size %zu block next %p size %zu",block_free,block_free->header,block_next_free,block_next_free->header);
         block_next_free->next_free=block_free->next_free;
-        block_free->prev_free->next_free=block_next_free;
+        if(block_free->prev_free!=NULL)
+			block_free->prev_free->next_free=block_next_free;
         block_next_free->prev_free=block_free->prev_free;
-        block_next_free->next_free->prev_free=block_next_free;
+        if(block_next_free->next_free!=NULL)
+			block_next_free->next_free->prev_free=block_next_free;
         freeList_start=block_next_free;
         printf("FreeList_start %p\n",freeList_start);
     }
