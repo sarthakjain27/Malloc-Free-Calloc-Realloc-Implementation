@@ -146,6 +146,7 @@ bool mm_init(void) {
     freeList_start = (block_f *) &(start[1]);
     freeList_start->next_free=NULL;
     freeList_start->prev_free=NULL;
+    printf("freeList_start %p\n",freeList_start);
     // Extend the empty heap with a free block of chunksize bytes
     if (extend_heap(chunksize) == NULL)
     {
@@ -376,6 +377,7 @@ static block_t *extend_heap(size_t size)
     write_footer(block, size, false);
     // Create new epilogue header
     block_t *block_next = find_next(block);
+    printf("new epilogue %p\n",block_next);
     write_header(block_next, 0, true);
 
     // Coalesce in case the previous block was free
@@ -390,13 +392,16 @@ static block_t *coalesce(block_t * block)
     block_t *block_next = find_next(block);
     block_t *block_prev = find_prev(block);
 
+    block_f *block_free=(block_f *)block;
+    block_f *block_next_free=(block_f *)block_next;
+    block_f *block_prev_free=(block_f *)block_prev;
+    
     bool prev_alloc = extract_alloc(*(find_prev_footer(block)));
     bool next_alloc = get_alloc(block_next);
     size_t size = get_size(block);
 
     if (prev_alloc && next_alloc)              // Case 1
     {
-        block_f* block_free=(block_f *)block;
         block_free->next_free=freeList_start;
         block_free->prev_free=NULL;
         freeList_start->prev_free=block_free;
@@ -409,9 +414,6 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next);
         write_header(block, size, false);
         write_footer(block, size, false);
-        
-        block_f* block_free=(block_f *)block;
-        block_f* block_next_free=(block_f *) block_next;
         
         block_free->next_free=freeList_start;
         freeList_start->prev_free=block_free;
@@ -429,9 +431,7 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
-        
-        block_f* block_prev_free=(block_f *)block_prev;
-        
+                
         block_prev_free->prev_free->next_free=block_prev_free->next_free;
         block_prev_free->next_free->prev_free=block_prev_free->prev_free;
         
@@ -448,10 +448,7 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next) + get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
-        
-        block_f* block_prev_free=(block_f *)block_prev;
-        block_f* block_next_free=(block_f *)block_next;
-        
+              
         block_prev_free->prev_free->next_free=block_prev_free->next_free;
         block_prev_free->next_free->prev_free=block_prev_free->prev_free;
         
@@ -474,7 +471,7 @@ static block_t *find_fit(size_t asize)
 
     for (block = freeList_start; block!=NULL && get_free_size(block)>0; block = block->next_free)
     {
-        if (asize <= get_size((block_t *)block))
+        if (asize <= get_free_size(block))
         {
             return (block_t *)block;
         }
