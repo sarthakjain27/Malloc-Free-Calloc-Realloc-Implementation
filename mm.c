@@ -211,7 +211,8 @@ void *malloc (size_t size) {
  * free
  */
 void free (void *bp) {
-    if (bp == NULL)
+    printf("Free called \n");
+	if (bp == NULL)
     {
         return;
     }
@@ -434,14 +435,19 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next);
         write_header(block, size, false);
         write_footer(block, size, false);
-        
-        block_free->next_free=freeList_start;
-        freeList_start->prev_free=block_free;
-        block_free->prev_free=NULL;
+        if(block_free->next_free!=freeList_start) 
+        {
+			block_free->next_free=freeList_start;
+        	freeList_start->prev_free=block_free;
+		}
+        else
+			block_free->next_free=NULL;
+		block_free->prev_free=NULL;
         freeList_start=block_free;
-        
-        block_next_free->prev_free->next_free=block_next_free->next_free;
-        block_next_free->next_free->prev_free=block_next_free->prev_free;
+        if(block_next_free->prev_free!=NULL)
+        	block_next_free->prev_free->next_free=block_next_free->next_free;
+        if(block_next_free->next_free!=NULL)
+			block_next_free->next_free->prev_free=block_next_free->prev_free;
         block_next_free->next_free=NULL;
         block_next_free->prev_free=NULL;
     }
