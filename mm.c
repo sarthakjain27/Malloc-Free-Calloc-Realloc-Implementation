@@ -82,7 +82,7 @@ static size_t ALIGN(size_t x) {
 
 #define HSIZE      ALIGN(sizeof(hblock)) /* The minimum size of a block */
 
-*
+/*
  * max: returns x if x > y, and y otherwise.
  */
 static size_t max(size_t x, size_t y)
