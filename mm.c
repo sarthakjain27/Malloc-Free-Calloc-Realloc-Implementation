@@ -392,10 +392,14 @@ static void place(block_t *block, size_t asize)
         	freeList_start=freeList_start->next_free;
 		freeList_start->prev_free=NULL;
 	}
-	else if(block_free->next_free==NULL)
+	//both prev and next null possible? and if yes then do what? freeList-start=NULL?
+	if(block_free->prev_free==NULL && block_free->next_free!=NULL)
+	{
+		block_free->next_free->prev_free=NULL;
+	}
+	else if(block_free->prev_free!=NULL && block_free->next_free==NULL)
 	{
 		block_free->prev_free->next_free=NULL;
-		block_free->prev_free=NULL;
 	}
 	else{
 		block_free->prev_free->next_free=block_free->next_free;
