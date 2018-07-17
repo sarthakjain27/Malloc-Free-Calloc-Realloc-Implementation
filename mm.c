@@ -64,7 +64,7 @@ static const size_t chunksize = (1 << 12);    // requires (chunksize % 16 == 0)
 static const word_t alloc_mask = 0x1;
 static const word_t size_mask = ~(word_t)0xF;
 
-#define ALIGNMENT dsize
+#define ALIGNMENT 2*dsize
 
 typedef struct block
 {
