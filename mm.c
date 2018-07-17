@@ -375,7 +375,7 @@ static void place(block_t *block, size_t asize)
 	}
 	else if(block_free->next_free==NULL)
 	{
-		block_free->prev_free->next_free==NULL;
+		block_free->prev_free->next_free=NULL;
 	}
 	else{
 		block_free->prev_free->next_free=block_free->next_free;
