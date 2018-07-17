@@ -102,27 +102,53 @@ static size_t round_up(size_t size, size_t n)
  * pack: returns a header reflecting a specified size and its alloc status.
  *       If the block is allocated, the lowest bit is set to 1, and 0 otherwise.
  */
-static word_t pack(size_t size, bool alloc)
+static word_t pack(size_t size, size_t alloc)
 {
-    return alloc ? (size | alloc_mask) : size;
+    return ((size) | (alloc));
+}
+
+static size_t GET(hblock *p)
+{
+    return (*(size_t *)(p));   
 }
 
 /*
  * get_size: returns the size of a given block by clearing the lowest 4 bits
  *           (as the heap is 16-byte aligned).
  */
-static size_t get_size(hblock *block)
+static size_t GET_SIZE(hblock *block)
 {
-    return extract_size(block->header);
+    return (GET(p) & ~0x1);
+}
+
+static hblock* HDRP(hblock *bp)
+{
+    return ((char *)(bp));   
+}
+
+static hblock* FTRP(hblock *bp)
+{
+    return ((char *)(bp) + GET_SIZE((bp));   
+}
+
+
+static hblock *NEXT_BLKP(hblock *bp)
+{
+    return ((char *)(bp) + GET_SIZE(bp));    
+}
+
+static hblock *PREV_BLKP(hblock *bp)
+{
+    return ((char *)(bp) - GET_SIZE(bp));   
 }
 
 /*
  * get_alloc: returns true when the block is allocated based on the
  *            block header's lowest bit, and false otherwise.
  */
-static bool get_alloc(hblock *block)
+static bool GET_ALLOC(hblock *block)
 {
-    return extract_alloc(block->header);
+    return (GET(p) & 0x1);
 }
 
 /* rounds up to the nearest multiple of ALIGNMENT */
