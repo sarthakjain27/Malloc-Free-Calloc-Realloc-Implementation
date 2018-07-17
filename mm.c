@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <stdint.h>
-
+#include <stddef.h>
 #include "mm.h"
 #include "memlib.h"
 
@@ -409,7 +409,7 @@ static block_t *coalesce(block_t * block)
         heap_start->prev_free=block_prev;
         heap_start=block_prev;
         block_prev->prev_free=NULL;
-        block=block_prev;
+        block=(block_t *)block_prev;
     }
 
     else                                        // Case 4
@@ -427,7 +427,7 @@ static block_t *coalesce(block_t * block)
         block_prev->prev_free=NULL;
         block_next->prev_free->next_free=block_next->next_free;
         block_next->next_free->prev_free=block_next->prev_free;
-        block=block_prev;
+        block=(block_t *)block_prev;
     }
     return (block_t *)block;
 }
