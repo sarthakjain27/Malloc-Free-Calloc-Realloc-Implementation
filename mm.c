@@ -319,8 +319,8 @@ static void place(block_t *block, size_t asize)
         block_next = find_next(block);
         write_header(block_next, csize-asize, false);
         write_footer(block_next, csize-asize, false);
-        block=(block_t *)block;
-        block_next=(block_f *)block_next;
+        block_f* block=(block_f *)block;
+        block_f* block_next=(block_f *)block_next;
         
         block_next->next_free=block->next_free;
         block->prev_free->next_free=block_next;
@@ -387,8 +387,8 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next);
         write_header(block, size, false);
         write_footer(block, size, false);
-        block=(block_f *)block;
-        block_next=(block_f *) block_next;
+        block_f* block=(block_f *)block;
+        block_f* block_next=(block_f *) block_next;
         block->next_free=heap_start;
         heap_start->prev_free=block;
         block->prev_free=NULL;
@@ -402,7 +402,7 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
-        block_prev=(block_f *)block_prev;
+        block_f* block_prev=(block_f *)block_prev;
         block_prev->prev_free->next_free=block_prev->next_free;
         block_prev->next_free->prev_free=block_prev->prev_free;
         block_prev->next_free=heap_start;
@@ -417,8 +417,8 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next) + get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
-        block_prev=(block_f *)block_prev;
-        block_next=(block_f *)block_next;
+        block_f* block_prev=(block_f *)block_prev;
+        block_f* block_next=(block_f *)block_next;
         block_prev->prev_free->next_free=block_prev->next_free;
         block_prev->next_free->prev_free=block_prev->prev_free;
         block_prev->next_free=heap_start;
