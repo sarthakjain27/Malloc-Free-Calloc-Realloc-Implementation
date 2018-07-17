@@ -414,10 +414,13 @@ static block_t *coalesce(block_t * block)
     {
 	printf("Case 1 entered \n");
 	printf("block_free %p freeList start %p \n",block_free,freeList_start);
-        block_free->next_free=freeList_start;
-        block_free->prev_free=NULL;
-        freeList_start->prev_free=block_free;
-        freeList_start=block_free;
+        if(block_free!=freeList_start)
+		{
+			block_free->next_free=freeList_start;
+        	block_free->prev_free=NULL;
+        	freeList_start->prev_free=block_free;
+        	freeList_start=block_free;
+		}
         return block;
     }
 
