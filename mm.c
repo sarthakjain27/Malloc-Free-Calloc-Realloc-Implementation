@@ -363,7 +363,7 @@ static void place(block_t *block, size_t asize)
     { 
         write_header(block, csize, true);
         write_footer(block, csize, true);
-        freeList_start+=csize;
+        freeList_start=freeList_start->next_free;
     }
      printf("Asize %zu FreeList_start %p\n",asize, freeList_start);
 }
@@ -404,7 +404,9 @@ static block_t *extend_heap(size_t size)
     block_t *block = payload_to_header(bp);
     write_header(block, size, false);
     write_footer(block, size, false);
-    // Create new epilogue header
+    
+	printf("new extend heap block address %p size %zu\n",block,size);
+	// Create new epilogue header
     block_t *block_next = find_next(block);
     printf("new epilogue %p\n",block_next);
     write_header(block_next, 0, true);
