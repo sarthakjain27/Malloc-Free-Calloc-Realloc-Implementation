@@ -370,6 +370,18 @@ static void place(block_t *block, size_t asize)
  * mm_checkheap
  */
 bool mm_checkheap(int lineno) {
+    printf("Printing Heap blocks \n");
+    block_t *i;
+	block_f *j;
+	for(i=heap_start;get_size(block) > 0; block = find_next(block))
+	{
+		if(get_alloc(block))
+			printf("Heap Block %p \n",i);
+	}
+	for(j=freeList_start;block!=NULL && get_free_size(block)>0; block = block->next_free)
+	{
+		printf("FreeList Block %p \n",j);	
+	}
     return true;
 }
 
