@@ -357,7 +357,8 @@ static void place(block_t *block, size_t asize)
         block_next_free->prev_free=block_free->prev_free;
         if(block_next_free->next_free!=NULL)
 			block_next_free->next_free->prev_free=block_next_free;
-        freeList_start=block_next_free;
+        if(freeList_start==block_free)
+			freeList_start=block_next_free;
         block_free->next_free=NULL;
 		block_free->prev_free=NULL;
 		printf("FreeList_start %p\n",freeList_start);
