@@ -370,6 +370,7 @@ bool mm_checkheap(int lineno) {
 
 static block_t *extend_heap(size_t size) 
 {
+    printf("Extend heap called with size %zu",size);
     void *bp;
 
     // Allocate an even number of words to maintain alignment
@@ -387,7 +388,7 @@ static block_t *extend_heap(size_t size)
     block_t *block_next = find_next(block);
     printf("new epilogue %p\n",block_next);
     write_header(block_next, 0, true);
-
+    printf("Calling coalesce from extend_heap\n");
     // Coalesce in case the previous block was free
     return coalesce(block);
 }
@@ -397,6 +398,7 @@ static block_t *extend_heap(size_t size)
  */
 static block_t *coalesce(block_t * block) 
 {
+	printf("Coalesce called \n");
     block_t *block_next = find_next(block);
     block_t *block_prev = find_prev(block);
 
@@ -410,6 +412,8 @@ static block_t *coalesce(block_t * block)
 
     if (prev_alloc && next_alloc)              // Case 1
     {
+	printf("Case 1 entered \n");
+	printf("block_free %p freeList start %p \n",block_free,freeList_start);
         block_free->next_free=freeList_start;
         block_free->prev_free=NULL;
         freeList_start->prev_free=block_free;
@@ -419,6 +423,7 @@ static block_t *coalesce(block_t * block)
 
     else if (prev_alloc && !next_alloc)        // Case 2
     {
+	    printf("Case 2 entered \n");
         size += get_size(block_next);
         write_header(block, size, false);
         write_footer(block, size, false);
@@ -436,6 +441,7 @@ static block_t *coalesce(block_t * block)
 
     else if (!prev_alloc && next_alloc)        // Case 3
     {
+	    printf("Case 3 entered \n");
         size += get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
@@ -453,6 +459,7 @@ static block_t *coalesce(block_t * block)
 
     else                                        // Case 4
     {
+	    printf("Case 4 entered \n");
         size += get_size(block_next) + get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
@@ -470,7 +477,9 @@ static block_t *coalesce(block_t * block)
         
         block=(block_t *)block_prev_free;
     }
-    return (block_t *)block;
+	printf("Returning from coalesce \n");
+	printf("freeList_start %p freeList next %p freeList prev %p\n",freeList_start,freeList_start->next_free,freeList_start->prev_free);
+    return block;
 }
 
 static block_t *find_fit(size_t asize)
