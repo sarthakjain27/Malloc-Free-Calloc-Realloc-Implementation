@@ -405,7 +405,9 @@ static block_t *coalesce(block_t * block)
     block_f *block_free=(block_f *)block;
     block_f *block_next_free=(block_f *)block_next;
     block_f *block_prev_free=(block_f *)block_prev;
-    
+   	
+	printf("freeList start %p block_free %p block_f_next %p block_p_next %p\n",freeList_start,block_free,block_next_free,block_prev_free);
+ 
     bool prev_alloc = extract_alloc(*(find_prev_footer(block)));
     bool next_alloc = get_alloc(block_next);
     size_t size = get_size(block);
@@ -413,7 +415,6 @@ static block_t *coalesce(block_t * block)
     if (prev_alloc && next_alloc)              // Case 1
     {
 	printf("Case 1 entered \n");
-	printf("block_free %p freeList start %p \n",block_free,freeList_start);
         if(block_free!=freeList_start)
 		{
 			block_free->next_free=freeList_start;
@@ -421,7 +422,6 @@ static block_t *coalesce(block_t * block)
         	freeList_start->prev_free=block_free;
         	freeList_start=block_free;
 		}
-        return block;
     }
 
     else if (prev_alloc && !next_alloc)        // Case 2
@@ -448,16 +448,21 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
-                
-        block_prev_free->prev_free->next_free=block_prev_free->next_free;
-        block_prev_free->next_free->prev_free=block_prev_free->prev_free;
         
-        block_prev_free->next_free=freeList_start;
-        block_prev_free->prev_free=NULL;
-        freeList_start->prev_free=block_prev_free;
-        freeList_start=block_prev_free;
-       
-        block=(block_t *)block_prev_free;
+		printf("Modifying block_prev\n");        
+        if(block_prev_free->prev_free!=NULL)
+			block_prev_free->prev_free->next_free=block_prev_free->next_free;
+        if(block_prev_free->next_free!=NULL)
+			block_prev_free->next_free->prev_free=block_prev_free->prev_free;
+        printf("block_prev done \n");
+        if(block_prev_free!=freeList_start)
+		{
+			block_prev_free->next_free=freeList_start;
+        	block_prev_free->prev_free=NULL;
+        	freeList_start->prev_free=block_prev_free;
+        	freeList_start=block_prev_free;
+		}
+        block=block_prev;
     }
 
     else                                        // Case 4
@@ -466,19 +471,24 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next) + get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
-              
-        block_prev_free->prev_free->next_free=block_prev_free->next_free;
-        block_prev_free->next_free->prev_free=block_prev_free->prev_free;
+    	if(block_prev_free->prev_free!=NULL)          
+       		block_prev_free->prev_free->next_free=block_prev_free->next_free;
+        if(block_prev_free->next_free!=NULL)
+			block_prev_free->next_free->prev_free=block_prev_free->prev_free;
+        if(block_prev_free!=freeList_start)
+        {
+			block_prev_free->next_free=freeList_start;
+        	freeList_start->prev_free=block_prev_free;
+        	freeList_start=block_prev_free;
+        	block_prev_free->prev_free=NULL;
+		}
         
-        block_prev_free->next_free=freeList_start;
-        freeList_start->prev_free=block_prev_free;
-        freeList_start=block_prev_free;
-        block_prev_free->prev_free=NULL;
+		if(block_next_free->prev_free!=NULL)
+        	block_next_free->prev_free->next_free=block_next_free->next_free;
+        if(block_next_free->next_free!=NULL)
+			block_next_free->next_free->prev_free=block_next_free->prev_free;
         
-        block_next_free->prev_free->next_free=block_next_free->next_free;
-        block_next_free->next_free->prev_free=block_next_free->prev_free;
-        
-        block=(block_t *)block_prev_free;
+        block=block_prev;
     }
 	printf("Returning from coalesce \n");
 	printf("freeList_start %p freeList next %p freeList prev %p\n",freeList_start,freeList_start->next_free,freeList_start->prev_free);
