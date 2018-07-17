@@ -205,16 +205,67 @@ void free (void *ptr) {
 /*
  * realloc
  */
-void *realloc(void *oldptr, size_t size) {
-    return NULL;
+void *realloc(void *ptr, size_t size) {
+    block_t *block = payload_to_header(ptr);
+    size_t copysize;
+    void *newptr;
+
+    // If size == 0, then free block and return NULL
+    if (size == 0)
+    {
+        free(ptr);
+        return NULL;
+    }
+
+    // If ptr is NULL, then equivalent to malloc
+    if (ptr == NULL)
+    {
+        return malloc(size);
+    }
+
+    // Otherwise, proceed with reallocation
+    newptr = malloc(size);
+    // If malloc fails, the original block is left untouched
+    if (newptr == NULL)
+    {
+        return NULL;
+    }
+
+    // Copy the old data
+    copysize = get_payload_size(block); // gets size of old payload
+    if(size < copysize)
+    {
+        copysize = size;
+    }
+    memcpy(newptr, ptr, copysize);
+
+    // Free the old block
+    free(ptr);
+
+    return newptr;
 }
 
 /*
  * calloc
  * This function is not tested by mdriver
  */
-void *calloc (size_t nmemb, size_t size) {
+void *calloc (size_t elements, size_t size) {
+    void *bp;
+    size_t asize = elements * size;
+
+    if (asize/elements != size)
+    // Multiplication overflowed
     return NULL;
+    
+    bp = malloc(asize);
+    if (bp == NULL)
+    {
+        return NULL;
+    }
+    // Initialize all bits to 0
+    memset(bp, 0, asize);
+
+    return bp;
 }
 
 
