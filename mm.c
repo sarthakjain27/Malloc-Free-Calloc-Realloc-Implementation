@@ -490,7 +490,7 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next);
         write_header(block, size, false);
         write_footer(block, size, false);
-	    
+	printf("block %p size %zu\n",block,block->header); 
 	freeList_del(block_next_free);
 	freeList_LIFO_insert(block_free);	
     }
@@ -501,7 +501,7 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
-        
+    printf("block %p size %zu\n",block_prev,block_prev->header);    
 	freeList_del(block_prev_free);
 	freeList_LIFO_insert(block_prev_free);
         block=block_prev;
@@ -513,7 +513,7 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next) + get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
-	
+		printf("block %p sze %zu \n",block_prev,block_prev->header);
 	    
 	freeList_del(block_next_free);
 	freeList_del(block_prev_free);
@@ -536,7 +536,8 @@ static void freeList_del(block_f *block){
 	if(block->prev_free==NULL) //at start of freeList
 	{
 		freeList_start=freeList_start->next_free;
-		freeList_start->prev_free=NULL;
+		if(freeList_start!=NULL)
+			freeList_start->prev_free=NULL;
 	}
 	else if(block->next_free==NULL) //Last block of freeList
 		block->prev_free->next_free=NULL;
