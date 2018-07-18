@@ -555,7 +555,7 @@ static block_t *coalesce(block_t * block)
 	{
 		block_prev_free->next_free=block_next_free->next_free;
 		if(block_next_free->next_free!=NULL)
-			block_next_free->prev_free=block_prev_free;
+			block_next_free->next_free->prev_free=block_prev_free;
 	}
 	    
 	if(block_prev_free!=freeList_start)
