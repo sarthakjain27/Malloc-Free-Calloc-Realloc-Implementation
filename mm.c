@@ -58,7 +58,7 @@
 typedef uint64_t word_t;
 static const size_t wsize = sizeof(word_t);   // word and header size (bytes)
 static const size_t dsize = 2*wsize;          // double word size (bytes)
-static const size_t min_block_size = 3*dsize; // Minimum block size
+static const size_t min_block_size = 2*dsize; // Minimum block size
 static const size_t chunksize = (1 << 12);    // requires (chunksize % 16 == 0)
 
 static const word_t alloc_mask = 0x1;
@@ -160,7 +160,7 @@ bool mm_init(void) {
         return false;
     }
     return true;
-    //printf("Returned from init \n");
+  //  printf("Returned from init \n");
 }
 
 /*
@@ -359,12 +359,14 @@ static void place(block_t *block, size_t asize)
         block_f* block_next_free=(block_f *)block_next;
         //printf("block %p size %zu block next %p size %zu",block_free,block_free->header,block_next_free,block_next_free->header);
 
-	if(freeList_start==block_free)
-		freeList_start=block_next_free;
+	//if(freeList_start==block_free)
+	//	freeList_start=block_next_free;
 	
 	if(freeList_end==block_free)
-		freeList_end=block_next_free;
-	
+		freeList_end=NULL;
+	freeList_del(block_free);
+	freeList_FIFO_insert(block_next_free);
+	/*
 	if(block_free->prev_free==NULL && block_free->next_free==NULL)
 	{
 		block_next_free->prev_free=NULL;
@@ -389,6 +391,7 @@ static void place(block_t *block, size_t asize)
 		block_free->prev_free->next_free=block_next_free;
 		block_free->next_free->prev_free=block_next_free;
 	}
+	*/
 		//printf("FreeList_start %p FreeList_end %p\n",freeList_start,freeList_end);
     }
 
@@ -469,9 +472,9 @@ static block_t *extend_heap(size_t size)
 	//printf("new extend heap block address %p size %zu\n",block,size);
 	// Create new epilogue header
     block_t *block_next = find_next(block);
-    //printf("new epilogue %p\n",block_next);
+   // printf("new epilogue %p\n",block_next);
     write_header(block_next, 0, true);
-    //printf("Calling coalesce from extend_heap\n");
+   // printf("Calling coalesce from extend_heap\n");
     // Coalesce in case the previous block was free
     return coalesce(block);
 }
@@ -530,7 +533,7 @@ static block_t *coalesce(block_t * block)
 
     else                                        // Case 4
     {
-	    //printf("Case 4 entered \n");
+	   // printf("Case 4 entered \n");
         size += get_size(block_next) + get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
