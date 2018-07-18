@@ -489,7 +489,7 @@ static block_t *coalesce(block_t * block)
     {
 	//printf("Case 1 entered \n");
         if(block_free!=freeList_start)
-		freeList_LIFO_insert(block_free);
+			freeList_LIFO_insert(block_free);
 	    	//freeList_FIFO_insert(block_free);
     }
 
@@ -548,7 +548,8 @@ static void freeList_LIFO_insert(block_f *block){
 
 static void freeList_FIFO_insert(block_f *block)
 {
-	freeList_end->next_free=block;
+	if(freeList_end!=NULL)
+		freeList_end->next_free=block;
 	block->prev_free=freeList_end;
 	block->next_free=NULL;
 	freeList_end=block;
