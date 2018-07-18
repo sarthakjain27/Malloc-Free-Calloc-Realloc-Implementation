@@ -147,8 +147,8 @@ bool mm_init(void) {
     // Heap starts with first "block header", currently the epilogue footer
     heap_start=(block_t *) &(start[1]);
     freeList_start = (block_f *) &(start[1]);
-    freeList_start->next_free=NULL;
-    freeList_start->prev_free=NULL;
+    //freeList_start->next_free=NULL;
+    //freeList_start->prev_free=NULL;
     //printf("freeList_start %p\n",freeList_start);
     // Extend the empty heap with a free block of chunksize bytes
     if (extend_heap(chunksize) == NULL)
