@@ -546,6 +546,14 @@ static block_t *coalesce(block_t * block)
         	if(block_prev_free->next_free!=NULL)
 			block_prev_free->next_free->prev_free=block_prev_free->prev_free;
       
+		if(block_prev_free!=freeList_start)
+        	{	
+			block_prev_free->next_free=freeList_start;
+        		freeList_start->prev_free=block_prev_free;
+        		freeList_start=block_prev_free;
+        		block_prev_free->prev_free=NULL;
+		}
+		
 		if(block_next_free->prev_free!=NULL)
         		block_next_free->prev_free->next_free=block_next_free->next_free;
         	if(block_next_free->next_free!=NULL)
@@ -557,15 +565,7 @@ static block_t *coalesce(block_t * block)
 		if(block_next_free->next_free!=NULL)
 			block_next_free->next_free->prev_free=block_prev_free;
 	}
-	    
-	if(block_prev_free!=freeList_start)
-        {
-			block_prev_free->next_free=freeList_start;
-        		freeList_start->prev_free=block_prev_free;
-        		freeList_start=block_prev_free;
-        		block_prev_free->prev_free=NULL;
-	}
-		   
+	    	   
         block=block_prev;
     }
 	printf("Returning from coalesce \n");
