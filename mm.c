@@ -527,14 +527,19 @@ static block_t *coalesce(block_t * block)
 }
 
 static void freeList_LIFO_insert(block_f *block){
+	printf("freeList_LIFO called freeList %p\n",freeList_start);
 	block->next_free=freeList_start;
 	block->prev_free=NULL;
+	if(freeList_start!=NULL && freeList_start->prev_free!=NULL)
+		freeList_start->prev_free=block;
 	freeList_start=block;
 }
 
 static void freeList_del(block_f *block){
+	printf("freeList_del called \n");
 	if(block->prev_free==NULL) //at start of freeList
 	{
+		printf("start of freelist block\n");
 		freeList_start=freeList_start->next_free;
 		if(freeList_start!=NULL)
 			freeList_start->prev_free=NULL;
@@ -543,6 +548,7 @@ static void freeList_del(block_f *block){
 		block->prev_free->next_free=NULL;
 	else //in middle of freeList
 	{
+		printf("Middle \n");
 		block->prev_free->next_free=block->next_free;
 		block->next_free->prev_free=block->prev_free;
 	}
