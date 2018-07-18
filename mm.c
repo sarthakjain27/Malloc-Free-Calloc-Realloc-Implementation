@@ -91,6 +91,7 @@ typedef struct free_block
 
 static block_f *freeList_start=NULL;
 static block_t *heap_start = NULL;
+static block_f *freeList_end=NULL;
 
 /* rounds up to the nearest multiple of ALIGNMENT */
 static size_t align(size_t x) {
@@ -104,6 +105,7 @@ static block_t *extend_heap(size_t size);
 static void place(block_t *block, size_t asize);
 static block_t *find_fit(size_t asize);
 static void freeList_LIFO_insert(block_f *block);
+static void freeList_FIFO_insert(block_f *block);
 static void freeList_del(block_f *block);
 static block_t *coalesce(block_t *block);
 
@@ -147,6 +149,7 @@ bool mm_init(void) {
     // Heap starts with first "block header", currently the epilogue footer
     heap_start=(block_t *) &(start[1]);
     freeList_start = (block_f *) &(start[1]);
+    freeList_end=(block_f *) &(start[1]);
     //freeList_start->next_free=NULL;
     //freeList_start->prev_free=NULL;
     //printf("freeList_start %p\n",freeList_start);
@@ -487,6 +490,7 @@ static block_t *coalesce(block_t * block)
 	//printf("Case 1 entered \n");
         if(block_free!=freeList_start)
 		freeList_LIFO_insert(block_free);
+	    	//freeList_FIFO_insert(block_free);
     }
 
     else if (prev_alloc && !next_alloc)        // Case 2
@@ -497,7 +501,8 @@ static block_t *coalesce(block_t * block)
         write_footer(block, size, false);
 	//printf("block %p size %zu\n",block,block->header); 
 	freeList_del(block_next_free);
-	freeList_LIFO_insert(block_free);	
+	freeList_LIFO_insert(block_free);
+	//freeList_FIFO_insert(block_free);
     }
 
     else if (!prev_alloc && next_alloc)        // Case 3
@@ -509,6 +514,7 @@ static block_t *coalesce(block_t * block)
     //printf("block %p size %zu\n",block_prev,block_prev->header);    
 	freeList_del(block_prev_free);
 	freeList_LIFO_insert(block_prev_free);
+	//freeList_FIFO_insert(block_prev_free);    
         block=block_prev;
     }
 
@@ -523,7 +529,7 @@ static block_t *coalesce(block_t * block)
 	freeList_del(block_next_free);
 	freeList_del(block_prev_free);
 	freeList_LIFO_insert(block_prev_free);
-	    
+	//freeList_FIFO_insert(block_prev_free);
         block=block_prev;
     }
 	//printf("Returning from coalesce \n");
@@ -538,6 +544,14 @@ static void freeList_LIFO_insert(block_f *block){
 	if(freeList_start!=NULL)
 		freeList_start->prev_free=block;
 	freeList_start=block;
+}
+
+static void freeList_FIFO_insert(block_f *block)
+{
+	freeList_end->next_free=block;
+	block->prev_free=freeList_end;
+	block->next_free=NULL;
+	freeList_end=block;
 }
 
 static void freeList_del(block_f *block){
