@@ -336,7 +336,7 @@ static void place(block_t *block, size_t asize)
 {
     printf("Place entered\n");
 	size_t csize = get_size(block);
-	printf("csize %zu asize %zu min_block_size %zu\n",csize,asize,min_block_size);
+	printf("freeList %p block %p csize %zu asize %zu min_block_size %zu\n",freeList_start,block,csize,asize,min_block_size);
     if ((csize - asize) >= min_block_size)
     {
 		printf("If entered \n");	
@@ -386,16 +386,21 @@ static void place(block_t *block, size_t asize)
 
     else
     { 
+	printf("else block\n");
         write_header(block, csize, true);
         write_footer(block, csize, true);
 	block_f* block_free=(block_f *)block;
 	if(block_free==freeList_start)
 	{
+		printf("block free equals freeList_start \n");
         	freeList_start=freeList_start->next_free;
-		freeList_start->prev_free=NULL;
+		if(freeList_start!=NULL)
+			freeList_start->prev_free=NULL;
 	}
+	if(block_free->prev_free==NULL && block_free->next_free==NULL)
+		freeList_start=NULL;
 	//both prev and next null possible? and if yes then do what? freeList-start=NULL?
-	if(block_free->prev_free==NULL && block_free->next_free!=NULL)
+	else if(block_free->prev_free==NULL && block_free->next_free!=NULL)
 	{
 		block_free->next_free->prev_free=NULL;
 	}
@@ -530,7 +535,7 @@ static void freeList_LIFO_insert(block_f *block){
 	printf("freeList_LIFO called freeList %p\n",freeList_start);
 	block->next_free=freeList_start;
 	block->prev_free=NULL;
-	if(freeList_start!=NULL && freeList_start->prev_free!=NULL)
+	if(freeList_start!=NULL)
 		freeList_start->prev_free=block;
 	freeList_start=block;
 }
