@@ -491,8 +491,8 @@ static block_t *coalesce(block_t * block)
         write_header(block, size, false);
         write_footer(block, size, false);
 	    
-	freeList_del(block_next);
-	freeList_LIFO_insert(block);	
+	freeList_del(block_next_free);
+	freeList_LIFO_insert(block_free);	
     }
 
     else if (!prev_alloc && next_alloc)        // Case 3
@@ -502,8 +502,8 @@ static block_t *coalesce(block_t * block)
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
         
-	freeList_del(block_prev);
-	freeList_LIFO_insert(block_prev);
+	freeList_del(block_prev_free);
+	freeList_LIFO_insert(block_prev_free);
         block=block_prev;
     }
 
@@ -515,9 +515,9 @@ static block_t *coalesce(block_t * block)
         write_footer(block_prev, size, false);
 	
 	    
-	freeList_del(block_next);
-	freeList_del(block_prev);
-	freeList_LIFO_insert(block_prev);
+	freeList_del(block_next_free);
+	freeList_del(block_prev_free);
+	freeList_LIFO_insert(block_prev_free);
 	    
         block=block_prev;
     }
