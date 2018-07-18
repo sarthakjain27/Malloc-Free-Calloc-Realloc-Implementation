@@ -539,7 +539,7 @@ static void freeList_del(block_f *block){
 		freeList_start->prev_free=NULL;
 	}
 	else if(block->next_free==NULL) //Last block of freeList
-		block->prev_free->next_free==NULL;
+		block->prev_free->next_free=NULL;
 	else //in middle of freeList
 	{
 		block->prev_free->next_free=block->next_free;
