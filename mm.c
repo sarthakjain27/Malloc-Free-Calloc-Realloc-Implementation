@@ -481,9 +481,9 @@ static block_t *coalesce(block_t * block)
         if(block_free!=freeList_start)
 		{
 			block_free->next_free=freeList_start;
-        	block_free->prev_free=NULL;
-        	freeList_start->prev_free=block_free;
-        	freeList_start=block_free;
+        		block_free->prev_free=NULL;
+        		freeList_start->prev_free=block_free;
+        		freeList_start=block_free;
 		}
     }
 
@@ -539,23 +539,33 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next) + get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
-    	if(block_prev_free->prev_free!=NULL)          
-       		block_prev_free->prev_free->next_free=block_prev_free->next_free;
-        if(block_prev_free->next_free!=NULL)
+	if(block_prev_free->next_free!=block_next_free)
+	{
+		if(block_prev_free->prev_free!=NULL)          
+       			block_prev_free->prev_free->next_free=block_prev_free->next_free;
+        	if(block_prev_free->next_free!=NULL)
 			block_prev_free->next_free->prev_free=block_prev_free->prev_free;
-        if(block_prev_free!=freeList_start)
+      
+		if(block_next_free->prev_free!=NULL)
+        		block_next_free->prev_free->next_free=block_next_free->next_free;
+        	if(block_next_free->next_free!=NULL)
+			block_next_free->next_free->prev_free=block_next_free->prev_free;
+	}
+	else
+	{
+		block_prev_free->next_free=block_next_free->next_free;
+		if(block_next_free->next_free!=NULL)
+			block_next_free->prev_free=block_prev_free;
+	}
+	    
+	if(block_prev_free!=freeList_start)
         {
 			block_prev_free->next_free=freeList_start;
-        	freeList_start->prev_free=block_prev_free;
-        	freeList_start=block_prev_free;
-        	block_prev_free->prev_free=NULL;
-		}
-        
-		if(block_next_free->prev_free!=NULL)
-        	block_next_free->prev_free->next_free=block_next_free->next_free;
-        if(block_next_free->next_free!=NULL)
-			block_next_free->next_free->prev_free=block_next_free->prev_free;
-        
+        		freeList_start->prev_free=block_prev_free;
+        		freeList_start=block_prev_free;
+        		block_prev_free->prev_free=NULL;
+	}
+		   
         block=block_prev;
     }
 	printf("Returning from coalesce \n");
