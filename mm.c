@@ -104,6 +104,7 @@ bool mm_checkheap(int lineno);
 static block_t *extend_heap(size_t size);
 static void place(block_t *block, size_t asize);
 static block_t *find_fit(size_t asize);
+static block_t *best_fit(size_t asize);
 static void freeList_LIFO_insert(block_f *block);
 static void freeList_FIFO_insert(block_f *block);
 static void freeList_del(block_f *block);
@@ -190,6 +191,7 @@ void *malloc (size_t size) {
     // Search the free list for a fit
     //printf("Calling find_fit from malloc \n");
     block = find_fit(asize);
+    //block=best_fit(aisze);
     //printf("Returned from find_fit from malloc \n");
 
     // If no fit is found, request more memory, and then and place the block
@@ -587,6 +589,27 @@ static block_t *find_fit(size_t asize)
     return NULL; // no fit found
 }
 
+static block_t *best_fit(size_t asize)
+{
+	block_f *block,min_block=freeList_start;
+	size_t temp,min_block_size;
+	min_block_size=get_free_size(min_block);
+	for(block=freeList_start;block!=NULL && get_free_size(block)>0; block = block->next_free)
+	{	
+		temp=get_free_size(block);
+		if(asize <= temp)
+		{
+			if(temp<min_block_size)
+			{
+				min_block_size=temp;
+				min_block=block;
+			}
+		}
+	}
+	if(min_block_size<asize)
+		return NULL;
+	return (block_t *)min_block;
+}
 
 /*
  * max: returns x if x > y, and y otherwise.
