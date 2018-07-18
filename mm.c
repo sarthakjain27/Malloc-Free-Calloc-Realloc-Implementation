@@ -103,6 +103,8 @@ bool mm_checkheap(int lineno);
 static block_t *extend_heap(size_t size);
 static void place(block_t *block, size_t asize);
 static block_t *find_fit(size_t asize);
+static void freeList_LIFO_insert(block_f *block);
+static void freeList_del(block_f *block);
 static block_t *coalesce(block_t *block);
 
 static size_t max(size_t x, size_t y);
@@ -479,57 +481,29 @@ static block_t *coalesce(block_t * block)
     {
 	printf("Case 1 entered \n");
         if(block_free!=freeList_start)
-		{
-			block_free->next_free=freeList_start;
-        		block_free->prev_free=NULL;
-        		freeList_start->prev_free=block_free;
-        		freeList_start=block_free;
-		}
+		freeList_LIFO_insert(block_free);
     }
 
     else if (prev_alloc && !next_alloc)        // Case 2
     {
-	    printf("Case 2 entered \n");
+	printf("Case 2 entered \n");
         size += get_size(block_next);
         write_header(block, size, false);
         write_footer(block, size, false);
-        if(block_free->next_free!=freeList_start) 
-        {
-			block_free->next_free=freeList_start;
-        	freeList_start->prev_free=block_free;
-		}
-        else
-			block_free->next_free=NULL;
-		block_free->prev_free=NULL;
-        freeList_start=block_free;
-        if(block_next_free->prev_free!=NULL)
-        	block_next_free->prev_free->next_free=block_next_free->next_free;
-        if(block_next_free->next_free!=NULL)
-			block_next_free->next_free->prev_free=block_next_free->prev_free;
-        block_next_free->next_free=NULL;
-        block_next_free->prev_free=NULL;
+	    
+	freeList_del(block_next);
+	freeList_LIFO_insert(block);	
     }
 
     else if (!prev_alloc && next_alloc)        // Case 3
     {
-	    printf("Case 3 entered \n");
+	printf("Case 3 entered \n");
         size += get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
         
-		printf("Modifying block_prev\n");        
-        if(block_prev_free->prev_free!=NULL)
-			block_prev_free->prev_free->next_free=block_prev_free->next_free;
-        if(block_prev_free->next_free!=NULL)
-			block_prev_free->next_free->prev_free=block_prev_free->prev_free;
-        printf("block_prev done \n");
-        if(block_prev_free!=freeList_start)
-		{
-			block_prev_free->next_free=freeList_start;
-        	block_prev_free->prev_free=NULL;
-        	freeList_start->prev_free=block_prev_free;
-        	freeList_start=block_prev_free;
-		}
+	freeList_del(block_prev);
+	freeList_LIFO_insert(block_prev);
         block=block_prev;
     }
 
@@ -540,34 +514,37 @@ static block_t *coalesce(block_t * block)
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
 	
-	    block_prev_free->next_free=block_next_free->next_free;
-		if(block_next_free->next_free!=NULL)
-			block_next_free->next_free->prev_free=block_prev_free;
 	    
-		if(block_prev_free->prev_free!=NULL)          
-       			block_prev_free->prev_free->next_free=block_prev_free->next_free;
-        	if(block_prev_free->next_free!=NULL)
-			block_prev_free->next_free->prev_free=block_prev_free->prev_free;
-      
-		if(block_prev_free!=freeList_start)
-        	{	
-			block_prev_free->next_free=freeList_start;
-        		freeList_start->prev_free=block_prev_free;
-        		freeList_start=block_prev_free;
-        		block_prev_free->prev_free=NULL;
-		}
-		
-		if(block_next_free->prev_free!=NULL)
-        		block_next_free->prev_free->next_free=block_next_free->next_free;
-        	if(block_next_free->next_free!=NULL)
-			block_next_free->next_free->prev_free=block_next_free->prev_free;
-	
-	    	   
+	freeList_del(block_next);
+	freeList_del(block_prev);
+	freeList_LIFO_insert(block_prev);
+	    
         block=block_prev;
     }
 	printf("Returning from coalesce \n");
 	printf("freeList_start %p freeList next %p freeList prev %p\n",freeList_start,freeList_start->next_free,freeList_start->prev_free);
     return block;
+}
+
+static void freeList_LIFO_insert(block_f *block){
+	block->next_free=freeList_start;
+	block->prev_free=NULL;
+	freeList_start=block;
+}
+
+static void freeList_del(block_f *block){
+	if(block->prev_free==NULL) //at start of freeList
+	{
+		freeList_start=freeList_start->next_free;
+		freeList_start->prev_free=NULL;
+	}
+	else if(block->next==NULL) //Last block of freeList
+		block->prev_free->next_free==NULL;
+	else //in middle of freeList
+	{
+		block->prev_free->next_free=block->next_free;
+		block->next_free->prev_free=block->prev_free;
+	}
 }
 
 static block_t *find_fit(size_t asize)
