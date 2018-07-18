@@ -190,8 +190,8 @@ void *malloc (size_t size) {
     //printf("Size %zu Asize %zu\n",size,asize);
     // Search the free list for a fit
     //printf("Calling find_fit from malloc \n");
-    block = find_fit(asize);
-    //block=best_fit(aisze);
+    //block = find_fit(asize);
+    block=best_fit(asize);
     //printf("Returned from find_fit from malloc \n");
 
     // If no fit is found, request more memory, and then and place the block
@@ -591,7 +591,8 @@ static block_t *find_fit(size_t asize)
 
 static block_t *best_fit(size_t asize)
 {
-	block_f *block,min_block=freeList_start;
+	block_f *block,*min_block;
+	min_block=freeList_start;
 	size_t temp,min_block_size;
 	min_block_size=get_free_size(min_block);
 	for(block=freeList_start;block!=NULL && get_free_size(block)>0; block = block->next_free)
