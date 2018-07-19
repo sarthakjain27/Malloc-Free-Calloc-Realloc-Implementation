@@ -470,13 +470,13 @@ bool mm_checkheap(int lineno)
         }
 
 		/* Next/prev free pointer inconsistencies */
-		if ((char *) GET(SUCCESSOR(ptr)) != NULL && (char *) GET(PREDECESSOR(GET(SUCCESSOR(ptr)))) != ptr)
+		if ((char *) GET(SUCCESSOR(ptr)) != NULL && (char *) GET(PREDECESSOR(SUCCESSOR(ptr))) != ptr)
         {
             printf("Free block pointer %p's next pointer is inconsistent\n", ptr);
             return false;
         }
 
-		if ((char *) GET(PREDECESSOR(ptr)) != NULL && (char *) GET(SUCCESSOR(GET(PREDECESSOR(ptr)))) != ptr)
+		if ((char *) GET(PREDECESSOR(ptr)) != NULL && (char *) GET(SUCCESSOR(PREDECESSOR(ptr))) != ptr)
         {
             printf("Free block pointer %p's previous pointer is inconsistent\n", ptr);
             return false;
