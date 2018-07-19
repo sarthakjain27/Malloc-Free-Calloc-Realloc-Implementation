@@ -58,10 +58,10 @@
 typedef uint64_t word_t;
 static const size_t WSIZE = sizeof(word_t);   // word and header size (bytes)
 static const size_t DSIZE = 2*WSIZE;          // double word size (bytes)
-static const size_t MINBLOCK = 2*DSIZE; // Minimum block size
+static const size_t MINBLOCK = 32; // Minimum block size
 
 #define CHUNKSIZE   224
-#define ALIGNMENT 2*DSIZE
+#define ALIGNMENT DSIZE
 
 /* For storing in lower 3 bits of header in allocated blocks
    and header & footer in free blocks */
