@@ -140,4 +140,3 @@ static bool aligned(const void *p) {
 bool mm_checkheap(int lineno) {
     return true;
 }
-
