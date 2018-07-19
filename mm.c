@@ -65,8 +65,8 @@ static const size_t MINBLOCK = 2*DSIZE; // Minimum block size
 
 /* For storing in lower 3 bits of header in allocated blocks
    and header & footer in free blocks */
-#define currBlockAllocated   1
-#define prevBlockAllocated  2
+#define CURRENTALLOCATED   1
+#define PREVIOUSALLOCATED  2
 
 /* Variables used as offsets for
    segregated lists headers */
@@ -103,8 +103,8 @@ static const size_t MINBLOCK = 2*DSIZE; // Minimum block size
 /* Total number of segregated lists */
 #define TOTALLIST   14
 
-static size_t max(size_t x, size_t y);
-static size_t min(size_t x, size_t y);
+static size_t MAX(size_t x, size_t y);
+static size_t MIN(size_t x, size_t y);
 static size_t round_up(size_t size, size_t n);
 static size_t pack(size_t size, size_t alloc);
 static size_t GET(char *p);
@@ -124,17 +124,9 @@ static size_t round_up(size_t size, size_t n);
 static void place(void *bp, size_t asize);
 static void *find(size_t sizeatstart, size_t actual_size);
 static void *find_fit(size_t asize);
-static int aligned(const void *p);
+static bool aligned(const void *p);
 static size_t align(size_t x);
 
-/*
- * Return whether the pointer is aligned.
- * May be useful for debugging.
- */
-static int aligned(const void *p)
-{
-	return (size_t) (((size_t) (p) + 7) & ~0x7) == (size_t) p;
-}
 
 static size_t align(size_t x) {
     return ALIGNMENT * ((x+ALIGNMENT-1)/ALIGNMENT);
@@ -211,7 +203,7 @@ static char* PREDECESSOR(char *bp)
  * pack: returns a header reflecting a specified size and its alloc status.
  *       If the block is allocated, the lowest bit is set to 1, and 0 otherwise.
  */
-static size_t pack(size_t size, size_t alloc)
+static size_t PACK(size_t size, size_t alloc)
 {
     return (size | alloc) ;
 }
@@ -219,7 +211,7 @@ static size_t pack(size_t size, size_t alloc)
 /*
  * max: returns x if x > y, and y otherwise.
  */
-static size_t max(size_t x, size_t y)
+static size_t MAX(size_t x, size_t y)
 {
     return (x > y) ? x : y;
 }
@@ -227,15 +219,11 @@ static size_t max(size_t x, size_t y)
 /*
  * min: returns x if x < y, and y otherwise.
  */
-static size_t max(size_t x, size_t y)
+static size_t MIN(size_t x, size_t y)
 {
     return (x < y) ? x : y;
 }
 
-/* rounds up to the nearest multiple of ALIGNMENT */
-static size_t align(size_t x) {
-    return ALIGNMENT * ((x+ALIGNMENT-1)/ALIGNMENT);
-}
 
 /*
  * round_up: Rounds size up to next multiple of n
@@ -598,19 +586,17 @@ bool mm_checkheap(int lineno)
 		//if (verbose) {
 
 			printf("\nBlock pointer: %p\n", ptr);
-			printf("Block size is: %d\n", GET_SIZE(HDRP(ptr)));
+			printf("Block size is: %zu\n", GET_SIZE(HDRP(ptr)));
 
 			if (GET_ALLOC(HDRP(ptr)))
 				printf("Block is allocated\n");
 			else
 				printf("Block is free\n");
 
-			if (verbose > 1) {
-				if (GET_PREV_ALLOC(HDRP(ptr)))
-					printf("Previous block is allocated\n");
-				else
-					printf("Previous block is free\n");
-			}
+			if (GET_PREV_ALLOC(HDRP(ptr)))
+				printf("Previous block is allocated\n");
+			else
+				printf("Previous block is free\n");
 		//}
 		ptr = NEXT_BLKP(ptr);
 	}
