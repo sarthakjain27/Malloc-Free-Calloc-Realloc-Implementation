@@ -253,11 +253,11 @@ char *h_start;
  * Initialize: return false on error, true on success.
  */
 bool mm_init(void) {
-    
+    printf("mm_init called \n");
     /* Allocating segregated free list pointers on heap */
 	if ((heap_listp = mem_sbrk(TOTALLIST * DSIZE)) == NULL)
 		return false;
-
+	printf("Heap_listp initialised %p \n",heap_listp);
 	/* Creating prologue and epilogue */
 	if ((h_start = mem_sbrk(4 * WSIZE)) == NULL)
 		return false;
@@ -270,7 +270,9 @@ bool mm_init(void) {
 	PUT4BYTES(h_start + (2 * WSIZE), PACK(DSIZE, 1));
 	/* Epilogue header */
 	PUT4BYTES(h_start + (3 * WSIZE), PACK(0, PREVIOUSALLOCATED | CURRENTALLOCATED));
-
+	
+	printf("Head start initialised %p with epilogue header %p \n",h_start, (h_start + (3*WSIZE)));
+		
 	/* Initializing the segregated list pointers on heap */
 	PUT(heap_listp + SEGLIST1, (size_t) NULL);
 	PUT(heap_listp + SEGLIST2, (size_t) NULL);
@@ -286,7 +288,8 @@ bool mm_init(void) {
 	PUT(heap_listp + SEGLIST12, (size_t) NULL);
 	PUT(heap_listp + SEGLIST13, (size_t) NULL);
 	PUT(heap_listp + SEGLIST14, (size_t) NULL);
-
+	
+	printf("Calling extend_heap \n");
 	/* Create initial empty space of CHUNKSIZE bytes */
 	if (extend_heap(CHUNKSIZE) == NULL)
 		return false;
@@ -298,6 +301,7 @@ bool mm_init(void) {
  * malloc
  */
 void *malloc (size_t size) {
+	printf("Malloc called with size %zu\n",size);
     size_t asize;		/* adjusted block size */
 	size_t extendsize;		/* size to be extended */
 	char *bp;
@@ -309,13 +313,14 @@ void *malloc (size_t size) {
 	/* Adjust block size to include header and alignment requests */
 		/* Rounds up to the nearest multiple of ALIGNMENT */
 		asize = round_up(size + DSIZE, DSIZE);;
-
+	printf("Asize %zu\n",asize);
+	printf("Calling find_fit\n");
 	/* Search through heap for possible fit */
 	if ((bp = find_fit(asize)) != NULL) {
 		place(bp, asize);	/* Actual assignment */
 		return bp;
 	}
-
+	printf("No fit found, calling extend heap \n);
 	/* If no fit, get more memory and allocate memory */
 	extendsize = MAX(asize, CHUNKSIZE);
 	if ((bp = extend_heap(extendsize)) == NULL)
@@ -330,6 +335,7 @@ void *malloc (size_t size) {
  * free
  */
 void free (void *ptr) {
+	printf("Free called %p\n",ptr);
     char *nxtblkheader;
 	size_t size;
 
@@ -338,25 +344,29 @@ void free (void *ptr) {
 
 	size = GET_SIZE(HDRP(ptr));
 	nxtblkheader = HDRP(NEXT_BLKP(ptr));
-
+	
+	printf("Next block header %p\n",nxtblkheader);
+	
 	/* Update header and footer to unallocated */
 	PUT4BYTES(HDRP(ptr), size | GET_PREV_ALLOC(HDRP(ptr)));
 	PUT4BYTES(FTRP(ptr), GET4BYTES(HDRP(ptr)));
 
 	/* Update next block, its previous is no longer allocated */
-	PUT4BYTES(nxtblkheader,
-			GET_SIZE(nxtblkheader) | GET_ALLOC(nxtblkheader));
-
+	PUT4BYTES(nxtblkheader, GET_SIZE(nxtblkheader) | GET_ALLOC(nxtblkheader));
+	
+	printf("calling add to seglist \n");
 	/* Add free block to appropriate segregated list */
 	addingtoseglist(ptr, size);
-
+	printf("Calling coalesce from free\n");
 	coalesce(ptr);
+	printf("Returned from coalesce in free \n");
 }
 
 /*
  * realloc
  */
 void *realloc(void *oldptr, size_t size) {
+	printf("Realloc called with %p and size %zu\n",oldptr,size);
     /* After malloc, new address with size "size" */
 	char *newaddress;
 
@@ -376,7 +386,8 @@ void *realloc(void *oldptr, size_t size) {
 	/* Else, allocate new free block, copy old content over */
 	newaddress = malloc(size);
 	copysize = MIN(size, GET_SIZE(HDRP(oldptr)) - WSIZE);
-
+	
+	printf("Newaddress %p\n",newaddress);
 	/* Move from source to dest */
 	memmove(newaddress, oldptr, copysize);
 
@@ -391,6 +402,7 @@ void *realloc(void *oldptr, size_t size) {
  * This function is not tested by mdriver
  */
 void *calloc (size_t nmemb, size_t size) {
+	printf("calloc called \n");
     size_t i;
 	size_t tsize = nmemb * size;
 	char *ptr = malloc(tsize);
@@ -401,7 +413,7 @@ void *calloc (size_t nmemb, size_t size) {
 		*temp = 0;
 		temp = temp + size;
 	}
-
+	printf("Returning from calloc \n");
 	return ptr;
 }
 
@@ -411,6 +423,7 @@ void *calloc (size_t nmemb, size_t size) {
  * May be useful for debugging.
  */
 static bool in_heap(const void *p) {
+	printf("in_heap() called with p %p heap_hi %p heap_lo %p\n",p,mem_heap_hi(),mem_heap_lo());
     return p <= mem_heap_hi() && p >= mem_heap_lo();
 }
 
@@ -454,7 +467,8 @@ bool mm_checkheap(int lineno)
 
 	/* Pointer to the very first block */
 	char *ptr = heap_listp + 2 * DSIZE + TOTALLIST * DSIZE;
-
+	
+	printf("Very first block ptr %p\n",ptr);
 	/* If block is free, check for:
 	   1. Header/footer mismatch
 	   2. Next/prev free pointer inconsistencies
@@ -472,13 +486,13 @@ bool mm_checkheap(int lineno)
 		/* Next/prev free pointer inconsistencies */
 		if ((char *) GET(SUCCESSOR(ptr)) != NULL && (char *) GET(PREDECESSOR(SUCCESSOR(ptr))) != ptr)
         {
-            printf("Free block pointer %p's next pointer is inconsistent\n", ptr);
+            printf("Free block pointer %p's successor is %p whose predecessor is %p prnext pointer is inconsistent\n", ptr,SUCCESSOR(ptr),PREDECESSOR(SUCCESSOR(ptr)));
             return false;
         }
 
 		if ((char *) GET(PREDECESSOR(ptr)) != NULL && (char *) GET(SUCCESSOR(PREDECESSOR(ptr))) != ptr)
         {
-            printf("Free block pointer %p's previous pointer is inconsistent\n", ptr);
+            printf("Free block pointer %p's predeccor is %p whose successor is %p previous pointer is inconsistent\n", ptr,PREDECESSOR(ptr),SUCCESSOR(PREDECESSOR(ptr)));
             return false;
         }
 
@@ -614,7 +628,7 @@ bool mm_checkheap(int lineno)
  */
 static void place(void *bp, size_t asize)
 {
-
+	printf("Place called with bp %p and asize %zu\n",bp,asize);
 	/* Original free block size */
 	size_t csize = GET_SIZE(HDRP(bp));
 	/* Remaining free block size */
@@ -625,20 +639,17 @@ static void place(void *bp, size_t asize)
 
 	/* Remove free block from the appropriate seg list */
 	removefromseglist(bp, csize);
-
+	printf("Asize %zu Csize %zu remainsize %zu\n",asize,csize,remainsize);
 	/* If the remaining block is larger than min block size of 
 	   24 bytes, then splitting is done to form new free block 
 	   */
 	if (remainsize >= MINBLOCK) {
-
+		printf("splicing of block will happen\n")
 		/* Update new header information, store info bits */
-		PUT4BYTES(HDRP(bp),
-				PACK(asize,
-					GET_PREV_ALLOC(HDRP(bp)) | CURRENTALLOCATED));
+		PUT4BYTES(HDRP(bp), PACK(asize,	GET_PREV_ALLOC(HDRP(bp)) | CURRENTALLOCATED));
 
 		/* Update next block's address to remaining free block's address */
 		nextaddress = NEXT_BLKP(bp);
-
 
 		/* Inform next adjacent free block that its previous block 
 		   is allocated */
@@ -653,19 +664,15 @@ static void place(void *bp, size_t asize)
 	} else {
 
 		/* Update new header information, store info bits */
-		PUT4BYTES(HDRP(bp),
-				PACK(csize,
-					GET_PREV_ALLOC(HDRP(bp)) | CURRENTALLOCATED));
+		PUT4BYTES(HDRP(bp), PACK(csize,GET_PREV_ALLOC(HDRP(bp)) | CURRENTALLOCATED));
 
 		/* Inform next adjacent block that its previous block 
 		   is allocated */
-		PUT4BYTES(HDRP(nextaddress),
-				GET4BYTES(HDRP(nextaddress)) | PREVIOUSALLOCATED);
+		PUT4BYTES(HDRP(nextaddress), GET4BYTES(HDRP(nextaddress)) | PREVIOUSALLOCATED);
 
 		/* Update next adjacent block's footer only if free */
 		if (!GET_ALLOC(HDRP(nextaddress)))
 			PUT4BYTES(FTRP(nextaddress), GET4BYTES(HDRP(nextaddress)));
-
 	}
 }
 
@@ -677,23 +684,29 @@ static void place(void *bp, size_t asize)
  */
 static void *extend_heap(size_t words)
 {
+	printf("Extend heap entered \n");
 	char *bp;
 
 	if ((long) (bp = mem_sbrk(words)) < 0)
 		return NULL;
+	printf("BP in extend_heap is %p \n",bp);
 
 	/* Change epilogue header to new free block header */
 	PUT4BYTES(HDRP(bp), PACK(words, GET_PREV_ALLOC(HDRP(bp))));
-
+	
 	/* Set new free block footer */
 	PUT4BYTES(FTRP(bp), GET4BYTES(HDRP(bp)));
+	
+	printf("Calling addtoseglist \n");
 	/* Add to segregated list */
 	addingtoseglist(bp, words);
-
+	printf("Returned from addtoseglist \n");
+	
 	/* Set new epilogue header */
 	PUT4BYTES(HDRP(NEXT_BLKP(bp)), PACK(0, 1));
-
+	printf("New epilogue header %p",HDRP(NEXT_BLKP(bp)));
 	/* coalesce free blocks if needed */
+	printf("Calling coalesce \n");
 	return coalesce(bp);
 }
 
@@ -705,6 +718,7 @@ static void *extend_heap(size_t words)
  */
 static void addingtoseglist(char *bp, size_t size)
 {
+	printf("Addtoseglist called with bp %p \n",bp);
 	/* Address of head of a particular list */
 	char *listhead;
 
@@ -769,11 +783,13 @@ static void addingtoseglist(char *bp, size_t size)
 		listhead = (char *) GET(segstart);
 
 	}
+	
+	printf("Seg start %p listhead %p \n",segstart,listhead);
 
-
-	/* If there is no block in that size list */
+	/* If there is block in that size list */
 	if (listhead != NULL) 
     {
+		printf("If entered of addtoseglist \n");
 		/* Set the current block as head */
 		PUT(segstart, (size_t) bp);
 
@@ -782,20 +798,25 @@ static void addingtoseglist(char *bp, size_t size)
 
 		/* set current free block's next pointer to previous head */
 		PUT(SUCCESSOR(bp), (size_t) listhead);
-
+		
+		printf("Predessor %p and Successor %p of bp \n", PREDECESSOR(bp), SUCCESSOR(bp));
+		
 		/* Set the previous head's previous pointer to 
 		   current free block */
 		PUT(PREDECESSOR(listhead), (size_t) bp);
+		printf("Predecessor of listhead %p \n",PREDECESSOR(listhead));
 
 	}
-	/* If there are blocks in the size list */
+	/* If there are no blocks in the size list */
 	else {
+		printf("Else of addtoseglist \n");
 		/* Set the current block as head */
 		PUT(segstart, (size_t) bp);
 		/* Set the free block's next and prev free block 
 		   addresses to NULL */
 		PUT(SUCCESSOR(bp), (size_t) NULL);
 		PUT(PREDECESSOR(bp), (size_t) NULL);
+		printf("Predessor %p and Successor %p of bp \n", PREDECESSOR(bp), SUCCESSOR(bp));
 	}
 }
 
@@ -809,13 +830,15 @@ static void addingtoseglist(char *bp, size_t size)
 
 static void removefromseglist(char *bp, size_t size)
 {
+	
 	/* Previous block address */
 	char *nextaddress = (char *) GET(SUCCESSOR(bp));
 	/* Next block address */
 	char *prevaddress = (char *) GET(PREDECESSOR(bp));
-
+	printf("Remove from seglist entered with bp %p next addr %p and prev addr %p\n",bp,nextaddress,prevaddress);
+	/* If head of list, update head pointer to next free block */
 	if (prevaddress == NULL && nextaddress != NULL) {
-
+		printf("Head of list entered with heap_listp %p\n",heap_listp);
 		/* Update head pointer of segregated list */
 		if (size <= LIST1_LIMIT)
 			PUT(heap_listp + SEGLIST1, (size_t) nextaddress);
@@ -853,7 +876,7 @@ static void removefromseglist(char *bp, size_t size)
 
 	/* If only free block in list, update head pointer to NULL */
 	else if (prevaddress == NULL && nextaddress == NULL) {
-
+		printf("Single block with heaplistp %p\n",heap_listp);
 		if (size <= LIST1_LIMIT)
 			PUT(heap_listp + SEGLIST1, (size_t) NULL);
 		else if (size <= LIST2_LIMIT)
@@ -883,14 +906,15 @@ static void removefromseglist(char *bp, size_t size)
 		else
 			PUT(heap_listp + SEGLIST14, (size_t) NULL);
 	}
-	/* If head of list, update head pointer to next free block */
+	//if last in list
 	else if (prevaddress != NULL && nextaddress == NULL) {
-
+		printf("Last in list \n");
 		/* Update new tail block's next to null */
 		PUT(SUCCESSOR(prevaddress), (size_t) NULL);
 
 		/* If in middle of a list, link blocks on either sides */
 	} else {
+		printf("Middle of list \n");
 
 		/* Link next block's previous to current's previous block */
 		PUT(PREDECESSOR(nextaddress), (size_t) prevaddress);
@@ -910,10 +934,13 @@ static void removefromseglist(char *bp, size_t size)
  */
 static void *coalesce(void *bp)
 {
+	printf("Coalesce entered with bp %p\n",bp);
 	/* store prev and next block's info */
 	size_t prev_alloc = GET_PREV_ALLOC(HDRP(bp));
 	size_t next_alloc = GET_ALLOC(HDRP(NEXT_BLKP(bp)));
-
+	
+	printf("prev_alloc %zu next_alloc %zu \n",prev_alloc,next_alloc);
+	
 	/* get size of current, prev, next free block (including header) */
 	size_t size = GET_SIZE(HDRP(bp));
 	size_t nsize = 0;
@@ -929,12 +956,14 @@ static void *coalesce(void *bp)
 	/* Case 1: Prev and Next both allocated */
 	if (prev_alloc && next_alloc) {
 		/* return current pointer to free block */
+		printf("Case 1 entered \n");
 		return bp;
 	}
 	/* Case 2: Prev allocated, Next free */
 	else if (prev_alloc && !next_alloc) {
+		
 		next_blk = NEXT_BLKP(bp);
-
+		printf("Case 2 entered with next_blk %p\n",next_blk);
 		/* remove current free block and next free block from lists */
 		removefromseglist(bp, size);
 		removefromseglist(next_blk, GET_SIZE(HDRP(next_blk)));
@@ -957,10 +986,11 @@ static void *coalesce(void *bp)
 	}
 	/* Case 3- Prev free, Next allocated */
 	else if (!prev_alloc && next_alloc) {
-
+		
 		/* get previous block's location and header location */
 		prev_blk = PREV_BLKP(bp);
 		prev_hd = HDRP(prev_blk);
+		printf("Case 3 entered with prev_blk %p \n",prev_blk);
 
 		psize = GET_SIZE(prev_hd);
 
@@ -987,13 +1017,14 @@ static void *coalesce(void *bp)
 
 	/* Case 4- Prev free, Next free */
 	else {
+		
 
 		/* Get previous block's location and header location */
 		prev_blk = PREV_BLKP(bp);
 		prev_hd = HDRP(prev_blk);
 
 		next_blk = NEXT_BLKP(bp);
-
+		printf("Case 4 entered with prev %p and next %p \n",prev_blk,prev_hd);
 		psize = GET_SIZE(prev_hd);
 		nsize = GET_SIZE(HDRP(next_blk));
 
@@ -1030,6 +1061,7 @@ static void *coalesce(void *bp)
  */
 static void *find_fit(size_t asize)
 {
+	printf("Find_fit called with asize %zu\n",asize);
 	size_t sizeatstart;
 	char *bp = NULL;
 
@@ -1105,7 +1137,7 @@ static void *find_fit(size_t asize)
 			return bp;
 		}
 	}
-
+	printf("All if else failed in find_fit \n");
 	return bp;
 }
 
@@ -1118,6 +1150,7 @@ static void *find_fit(size_t asize)
  */
 static void *find(size_t sizeatstart, size_t actual_size)
 {
+	printf("Find called with sizeatstart %zu actual size %zu and heap_listp %p\n",sizeatstart,actual_size,heap_listp);
 	char *current = NULL;
 
 	/* Finding which list to look into */
@@ -1150,6 +1183,7 @@ static void *find(size_t sizeatstart, size_t actual_size)
 	else if (sizeatstart == 13)
 		current = (char *) GET(heap_listp + SEGLIST14);
 
+	printf("Current value %p\n",current);
 
 	/* Finding available free block in list */
 	while (current != NULL) {
@@ -1158,7 +1192,7 @@ static void *find(size_t sizeatstart, size_t actual_size)
 		}
 		current = (char *) GET(SUCCESSOR(current));
 	}
-
+	printf("Current where block will fit %p\n",current);
 	return current;
 }
 
