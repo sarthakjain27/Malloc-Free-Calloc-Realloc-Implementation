@@ -1,0 +1,1062 @@
+Found benchmark throughput 13056 for cpu type Intel(R)Xeon(R)CPUE5520@2.27GHz, benchmark regular
+
+Throughput targets: min=6528, max=11750, benchmark=13056
+mm_init called 
+Heap_listp initialised 0x800000000 
+Head start initialised 0x8000000e0 with epilogue header 0x8000000f8 
+Calling extend_heap 
+Extend heap entered 
+BP in extend_heap is 0x800000100 
+Calling addtoseglist 
+Addtoseglist called with bp 0x800000100 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000110 and Successor 0x800000100 of bp 
+Returned from addtoseglist 
+New epilogue header 0x8000001d8Calling coalesce 
+Coalesce entered with bp 0x800000100
+prev_alloc 2 next_alloc 1 
+Case 1 entered 
+Malloc called with size 24
+Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 4 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
+Current value 0x800000100
+Current where block will fit 0x800000100
+Place called with bp 0x800000100 and asize 48
+Remove from seglist entered with bp 0x800000100 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 48 Csize 224 remainsize 176
+splicing of block will happen
+Addtoseglist called with bp 0x800000130 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000140 and Successor 0x800000130 of bp 
+Malloc called with size 208
+Asize 224
+Calling find_fit
+Find_fit called with asize 224
+Find called with sizeatstart 5 actual size 224 and heap_listp 0x800000000
+Current value 0x800000130
+Current where block will fit (nil)
+Find called with sizeatstart 6 actual size 224 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 7 actual size 224 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 8 actual size 224 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 9 actual size 224 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 10 actual size 224 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 11 actual size 224 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 12 actual size 224 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 13 actual size 224 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap entered 
+BP in extend_heap is 0x8000001e0 
+Calling addtoseglist 
+Addtoseglist called with bp 0x8000001e0 
+Seg start 0x800000050 listhead 0x800000130 
+If entered of addtoseglist 
+Predessor 0x8000001f0 and Successor 0x8000001e0 of bp 
+Predecessor of listhead 0x800000140 
+Returned from addtoseglist 
+New epilogue header 0x8000002b8Calling coalesce 
+Coalesce entered with bp 0x8000001e0
+prev_alloc 0 next_alloc 1 
+Case 3 entered with prev_blk 0x800000130 
+Remove from seglist entered with bp 0x8000001e0 next addr 0x800000130 and prev addr (nil)
+Head of list entered with heap_listp 0x800000000
+Remove from seglist entered with bp 0x800000130 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Addtoseglist called with bp 0x800000130 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000140 and Successor 0x800000130 of bp 
+Place called with bp 0x800000130 and asize 224
+Remove from seglist entered with bp 0x800000130 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 224 Csize 400 remainsize 176
+splicing of block will happen
+Addtoseglist called with bp 0x800000210 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000220 and Successor 0x800000210 of bp 
+Malloc called with size 64
+Asize 80
+Calling find_fit
+Find_fit called with asize 80
+Find called with sizeatstart 2 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 4 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 5 actual size 80 and heap_listp 0x800000000
+Current value 0x800000210
+Current where block will fit 0x800000210
+Place called with bp 0x800000210 and asize 80
+Remove from seglist entered with bp 0x800000210 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 80 Csize 176 remainsize 96
+splicing of block will happen
+Addtoseglist called with bp 0x800000260 
+Seg start 0x800000020 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000270 and Successor 0x800000260 of bp 
+Malloc called with size 472
+Asize 496
+Calling find_fit
+Find_fit called with asize 496
+Find called with sizeatstart 5 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 6 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 7 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 8 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 9 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 10 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 11 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 12 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 13 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap entered 
+BP in extend_heap is 0x8000002c0 
+Calling addtoseglist 
+Addtoseglist called with bp 0x8000002c0 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x8000002d0 and Successor 0x8000002c0 of bp 
+Returned from addtoseglist 
+New epilogue header 0x8000004a8Calling coalesce 
+Coalesce entered with bp 0x8000002c0
+prev_alloc 0 next_alloc 1 
+Case 3 entered with prev_blk 0x800000260 
+Remove from seglist entered with bp 0x8000002c0 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Remove from seglist entered with bp 0x800000260 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Addtoseglist called with bp 0x800000260 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000270 and Successor 0x800000260 of bp 
+Place called with bp 0x800000260 and asize 496
+Remove from seglist entered with bp 0x800000260 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 496 Csize 592 remainsize 96
+splicing of block will happen
+Addtoseglist called with bp 0x800000450 
+Seg start 0x800000020 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000460 and Successor 0x800000450 of bp 
+Malloc called with size 64
+Asize 80
+Calling find_fit
+Find_fit called with asize 80
+Find called with sizeatstart 2 actual size 80 and heap_listp 0x800000000
+Current value 0x800000450
+Current where block will fit 0x800000450
+Place called with bp 0x800000450 and asize 80
+Remove from seglist entered with bp 0x800000450 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 80 Csize 96 remainsize 16
+Malloc called with size 472
+Asize 496
+Calling find_fit
+Find_fit called with asize 496
+Find called with sizeatstart 5 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 6 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 7 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 8 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 9 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 10 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 11 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 12 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 13 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap entered 
+BP in extend_heap is 0x8000004b0 
+Calling addtoseglist 
+Addtoseglist called with bp 0x8000004b0 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x8000004c0 and Successor 0x8000004b0 of bp 
+Returned from addtoseglist 
+New epilogue header 0x800000698Calling coalesce 
+Coalesce entered with bp 0x8000004b0
+prev_alloc 2 next_alloc 1 
+Case 1 entered 
+Place called with bp 0x8000004b0 and asize 496
+Remove from seglist entered with bp 0x8000004b0 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 496 Csize 496 remainsize 0
+Malloc called with size 64
+Asize 80
+Calling find_fit
+Find_fit called with asize 80
+Find called with sizeatstart 2 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 4 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 5 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 6 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 7 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 8 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 9 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 10 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 11 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 12 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 13 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap entered 
+BP in extend_heap is 0x8000006a0 
+Calling addtoseglist 
+Addtoseglist called with bp 0x8000006a0 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x8000006b0 and Successor 0x8000006a0 of bp 
+Returned from addtoseglist 
+New epilogue header 0x800000778Calling coalesce 
+Coalesce entered with bp 0x8000006a0
+prev_alloc 2 next_alloc 1 
+Case 1 entered 
+Place called with bp 0x8000006a0 and asize 80
+Remove from seglist entered with bp 0x8000006a0 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 80 Csize 224 remainsize 144
+splicing of block will happen
+Addtoseglist called with bp 0x8000006f0 
+Seg start 0x800000040 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000700 and Successor 0x8000006f0 of bp 
+Malloc called with size 472
+Asize 496
+Calling find_fit
+Find_fit called with asize 496
+Find called with sizeatstart 5 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 6 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 7 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 8 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 9 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 10 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 11 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 12 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 13 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap entered 
+BP in extend_heap is 0x800000780 
+Calling addtoseglist 
+Addtoseglist called with bp 0x800000780 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000790 and Successor 0x800000780 of bp 
+Returned from addtoseglist 
+New epilogue header 0x800000968Calling coalesce 
+Coalesce entered with bp 0x800000780
+prev_alloc 0 next_alloc 1 
+Case 3 entered with prev_blk 0x8000006f0 
+Remove from seglist entered with bp 0x800000780 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Remove from seglist entered with bp 0x8000006f0 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Addtoseglist called with bp 0x8000006f0 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000700 and Successor 0x8000006f0 of bp 
+Place called with bp 0x8000006f0 and asize 496
+Remove from seglist entered with bp 0x8000006f0 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 496 Csize 640 remainsize 144
+splicing of block will happen
+Addtoseglist called with bp 0x8000008e0 
+Seg start 0x800000040 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x8000008f0 and Successor 0x8000008e0 of bp 
+Malloc called with size 64
+Asize 80
+Calling find_fit
+Find_fit called with asize 80
+Find called with sizeatstart 2 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 4 actual size 80 and heap_listp 0x800000000
+Current value 0x8000008e0
+Current where block will fit 0x8000008e0
+Place called with bp 0x8000008e0 and asize 80
+Remove from seglist entered with bp 0x8000008e0 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 80 Csize 144 remainsize 64
+splicing of block will happen
+Addtoseglist called with bp 0x800000930 
+Seg start 0x800000010 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000940 and Successor 0x800000930 of bp 
+Malloc called with size 472
+Asize 496
+Calling find_fit
+Find_fit called with asize 496
+Find called with sizeatstart 5 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 6 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 7 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 8 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 9 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 10 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 11 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 12 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 13 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap entered 
+BP in extend_heap is 0x800000970 
+Calling addtoseglist 
+Addtoseglist called with bp 0x800000970 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000980 and Successor 0x800000970 of bp 
+Returned from addtoseglist 
+New epilogue header 0x800000b58Calling coalesce 
+Coalesce entered with bp 0x800000970
+prev_alloc 0 next_alloc 1 
+Case 3 entered with prev_blk 0x800000930 
+Remove from seglist entered with bp 0x800000970 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Remove from seglist entered with bp 0x800000930 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Addtoseglist called with bp 0x800000930 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000940 and Successor 0x800000930 of bp 
+Place called with bp 0x800000930 and asize 496
+Remove from seglist entered with bp 0x800000930 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 496 Csize 560 remainsize 64
+splicing of block will happen
+Addtoseglist called with bp 0x800000b20 
+Seg start 0x800000010 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000b30 and Successor 0x800000b20 of bp 
+Malloc called with size 64
+Asize 80
+Calling find_fit
+Find_fit called with asize 80
+Find called with sizeatstart 2 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 4 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 5 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 6 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 7 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 8 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 9 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 10 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 11 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 12 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 13 actual size 80 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap entered 
+BP in extend_heap is 0x800000b60 
+Calling addtoseglist 
+Addtoseglist called with bp 0x800000b60 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000b70 and Successor 0x800000b60 of bp 
+Returned from addtoseglist 
+New epilogue header 0x800000c38Calling coalesce 
+Coalesce entered with bp 0x800000b60
+prev_alloc 0 next_alloc 1 
+Case 3 entered with prev_blk 0x800000b20 
+Remove from seglist entered with bp 0x800000b60 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Remove from seglist entered with bp 0x800000b20 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Addtoseglist called with bp 0x800000b20 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000b30 and Successor 0x800000b20 of bp 
+Place called with bp 0x800000b20 and asize 80
+Remove from seglist entered with bp 0x800000b20 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 80 Csize 288 remainsize 208
+splicing of block will happen
+Addtoseglist called with bp 0x800000b70 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000b80 and Successor 0x800000b70 of bp 
+Malloc called with size 472
+Asize 496
+Calling find_fit
+Find_fit called with asize 496
+Find called with sizeatstart 5 actual size 496 and heap_listp 0x800000000
+Current value 0x800000b70
+Current where block will fit (nil)
+Find called with sizeatstart 6 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 7 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 8 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 9 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 10 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 11 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 12 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 13 actual size 496 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap entered 
+BP in extend_heap is 0x800000c40 
+Calling addtoseglist 
+Addtoseglist called with bp 0x800000c40 
+Seg start 0x800000050 listhead 0x800000b70 
+If entered of addtoseglist 
+Predessor 0x800000c50 and Successor 0x800000c40 of bp 
+Predecessor of listhead 0x800000b80 
+Returned from addtoseglist 
+New epilogue header 0x800000e28Calling coalesce 
+Coalesce entered with bp 0x800000c40
+prev_alloc 0 next_alloc 1 
+Case 3 entered with prev_blk 0x800000b70 
+Remove from seglist entered with bp 0x800000c40 next addr 0x800000b70 and prev addr (nil)
+Head of list entered with heap_listp 0x800000000
+Remove from seglist entered with bp 0x800000b70 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Addtoseglist called with bp 0x800000b70 
+Seg start 0x800000060 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000b80 and Successor 0x800000b70 of bp 
+Place called with bp 0x800000b70 and asize 496
+Remove from seglist entered with bp 0x800000b70 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 496 Csize 704 remainsize 208
+splicing of block will happen
+Addtoseglist called with bp 0x800000d60 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000d70 and Successor 0x800000d60 of bp 
+Malloc called with size 24
+Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 4 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
+Current value 0x800000d60
+Current where block will fit 0x800000d60
+Place called with bp 0x800000d60 and asize 48
+Remove from seglist entered with bp 0x800000d60 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 48 Csize 208 remainsize 160
+splicing of block will happen
+Addtoseglist called with bp 0x800000d90 
+Seg start 0x800000040 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000da0 and Successor 0x800000d90 of bp 
+Malloc called with size 5
+Asize 32
+Calling find_fit
+Find_fit called with asize 32
+Find called with sizeatstart 0 actual size 32 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 1 actual size 32 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 2 actual size 32 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 32 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 4 actual size 32 and heap_listp 0x800000000
+Current value 0x800000d90
+Current where block will fit 0x800000d90
+Place called with bp 0x800000d90 and asize 32
+Remove from seglist entered with bp 0x800000d90 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 32 Csize 160 remainsize 128
+splicing of block will happen
+Addtoseglist called with bp 0x800000db0 
+Seg start 0x800000030 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000dc0 and Successor 0x800000db0 of bp 
+Malloc called with size 24
+Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
+Current value 0x800000db0
+Current where block will fit 0x800000db0
+Place called with bp 0x800000db0 and asize 48
+Remove from seglist entered with bp 0x800000db0 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 48 Csize 128 remainsize 80
+splicing of block will happen
+Addtoseglist called with bp 0x800000de0 
+Seg start 0x800000020 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000df0 and Successor 0x800000de0 of bp 
+Free called 0x800000d60
+Next block header 0x800000d88
+calling add to seglist 
+Addtoseglist called with bp 0x800000d60 
+Seg start 0x800000010 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000d70 and Successor 0x800000d60 of bp 
+Calling coalesce from free
+Coalesce entered with bp 0x800000d60
+prev_alloc 2 next_alloc 1 
+Case 1 entered 
+Returned from coalesce in free 
+Malloc called with size 24
+Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
+Current value 0x800000d60
+Current where block will fit 0x800000d60
+Place called with bp 0x800000d60 and asize 48
+Remove from seglist entered with bp 0x800000d60 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 48 Csize 48 remainsize 0
+Malloc called with size 4
+Asize 32
+Calling find_fit
+Find_fit called with asize 32
+Find called with sizeatstart 0 actual size 32 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 1 actual size 32 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 2 actual size 32 and heap_listp 0x800000000
+Current value 0x800000de0
+Current where block will fit 0x800000de0
+Place called with bp 0x800000de0 and asize 32
+Remove from seglist entered with bp 0x800000de0 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 32 Csize 80 remainsize 48
+splicing of block will happen
+Addtoseglist called with bp 0x800000e00 
+Seg start 0x800000010 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000e10 and Successor 0x800000e00 of bp 
+Malloc called with size 24
+Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
+Current value 0x800000e00
+Current where block will fit 0x800000e00
+Place called with bp 0x800000e00 and asize 48
+Remove from seglist entered with bp 0x800000e00 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 48 Csize 48 remainsize 0
+Malloc called with size 32
+Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 4 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 6 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 7 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 8 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 9 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 10 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 11 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 12 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 13 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap entered 
+BP in extend_heap is 0x800000e30 
+Calling addtoseglist 
+Addtoseglist called with bp 0x800000e30 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000e40 and Successor 0x800000e30 of bp 
+Returned from addtoseglist 
+New epilogue header 0x800000f08Calling coalesce 
+Coalesce entered with bp 0x800000e30
+prev_alloc 2 next_alloc 1 
+Case 1 entered 
+Place called with bp 0x800000e30 and asize 48
+Remove from seglist entered with bp 0x800000e30 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 48 Csize 224 remainsize 176
+splicing of block will happen
+Addtoseglist called with bp 0x800000e60 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000e70 and Successor 0x800000e60 of bp 
+Malloc called with size 32
+Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 4 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
+Current value 0x800000e60
+Current where block will fit 0x800000e60
+Place called with bp 0x800000e60 and asize 48
+Remove from seglist entered with bp 0x800000e60 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 48 Csize 176 remainsize 128
+splicing of block will happen
+Addtoseglist called with bp 0x800000e90 
+Seg start 0x800000030 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000ea0 and Successor 0x800000e90 of bp 
+Malloc called with size 32
+Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
+Current value 0x800000e90
+Current where block will fit 0x800000e90
+Place called with bp 0x800000e90 and asize 48
+Remove from seglist entered with bp 0x800000e90 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 48 Csize 128 remainsize 80
+splicing of block will happen
+Addtoseglist called with bp 0x800000ec0 
+Seg start 0x800000020 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000ed0 and Successor 0x800000ec0 of bp 
+Malloc called with size 32
+Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
+Current value 0x800000ec0
+Current where block will fit 0x800000ec0
+Place called with bp 0x800000ec0 and asize 48
+Remove from seglist entered with bp 0x800000ec0 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 48 Csize 80 remainsize 32
+splicing of block will happen
+Addtoseglist called with bp 0x800000ef0 
+Seg start 0x800000000 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000f00 and Successor 0x800000ef0 of bp 
+Malloc called with size 32
+Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 4 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 6 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 7 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 8 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 9 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 10 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 11 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 12 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 13 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap entered 
+BP in extend_heap is 0x800000f10 
+Calling addtoseglist 
+Addtoseglist called with bp 0x800000f10 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000f20 and Successor 0x800000f10 of bp 
+Returned from addtoseglist 
+New epilogue header 0x800000fe8Calling coalesce 
+Coalesce entered with bp 0x800000f10
+prev_alloc 0 next_alloc 1 
+Case 3 entered with prev_blk 0x800000f10 
+Remove from seglist entered with bp 0x800000f10 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Remove from seglist entered with bp 0x800000f10 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Addtoseglist called with bp 0x800000f10 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000f20 and Successor 0x800000f10 of bp 
+Place called with bp 0x800000f10 and asize 48
+Remove from seglist entered with bp 0x800000f10 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 48 Csize 448 remainsize 400
+splicing of block will happen
+Addtoseglist called with bp 0x800000f40 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000f50 and Successor 0x800000f40 of bp 
+Malloc called with size 32
+Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 4 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
+Current value 0x800000f40
+Current where block will fit 0x800000f40
+Place called with bp 0x800000f40 and asize 48
+Remove from seglist entered with bp 0x800000f40 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 48 Csize 400 remainsize 352
+splicing of block will happen
+Addtoseglist called with bp 0x800000f70 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000f80 and Successor 0x800000f70 of bp 
+Malloc called with size 32
+Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 4 actual size 48 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
+Current value 0x800000f70
+Current where block will fit 0x800000f70
+Place called with bp 0x800000f70 and asize 48
+Remove from seglist entered with bp 0x800000f70 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 48 Csize 352 remainsize 304
+splicing of block will happen
+Addtoseglist called with bp 0x800000fa0 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000fb0 and Successor 0x800000fa0 of bp 
+Malloc called with size 40
+Asize 64
+Calling find_fit
+Find_fit called with asize 64
+Find called with sizeatstart 1 actual size 64 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 2 actual size 64 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 64 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 4 actual size 64 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 5 actual size 64 and heap_listp 0x800000000
+Current value 0x800000fa0
+Current where block will fit 0x800000fa0
+Place called with bp 0x800000fa0 and asize 64
+Remove from seglist entered with bp 0x800000fa0 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 64 Csize 304 remainsize 240
+splicing of block will happen
+Addtoseglist called with bp 0x800000fe0 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800000ff0 and Successor 0x800000fe0 of bp 
+Malloc called with size 40
+Asize 64
+Calling find_fit
+Find_fit called with asize 64
+Find called with sizeatstart 1 actual size 64 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 2 actual size 64 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 3 actual size 64 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 4 actual size 64 and heap_listp 0x800000000
+Current value (nil)
+Current where block will fit (nil)
+Find called with sizeatstart 5 actual size 64 and heap_listp 0x800000000
+Current value 0x800000fe0
+Current where block will fit 0x800000fe0
+Place called with bp 0x800000fe0 and asize 64
+Remove from seglist entered with bp 0x800000fe0 next addr (nil) and prev addr (nil)
+Single block with heaplistp 0x800000000
+Asize 64 Csize 240 remainsize 176
+splicing of block will happen
+Addtoseglist called with bp 0x800001020 
+Seg start 0x800000050 listhead (nil) 
+Else of addtoseglist 
+Predessor 0x800001030 and Successor 0x800001020 of bp 
+ERROR [trace ./traces/bdd-aa32.rep, line 32]: Payload (0x800000fe0:0x800001007) lies outside heap (0x800000000:0x800000fef)
+
+
+correctness check finished, by running tracefile "traces/bdd-aa32.rep".
+ => incorrect.
+
+Terminated with 1 errors
