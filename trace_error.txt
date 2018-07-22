@@ -11,7 +11,7 @@ Calling extend_heap
 Extend heap entered 
 BP in extend_heap is 0x800000100 mem_heap_lo 0x800000000 mem_heap_hi 0x8000001df
 Calling addtoseglist 
-Addtoseglist called with bp 0x800000100 
+Addtoseglist called with bp 0x800000100 and size 224 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359738624 
@@ -48,11 +48,11 @@ Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
 Current value 0x800000100
 Current where block will fit 0x800000100 size 224 
 Place called with bp 0x800000100 and asize 48
-Remove from seglist entered with bp 0x800000100 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000100 size 224 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 48 Csize 224 remainsize 176
 splicing of block will happen
-Addtoseglist called with bp 0x800000130 
+Addtoseglist called with bp 0x800000130 and size 176 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359738672 
@@ -106,7 +106,7 @@ No fit found, calling extend heap
 Extend heap entered 
 BP in extend_heap is 0x8000001e0 mem_heap_lo 0x800000000 mem_heap_hi 0x8000002bf
 Calling addtoseglist 
-Addtoseglist called with bp 0x8000001e0 
+Addtoseglist called with bp 0x8000001e0 and size 224 
 Seg start 0x800000050 listhead 0x800000130 
 If entered of addtoseglist 
 segstart 0x800000050 size 34359738848 
@@ -117,21 +117,21 @@ New epilogue header 0x8000002b8Calling coalesce
 Coalesce entered with bp 0x8000001e0
 prev_alloc 0 next_alloc 1 
 Case 3 entered with prev_blk 0x800000130 
-Remove from seglist entered with bp 0x8000001e0 next addr 0x800000130 and prev addr (nil)
+Remove from seglist entered with bp 0x8000001e0 size 224 next addr 0x800000130 and prev addr (nil)
 Head of list entered with heap_listp 0x800000000
-Remove from seglist entered with bp 0x800000130 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000130 size 176 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
-Addtoseglist called with bp 0x800000130 
+Addtoseglist called with bp 0x800000130 and size 400 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359738672 
 Predessor 0x800000140 and Successor 0x800000130 of bp 
 Place called with bp 0x800000130 and asize 224
-Remove from seglist entered with bp 0x800000130 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000130 size 400 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 224 Csize 400 remainsize 176
 splicing of block will happen
-Addtoseglist called with bp 0x800000210 
+Addtoseglist called with bp 0x800000210 and size 176 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359738896 
@@ -172,11 +172,11 @@ Find called with sizeatstart 5 actual size 80 and heap_listp 0x800000000
 Current value 0x800000210
 Current where block will fit 0x800000210 size 176 
 Place called with bp 0x800000210 and asize 80
-Remove from seglist entered with bp 0x800000210 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000210 size 176 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 80 Csize 176 remainsize 96
 splicing of block will happen
-Addtoseglist called with bp 0x800000260 
+Addtoseglist called with bp 0x800000260 and size 96 
 Seg start 0x800000020 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000020 size 34359738976 
@@ -242,7 +242,7 @@ No fit found, calling extend heap
 Extend heap entered 
 BP in extend_heap is 0x8000002c0 mem_heap_lo 0x800000000 mem_heap_hi 0x8000004af
 Calling addtoseglist 
-Addtoseglist called with bp 0x8000002c0 
+Addtoseglist called with bp 0x8000002c0 and size 496 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359739072 
@@ -252,21 +252,21 @@ New epilogue header 0x8000004a8Calling coalesce
 Coalesce entered with bp 0x8000002c0
 prev_alloc 0 next_alloc 1 
 Case 3 entered with prev_blk 0x800000260 
-Remove from seglist entered with bp 0x8000002c0 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x8000002c0 size 496 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
-Remove from seglist entered with bp 0x800000260 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000260 size 96 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
-Addtoseglist called with bp 0x800000260 
+Addtoseglist called with bp 0x800000260 and size 592 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359738976 
 Predessor 0x800000270 and Successor 0x800000260 of bp 
 Place called with bp 0x800000260 and asize 496
-Remove from seglist entered with bp 0x800000260 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000260 size 592 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 496 Csize 592 remainsize 96
 splicing of block will happen
-Addtoseglist called with bp 0x800000450 
+Addtoseglist called with bp 0x800000450 and size 96 
 Seg start 0x800000020 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000020 size 34359739472 
@@ -310,7 +310,7 @@ Find called with sizeatstart 2 actual size 80 and heap_listp 0x800000000
 Current value 0x800000450
 Current where block will fit 0x800000450 size 96 
 Place called with bp 0x800000450 and asize 80
-Remove from seglist entered with bp 0x800000450 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000450 size 96 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 80 Csize 96 remainsize 16
 Very first block ptr 0x800000100
@@ -380,7 +380,7 @@ No fit found, calling extend heap
 Extend heap entered 
 BP in extend_heap is 0x8000004b0 mem_heap_lo 0x800000000 mem_heap_hi 0x80000069f
 Calling addtoseglist 
-Addtoseglist called with bp 0x8000004b0 
+Addtoseglist called with bp 0x8000004b0 and size 496 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359739568 
@@ -391,7 +391,7 @@ Coalesce entered with bp 0x8000004b0
 prev_alloc 2 next_alloc 1 
 Case 1 entered 
 Place called with bp 0x8000004b0 and asize 496
-Remove from seglist entered with bp 0x8000004b0 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x8000004b0 size 496 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 496 Csize 496 remainsize 0
 Very first block ptr 0x800000100
@@ -476,7 +476,7 @@ No fit found, calling extend heap
 Extend heap entered 
 BP in extend_heap is 0x8000006a0 mem_heap_lo 0x800000000 mem_heap_hi 0x80000077f
 Calling addtoseglist 
-Addtoseglist called with bp 0x8000006a0 
+Addtoseglist called with bp 0x8000006a0 and size 224 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359740064 
@@ -487,11 +487,11 @@ Coalesce entered with bp 0x8000006a0
 prev_alloc 2 next_alloc 1 
 Case 1 entered 
 Place called with bp 0x8000006a0 and asize 80
-Remove from seglist entered with bp 0x8000006a0 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x8000006a0 size 224 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 80 Csize 224 remainsize 144
 splicing of block will happen
-Addtoseglist called with bp 0x8000006f0 
+Addtoseglist called with bp 0x8000006f0 and size 144 
 Seg start 0x800000040 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000040 size 34359740144 
@@ -581,7 +581,7 @@ No fit found, calling extend heap
 Extend heap entered 
 BP in extend_heap is 0x800000780 mem_heap_lo 0x800000000 mem_heap_hi 0x80000096f
 Calling addtoseglist 
-Addtoseglist called with bp 0x800000780 
+Addtoseglist called with bp 0x800000780 and size 496 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359740288 
@@ -591,21 +591,21 @@ New epilogue header 0x800000968Calling coalesce
 Coalesce entered with bp 0x800000780
 prev_alloc 0 next_alloc 1 
 Case 3 entered with prev_blk 0x8000006f0 
-Remove from seglist entered with bp 0x800000780 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000780 size 496 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
-Remove from seglist entered with bp 0x8000006f0 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x8000006f0 size 144 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
-Addtoseglist called with bp 0x8000006f0 
+Addtoseglist called with bp 0x8000006f0 and size 640 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359740144 
 Predessor 0x800000700 and Successor 0x8000006f0 of bp 
 Place called with bp 0x8000006f0 and asize 496
-Remove from seglist entered with bp 0x8000006f0 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x8000006f0 size 640 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 496 Csize 640 remainsize 144
 splicing of block will happen
-Addtoseglist called with bp 0x8000008e0 
+Addtoseglist called with bp 0x8000008e0 and size 144 
 Seg start 0x800000040 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000040 size 34359740640 
@@ -679,11 +679,11 @@ Find called with sizeatstart 4 actual size 80 and heap_listp 0x800000000
 Current value 0x8000008e0
 Current where block will fit 0x8000008e0 size 144 
 Place called with bp 0x8000008e0 and asize 80
-Remove from seglist entered with bp 0x8000008e0 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x8000008e0 size 144 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 80 Csize 144 remainsize 64
 splicing of block will happen
-Addtoseglist called with bp 0x800000930 
+Addtoseglist called with bp 0x800000930 and size 64 
 Seg start 0x800000010 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000010 size 34359740720 
@@ -785,7 +785,7 @@ No fit found, calling extend heap
 Extend heap entered 
 BP in extend_heap is 0x800000970 mem_heap_lo 0x800000000 mem_heap_hi 0x800000b5f
 Calling addtoseglist 
-Addtoseglist called with bp 0x800000970 
+Addtoseglist called with bp 0x800000970 and size 496 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359740784 
@@ -795,21 +795,21 @@ New epilogue header 0x800000b58Calling coalesce
 Coalesce entered with bp 0x800000970
 prev_alloc 0 next_alloc 1 
 Case 3 entered with prev_blk 0x800000930 
-Remove from seglist entered with bp 0x800000970 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000970 size 496 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
-Remove from seglist entered with bp 0x800000930 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000930 size 64 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
-Addtoseglist called with bp 0x800000930 
+Addtoseglist called with bp 0x800000930 and size 560 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359740720 
 Predessor 0x800000940 and Successor 0x800000930 of bp 
 Place called with bp 0x800000930 and asize 496
-Remove from seglist entered with bp 0x800000930 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000930 size 560 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 496 Csize 560 remainsize 64
 splicing of block will happen
-Addtoseglist called with bp 0x800000b20 
+Addtoseglist called with bp 0x800000b20 and size 64 
 Seg start 0x800000010 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000010 size 34359741216 
@@ -926,7 +926,7 @@ No fit found, calling extend heap
 Extend heap entered 
 BP in extend_heap is 0x800000b60 mem_heap_lo 0x800000000 mem_heap_hi 0x800000c3f
 Calling addtoseglist 
-Addtoseglist called with bp 0x800000b60 
+Addtoseglist called with bp 0x800000b60 and size 224 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359741280 
@@ -936,21 +936,21 @@ New epilogue header 0x800000c38Calling coalesce
 Coalesce entered with bp 0x800000b60
 prev_alloc 0 next_alloc 1 
 Case 3 entered with prev_blk 0x800000b20 
-Remove from seglist entered with bp 0x800000b60 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000b60 size 224 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
-Remove from seglist entered with bp 0x800000b20 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000b20 size 64 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
-Addtoseglist called with bp 0x800000b20 
+Addtoseglist called with bp 0x800000b20 and size 288 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359741216 
 Predessor 0x800000b30 and Successor 0x800000b20 of bp 
 Place called with bp 0x800000b20 and asize 80
-Remove from seglist entered with bp 0x800000b20 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000b20 size 288 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 80 Csize 288 remainsize 208
 splicing of block will happen
-Addtoseglist called with bp 0x800000b70 
+Addtoseglist called with bp 0x800000b70 and size 208 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359741296 
@@ -1064,7 +1064,7 @@ No fit found, calling extend heap
 Extend heap entered 
 BP in extend_heap is 0x800000c40 mem_heap_lo 0x800000000 mem_heap_hi 0x800000e2f
 Calling addtoseglist 
-Addtoseglist called with bp 0x800000c40 
+Addtoseglist called with bp 0x800000c40 and size 496 
 Seg start 0x800000050 listhead 0x800000b70 
 If entered of addtoseglist 
 segstart 0x800000050 size 34359741504 
@@ -1075,21 +1075,21 @@ New epilogue header 0x800000e28Calling coalesce
 Coalesce entered with bp 0x800000c40
 prev_alloc 0 next_alloc 1 
 Case 3 entered with prev_blk 0x800000b70 
-Remove from seglist entered with bp 0x800000c40 next addr 0x800000b70 and prev addr (nil)
+Remove from seglist entered with bp 0x800000c40 size 496 next addr 0x800000b70 and prev addr (nil)
 Head of list entered with heap_listp 0x800000000
-Remove from seglist entered with bp 0x800000b70 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000b70 size 208 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
-Addtoseglist called with bp 0x800000b70 
+Addtoseglist called with bp 0x800000b70 and size 704 
 Seg start 0x800000060 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000060 size 34359741296 
 Predessor 0x800000b80 and Successor 0x800000b70 of bp 
 Place called with bp 0x800000b70 and asize 496
-Remove from seglist entered with bp 0x800000b70 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000b70 size 704 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 496 Csize 704 remainsize 208
 splicing of block will happen
-Addtoseglist called with bp 0x800000d60 
+Addtoseglist called with bp 0x800000d60 and size 208 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359741792 
@@ -1193,11 +1193,11 @@ Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
 Current value 0x800000d60
 Current where block will fit 0x800000d60 size 208 
 Place called with bp 0x800000d60 and asize 48
-Remove from seglist entered with bp 0x800000d60 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000d60 size 208 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 48 Csize 208 remainsize 160
 splicing of block will happen
-Addtoseglist called with bp 0x800000d90 
+Addtoseglist called with bp 0x800000d90 and size 160 
 Seg start 0x800000040 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000040 size 34359741840 
@@ -1307,11 +1307,11 @@ Find called with sizeatstart 4 actual size 32 and heap_listp 0x800000000
 Current value 0x800000d90
 Current where block will fit 0x800000d90 size 160 
 Place called with bp 0x800000d90 and asize 32
-Remove from seglist entered with bp 0x800000d90 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000d90 size 160 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 32 Csize 160 remainsize 128
 splicing of block will happen
-Addtoseglist called with bp 0x800000db0 
+Addtoseglist called with bp 0x800000db0 and size 128 
 Seg start 0x800000030 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000030 size 34359741872 
@@ -1421,11 +1421,11 @@ Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
 Current value 0x800000db0
 Current where block will fit 0x800000db0 size 128 
 Place called with bp 0x800000db0 and asize 48
-Remove from seglist entered with bp 0x800000db0 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000db0 size 128 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 48 Csize 128 remainsize 80
 splicing of block will happen
-Addtoseglist called with bp 0x800000de0 
+Addtoseglist called with bp 0x800000de0 and size 80 
 Seg start 0x800000020 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000020 size 34359741920 
@@ -1530,7 +1530,7 @@ Previous block is allocated
 Free called 0x800000d60
 Next block header 0x800000d88
 calling add to seglist 
-Addtoseglist called with bp 0x800000d60 
+Addtoseglist called with bp 0x800000d60 and size 48 
 Seg start 0x800000010 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000010 size 34359741792 
@@ -1645,7 +1645,7 @@ Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
 Current value 0x800000d60
 Current where block will fit 0x800000d60 size 48 
 Place called with bp 0x800000d60 and asize 48
-Remove from seglist entered with bp 0x800000d60 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000d60 size 48 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 48 Csize 48 remainsize 0
 Very first block ptr 0x800000100
@@ -1759,11 +1759,11 @@ Find called with sizeatstart 2 actual size 32 and heap_listp 0x800000000
 Current value 0x800000de0
 Current where block will fit 0x800000de0 size 80 
 Place called with bp 0x800000de0 and asize 32
-Remove from seglist entered with bp 0x800000de0 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000de0 size 80 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 32 Csize 80 remainsize 48
 splicing of block will happen
-Addtoseglist called with bp 0x800000e00 
+Addtoseglist called with bp 0x800000e00 and size 48 
 Seg start 0x800000010 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000010 size 34359741952 
@@ -1879,7 +1879,7 @@ Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
 Current value 0x800000e00
 Current where block will fit 0x800000e00 size 48 
 Place called with bp 0x800000e00 and asize 48
-Remove from seglist entered with bp 0x800000e00 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000e00 size 48 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 48 Csize 48 remainsize 0
 Very first block ptr 0x800000100
@@ -2033,7 +2033,7 @@ No fit found, calling extend heap
 Extend heap entered 
 BP in extend_heap is 0x800000e30 mem_heap_lo 0x800000000 mem_heap_hi 0x800000f0f
 Calling addtoseglist 
-Addtoseglist called with bp 0x800000e30 
+Addtoseglist called with bp 0x800000e30 and size 224 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359742000 
@@ -2044,11 +2044,11 @@ Coalesce entered with bp 0x800000e30
 prev_alloc 2 next_alloc 1 
 Case 1 entered 
 Place called with bp 0x800000e30 and asize 48
-Remove from seglist entered with bp 0x800000e30 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000e30 size 224 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 48 Csize 224 remainsize 176
 splicing of block will happen
-Addtoseglist called with bp 0x800000e60 
+Addtoseglist called with bp 0x800000e60 and size 176 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359742048 
@@ -2188,11 +2188,11 @@ Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
 Current value 0x800000e60
 Current where block will fit 0x800000e60 size 176 
 Place called with bp 0x800000e60 and asize 48
-Remove from seglist entered with bp 0x800000e60 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000e60 size 176 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 48 Csize 176 remainsize 128
 splicing of block will happen
-Addtoseglist called with bp 0x800000e90 
+Addtoseglist called with bp 0x800000e90 and size 128 
 Seg start 0x800000030 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000030 size 34359742096 
@@ -2332,11 +2332,11 @@ Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
 Current value 0x800000e90
 Current where block will fit 0x800000e90 size 128 
 Place called with bp 0x800000e90 and asize 48
-Remove from seglist entered with bp 0x800000e90 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000e90 size 128 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 48 Csize 128 remainsize 80
 splicing of block will happen
-Addtoseglist called with bp 0x800000ec0 
+Addtoseglist called with bp 0x800000ec0 and size 80 
 Seg start 0x800000020 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000020 size 34359742144 
@@ -2479,11 +2479,11 @@ Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
 Current value 0x800000ec0
 Current where block will fit 0x800000ec0 size 80 
 Place called with bp 0x800000ec0 and asize 48
-Remove from seglist entered with bp 0x800000ec0 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000ec0 size 80 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 48 Csize 80 remainsize 32
 splicing of block will happen
-Addtoseglist called with bp 0x800000ef0 
+Addtoseglist called with bp 0x800000ef0 and size 32 
 Seg start 0x800000000 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000000 size 34359742192 
@@ -2669,7 +2669,7 @@ No fit found, calling extend heap
 Extend heap entered 
 BP in extend_heap is 0x800000f10 mem_heap_lo 0x800000000 mem_heap_hi 0x800000fef
 Calling addtoseglist 
-Addtoseglist called with bp 0x800000f10 
+Addtoseglist called with bp 0x800000f10 and size 224 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359742224 
@@ -2679,21 +2679,21 @@ New epilogue header 0x800000fe8Calling coalesce
 Coalesce entered with bp 0x800000f10
 prev_alloc 0 next_alloc 1 
 Case 3 entered with prev_blk 0x800000f10 
-Remove from seglist entered with bp 0x800000f10 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000f10 size 224 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
-Remove from seglist entered with bp 0x800000f10 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000f10 size 224 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
-Addtoseglist called with bp 0x800000f10 
+Addtoseglist called with bp 0x800000f10 and size 448 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359742224 
 Predessor 0x800000f20 and Successor 0x800000f10 of bp 
 Place called with bp 0x800000f10 and asize 48
-Remove from seglist entered with bp 0x800000f10 next addr (nil) and prev addr (nil)
+Remove from seglist entered with bp 0x800000f10 size 448 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 48 Csize 448 remainsize 400
 splicing of block will happen
-Addtoseglist called with bp 0x800000f40 
+Addtoseglist called with bp 0x800000f40 and size 400 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
 segstart 0x800000050 size 34359742272 
