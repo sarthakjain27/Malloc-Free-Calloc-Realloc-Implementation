@@ -257,7 +257,7 @@ bool mm_init(void) {
     /* Allocating segregated free list pointers on heap */
 	if ((heap_listp = mem_sbrk(TOTALLIST * DSIZE)) == NULL)
 		return false;
-	printf("Heap_listp initialised %p \n",heap_listp);
+	printf("Heap_listp initialised %p mem_heap_lo %p mem_heap_hi %p \n",heap_listp,mem_heap_lo(),mem_heap_hi());
 	/* Creating prologue and epilogue */
 	if ((h_start = mem_sbrk(4 * WSIZE)) == NULL)
 		return false;
@@ -271,7 +271,7 @@ bool mm_init(void) {
 	/* Epilogue header */
 	PUT4BYTES(h_start + (3 * WSIZE), PACK(0, PREVIOUSALLOCATED | CURRENTALLOCATED));
 	
-	printf("Head start initialised %p with epilogue header %p \n",h_start, (h_start + (3*WSIZE)));
+	printf("Head start initialised %p with epilogue header %p mem_heap_lo %p mem_heap_high %p\n",h_start, (h_start + (3*WSIZE)), mem_heap_lo(), mem_heap_hi());
 		
 	/* Initializing the segregated list pointers on heap */
 	PUT(heap_listp + SEGLIST1, (size_t) NULL);
@@ -689,7 +689,7 @@ static void *extend_heap(size_t words)
 
 	if ((long) (bp = mem_sbrk(words)) < 0)
 		return NULL;
-	printf("BP in extend_heap is %p \n",bp);
+	printf("BP in extend_heap is %p mem_heap_lo %p mem_heap_hi %p\n",bp,mem_heap_lo(),mem_heap_hi());
 
 	/* Change epilogue header to new free block header */
 	PUT4BYTES(HDRP(bp), PACK(words, GET_PREV_ALLOC(HDRP(bp))));
@@ -792,7 +792,9 @@ static void addingtoseglist(char *bp, size_t size)
 		printf("If entered of addtoseglist \n");
 		/* Set the current block as head */
 		PUT(segstart, (size_t) bp);
-
+		
+		printf("segstart %p size %zu \n", segstart, (size_t)bp);
+		
 		/* Set the current free block's previous pointer to NULL */
 		PUT(PREDECESSOR(bp), (size_t) NULL);
 
@@ -804,7 +806,7 @@ static void addingtoseglist(char *bp, size_t size)
 		/* Set the previous head's previous pointer to 
 		   current free block */
 		PUT(PREDECESSOR(listhead), (size_t) bp);
-		printf("Predecessor of listhead %p \n",PREDECESSOR(listhead));
+		printf("Predecessor of listhead %p size %zu\n",PREDECESSOR(listhead),(size_t) bp);
 
 	}
 	/* If there are no blocks in the size list */
@@ -812,6 +814,7 @@ static void addingtoseglist(char *bp, size_t size)
 		printf("Else of addtoseglist \n");
 		/* Set the current block as head */
 		PUT(segstart, (size_t) bp);
+		printf("segstart %p size %zu \n", segstart, (size_t)bp);
 		/* Set the free block's next and prev free block 
 		   addresses to NULL */
 		PUT(SUCCESSOR(bp), (size_t) NULL);
@@ -1192,7 +1195,9 @@ static void *find(size_t sizeatstart, size_t actual_size)
 		}
 		current = (char *) GET(SUCCESSOR(current));
 	}
-	printf("Current where block will fit %p\n",current);
+	if(current!=NULL)
+		printf("Current where block will fit %p size %zu \n",current,GET_SIZE(HDRP(current)));
+	else printf("Current is null \n");
 	return current;
 }
 
