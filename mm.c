@@ -320,7 +320,7 @@ void *malloc (size_t size) {
 		place(bp, asize);	/* Actual assignment */
 		return bp;
 	}
-	printf("No fit found, calling extend heap \n);
+	printf("No fit found, calling extend heap \n");
 	/* If no fit, get more memory and allocate memory */
 	extendsize = MAX(asize, CHUNKSIZE);
 	if ((bp = extend_heap(extendsize)) == NULL)
@@ -644,7 +644,7 @@ static void place(void *bp, size_t asize)
 	   24 bytes, then splitting is done to form new free block 
 	   */
 	if (remainsize >= MINBLOCK) {
-		printf("splicing of block will happen\n")
+		printf("splicing of block will happen\n");
 		/* Update new header information, store info bits */
 		PUT4BYTES(HDRP(bp), PACK(asize,	GET_PREV_ALLOC(HDRP(bp)) | CURRENTALLOCATED));
 

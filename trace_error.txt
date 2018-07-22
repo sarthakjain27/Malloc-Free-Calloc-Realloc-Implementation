@@ -1,41 +1,52 @@
 Found benchmark throughput 13056 for cpu type Intel(R)Xeon(R)CPUE5520@2.27GHz, benchmark regular
 
 Throughput targets: min=6528, max=11750, benchmark=13056
-mm_init called 
-Heap_listp initialised 0x800000000 
-Head start initialised 0x8000000e0 with epilogue header 0x8000000f8 
+
+Testing mm malloc
+Reading tracefile: traces/bdd-aa32.rep
+Checking mm_malloc for correctness, mm_init called 
+Heap_listp initialised 0x800000000 mem_heap_lo 0x800000000 mem_heap_hi 0x8000000df 
+Head start initialised 0x8000000e0 with epilogue header 0x8000000f8 mem_heap_lo 0x800000000 mem_heap_high 0x8000000ff
 Calling extend_heap 
 Extend heap entered 
-BP in extend_heap is 0x800000100 
+BP in extend_heap is 0x800000100 mem_heap_lo 0x800000000 mem_heap_hi 0x8000001df
 Calling addtoseglist 
 Addtoseglist called with bp 0x800000100 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359738624 
 Predessor 0x800000110 and Successor 0x800000100 of bp 
 Returned from addtoseglist 
 New epilogue header 0x8000001d8Calling coalesce 
 Coalesce entered with bp 0x800000100
 prev_alloc 2 next_alloc 1 
 Case 1 entered 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x8000001df heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 224
+Block is free
+Previous block is allocated
 Malloc called with size 24
 Asize 48
 Calling find_fit
 Find_fit called with asize 48
 Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 4 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
 Current value 0x800000100
-Current where block will fit 0x800000100
+Current where block will fit 0x800000100 size 224 
 Place called with bp 0x800000100 and asize 48
 Remove from seglist entered with bp 0x800000100 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
@@ -44,48 +55,63 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000130 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359738672 
 Predessor 0x800000140 and Successor 0x800000130 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x8000001df heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x8000001df heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 176
+Block is free
+Previous block is allocated
 Malloc called with size 208
 Asize 224
 Calling find_fit
 Find_fit called with asize 224
 Find called with sizeatstart 5 actual size 224 and heap_listp 0x800000000
 Current value 0x800000130
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 6 actual size 224 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 7 actual size 224 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 8 actual size 224 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 9 actual size 224 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 10 actual size 224 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 11 actual size 224 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 12 actual size 224 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 13 actual size 224 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 All if else failed in find_fit 
 No fit found, calling extend heap 
 Extend heap entered 
-BP in extend_heap is 0x8000001e0 
+BP in extend_heap is 0x8000001e0 mem_heap_lo 0x800000000 mem_heap_hi 0x8000002bf
 Calling addtoseglist 
 Addtoseglist called with bp 0x8000001e0 
 Seg start 0x800000050 listhead 0x800000130 
 If entered of addtoseglist 
+segstart 0x800000050 size 34359738848 
 Predessor 0x8000001f0 and Successor 0x8000001e0 of bp 
-Predecessor of listhead 0x800000140 
+Predecessor of listhead 0x800000140 size 34359738848
 Returned from addtoseglist 
 New epilogue header 0x8000002b8Calling coalesce 
 Coalesce entered with bp 0x8000001e0
@@ -98,6 +124,7 @@ Single block with heaplistp 0x800000000
 Addtoseglist called with bp 0x800000130 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359738672 
 Predessor 0x800000140 and Successor 0x800000130 of bp 
 Place called with bp 0x800000130 and asize 224
 Remove from seglist entered with bp 0x800000130 next addr (nil) and prev addr (nil)
@@ -107,23 +134,43 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000210 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359738896 
 Predessor 0x800000220 and Successor 0x800000210 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x8000002bf heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x8000002bf heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x8000002bf heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 176
+Block is free
+Previous block is allocated
 Malloc called with size 64
 Asize 80
 Calling find_fit
 Find_fit called with asize 80
 Find called with sizeatstart 2 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 3 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 4 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 5 actual size 80 and heap_listp 0x800000000
 Current value 0x800000210
-Current where block will fit 0x800000210
+Current where block will fit 0x800000210 size 176 
 Place called with bp 0x800000210 and asize 80
 Remove from seglist entered with bp 0x800000210 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
@@ -132,46 +179,73 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000260 
 Seg start 0x800000020 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000020 size 34359738976 
 Predessor 0x800000270 and Successor 0x800000260 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x8000002bf heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x8000002bf heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x8000002bf heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x8000002bf heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 96
+Block is free
+Previous block is allocated
 Malloc called with size 472
 Asize 496
 Calling find_fit
 Find_fit called with asize 496
 Find called with sizeatstart 5 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 6 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 7 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 8 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 9 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 10 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 11 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 12 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 13 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 All if else failed in find_fit 
 No fit found, calling extend heap 
 Extend heap entered 
-BP in extend_heap is 0x8000002c0 
+BP in extend_heap is 0x8000002c0 mem_heap_lo 0x800000000 mem_heap_hi 0x8000004af
 Calling addtoseglist 
 Addtoseglist called with bp 0x8000002c0 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359739072 
 Predessor 0x8000002d0 and Successor 0x8000002c0 of bp 
 Returned from addtoseglist 
 New epilogue header 0x8000004a8Calling coalesce 
@@ -185,6 +259,7 @@ Single block with heaplistp 0x800000000
 Addtoseglist called with bp 0x800000260 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359738976 
 Predessor 0x800000270 and Successor 0x800000260 of bp 
 Place called with bp 0x800000260 and asize 496
 Remove from seglist entered with bp 0x800000260 next addr (nil) and prev addr (nil)
@@ -194,57 +269,121 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000450 
 Seg start 0x800000020 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000020 size 34359739472 
 Predessor 0x800000460 and Successor 0x800000450 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x8000004af heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x8000004af heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x8000004af heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x8000004af heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x8000004af heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is free
+Previous block is allocated
 Malloc called with size 64
 Asize 80
 Calling find_fit
 Find_fit called with asize 80
 Find called with sizeatstart 2 actual size 80 and heap_listp 0x800000000
 Current value 0x800000450
-Current where block will fit 0x800000450
+Current where block will fit 0x800000450 size 96 
 Place called with bp 0x800000450 and asize 80
 Remove from seglist entered with bp 0x800000450 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 80 Csize 96 remainsize 16
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x8000004af heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x8000004af heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x8000004af heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x8000004af heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x8000004af heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
 Malloc called with size 472
 Asize 496
 Calling find_fit
 Find_fit called with asize 496
 Find called with sizeatstart 5 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 6 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 7 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 8 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 9 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 10 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 11 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 12 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 13 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 All if else failed in find_fit 
 No fit found, calling extend heap 
 Extend heap entered 
-BP in extend_heap is 0x8000004b0 
+BP in extend_heap is 0x8000004b0 mem_heap_lo 0x800000000 mem_heap_hi 0x80000069f
 Calling addtoseglist 
 Addtoseglist called with bp 0x8000004b0 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359739568 
 Predessor 0x8000004c0 and Successor 0x8000004b0 of bp 
 Returned from addtoseglist 
 New epilogue header 0x800000698Calling coalesce 
@@ -255,54 +394,92 @@ Place called with bp 0x8000004b0 and asize 496
 Remove from seglist entered with bp 0x8000004b0 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 496 Csize 496 remainsize 0
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x80000069f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x80000069f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x80000069f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x80000069f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x80000069f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x80000069f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
 Malloc called with size 64
 Asize 80
 Calling find_fit
 Find_fit called with asize 80
 Find called with sizeatstart 2 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 3 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 4 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 5 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 6 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 7 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 8 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 9 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 10 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 11 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 12 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 13 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 All if else failed in find_fit 
 No fit found, calling extend heap 
 Extend heap entered 
-BP in extend_heap is 0x8000006a0 
+BP in extend_heap is 0x8000006a0 mem_heap_lo 0x800000000 mem_heap_hi 0x80000077f
 Calling addtoseglist 
 Addtoseglist called with bp 0x8000006a0 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359740064 
 Predessor 0x8000006b0 and Successor 0x8000006a0 of bp 
 Returned from addtoseglist 
 New epilogue header 0x800000778Calling coalesce 
@@ -317,46 +494,97 @@ splicing of block will happen
 Addtoseglist called with bp 0x8000006f0 
 Seg start 0x800000040 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000040 size 34359740144 
 Predessor 0x800000700 and Successor 0x8000006f0 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x80000077f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x80000077f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x80000077f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x80000077f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x80000077f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x80000077f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x80000077f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x80000077f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 144
+Block is free
+Previous block is allocated
 Malloc called with size 472
 Asize 496
 Calling find_fit
 Find_fit called with asize 496
 Find called with sizeatstart 5 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 6 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 7 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 8 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 9 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 10 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 11 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 12 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 13 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 All if else failed in find_fit 
 No fit found, calling extend heap 
 Extend heap entered 
-BP in extend_heap is 0x800000780 
+BP in extend_heap is 0x800000780 mem_heap_lo 0x800000000 mem_heap_hi 0x80000096f
 Calling addtoseglist 
 Addtoseglist called with bp 0x800000780 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359740288 
 Predessor 0x800000790 and Successor 0x800000780 of bp 
 Returned from addtoseglist 
 New epilogue header 0x800000968Calling coalesce 
@@ -370,6 +598,7 @@ Single block with heaplistp 0x800000000
 Addtoseglist called with bp 0x8000006f0 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359740144 
 Predessor 0x800000700 and Successor 0x8000006f0 of bp 
 Place called with bp 0x8000006f0 and asize 496
 Remove from seglist entered with bp 0x8000006f0 next addr (nil) and prev addr (nil)
@@ -379,20 +608,76 @@ splicing of block will happen
 Addtoseglist called with bp 0x8000008e0 
 Seg start 0x800000040 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000040 size 34359740640 
 Predessor 0x8000008f0 and Successor 0x8000008e0 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 144
+Block is free
+Previous block is allocated
 Malloc called with size 64
 Asize 80
 Calling find_fit
 Find_fit called with asize 80
 Find called with sizeatstart 2 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 3 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 4 actual size 80 and heap_listp 0x800000000
 Current value 0x8000008e0
-Current where block will fit 0x8000008e0
+Current where block will fit 0x8000008e0 size 144 
 Place called with bp 0x8000008e0 and asize 80
 Remove from seglist entered with bp 0x8000008e0 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
@@ -401,46 +686,109 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000930 
 Seg start 0x800000010 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000010 size 34359740720 
 Predessor 0x800000940 and Successor 0x800000930 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x80000096f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 64
+Block is free
+Previous block is allocated
 Malloc called with size 472
 Asize 496
 Calling find_fit
 Find_fit called with asize 496
 Find called with sizeatstart 5 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 6 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 7 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 8 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 9 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 10 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 11 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 12 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 13 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 All if else failed in find_fit 
 No fit found, calling extend heap 
 Extend heap entered 
-BP in extend_heap is 0x800000970 
+BP in extend_heap is 0x800000970 mem_heap_lo 0x800000000 mem_heap_hi 0x800000b5f
 Calling addtoseglist 
 Addtoseglist called with bp 0x800000970 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359740784 
 Predessor 0x800000980 and Successor 0x800000970 of bp 
 Returned from addtoseglist 
 New epilogue header 0x800000b58Calling coalesce 
@@ -454,6 +802,7 @@ Single block with heaplistp 0x800000000
 Addtoseglist called with bp 0x800000930 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359740720 
 Predessor 0x800000940 and Successor 0x800000930 of bp 
 Place called with bp 0x800000930 and asize 496
 Remove from seglist entered with bp 0x800000930 next addr (nil) and prev addr (nil)
@@ -463,55 +812,124 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000b20 
 Seg start 0x800000010 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000010 size 34359741216 
 Predessor 0x800000b30 and Successor 0x800000b20 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000b5f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000b5f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000b5f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000b5f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000b5f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000b5f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000b5f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000b5f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000b5f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000b5f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000b5f heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 64
+Block is free
+Previous block is allocated
 Malloc called with size 64
 Asize 80
 Calling find_fit
 Find_fit called with asize 80
 Find called with sizeatstart 2 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 3 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 4 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 5 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 6 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 7 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 8 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 9 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 10 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 11 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 12 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 13 actual size 80 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 All if else failed in find_fit 
 No fit found, calling extend heap 
 Extend heap entered 
-BP in extend_heap is 0x800000b60 
+BP in extend_heap is 0x800000b60 mem_heap_lo 0x800000000 mem_heap_hi 0x800000c3f
 Calling addtoseglist 
 Addtoseglist called with bp 0x800000b60 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359741280 
 Predessor 0x800000b70 and Successor 0x800000b60 of bp 
 Returned from addtoseglist 
 New epilogue header 0x800000c38Calling coalesce 
@@ -525,6 +943,7 @@ Single block with heaplistp 0x800000000
 Addtoseglist called with bp 0x800000b20 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359741216 
 Predessor 0x800000b30 and Successor 0x800000b20 of bp 
 Place called with bp 0x800000b20 and asize 80
 Remove from seglist entered with bp 0x800000b20 next addr (nil) and prev addr (nil)
@@ -534,48 +953,123 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000b70 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359741296 
 Predessor 0x800000b80 and Successor 0x800000b70 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000c3f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000c3f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000c3f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000c3f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000c3f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000c3f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000c3f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000c3f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000c3f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000c3f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000c3f heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b70 heap_hi 0x800000c3f heap_lo 0x800000000
+
+Block pointer: 0x800000b70
+Block size is: 208
+Block is free
+Previous block is allocated
 Malloc called with size 472
 Asize 496
 Calling find_fit
 Find_fit called with asize 496
 Find called with sizeatstart 5 actual size 496 and heap_listp 0x800000000
 Current value 0x800000b70
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 6 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 7 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 8 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 9 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 10 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 11 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 12 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 13 actual size 496 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 All if else failed in find_fit 
 No fit found, calling extend heap 
 Extend heap entered 
-BP in extend_heap is 0x800000c40 
+BP in extend_heap is 0x800000c40 mem_heap_lo 0x800000000 mem_heap_hi 0x800000e2f
 Calling addtoseglist 
 Addtoseglist called with bp 0x800000c40 
 Seg start 0x800000050 listhead 0x800000b70 
 If entered of addtoseglist 
+segstart 0x800000050 size 34359741504 
 Predessor 0x800000c50 and Successor 0x800000c40 of bp 
-Predecessor of listhead 0x800000b80 
+Predecessor of listhead 0x800000b80 size 34359741504
 Returned from addtoseglist 
 New epilogue header 0x800000e28Calling coalesce 
 Coalesce entered with bp 0x800000c40
@@ -588,6 +1082,7 @@ Single block with heaplistp 0x800000000
 Addtoseglist called with bp 0x800000b70 
 Seg start 0x800000060 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000060 size 34359741296 
 Predessor 0x800000b80 and Successor 0x800000b70 of bp 
 Place called with bp 0x800000b70 and asize 496
 Remove from seglist entered with bp 0x800000b70 next addr (nil) and prev addr (nil)
@@ -597,26 +1092,106 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000d60 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359741792 
 Predessor 0x800000d70 and Successor 0x800000d60 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b70 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b70
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d60 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d60
+Block size is: 208
+Block is free
+Previous block is allocated
 Malloc called with size 24
 Asize 48
 Calling find_fit
 Find_fit called with asize 48
 Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 4 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
 Current value 0x800000d60
-Current where block will fit 0x800000d60
+Current where block will fit 0x800000d60 size 208 
 Place called with bp 0x800000d60 and asize 48
 Remove from seglist entered with bp 0x800000d60 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
@@ -625,26 +1200,112 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000d90 
 Seg start 0x800000040 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000040 size 34359741840 
 Predessor 0x800000da0 and Successor 0x800000d90 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b70 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b70
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d60 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d90 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d90
+Block size is: 160
+Block is free
+Previous block is allocated
 Malloc called with size 5
 Asize 32
 Calling find_fit
 Find_fit called with asize 32
 Find called with sizeatstart 0 actual size 32 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 1 actual size 32 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 2 actual size 32 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 3 actual size 32 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 4 actual size 32 and heap_listp 0x800000000
 Current value 0x800000d90
-Current where block will fit 0x800000d90
+Current where block will fit 0x800000d90 size 160 
 Place called with bp 0x800000d90 and asize 32
 Remove from seglist entered with bp 0x800000d90 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
@@ -653,20 +1314,112 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000db0 
 Seg start 0x800000030 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000030 size 34359741872 
 Predessor 0x800000dc0 and Successor 0x800000db0 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b70 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b70
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d60 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d90 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d90
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000db0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000db0
+Block size is: 128
+Block is free
+Previous block is allocated
 Malloc called with size 24
 Asize 48
 Calling find_fit
 Find_fit called with asize 48
 Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
 Current value 0x800000db0
-Current where block will fit 0x800000db0
+Current where block will fit 0x800000db0 size 128 
 Place called with bp 0x800000db0 and asize 48
 Remove from seglist entered with bp 0x800000db0 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
@@ -675,43 +1428,336 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000de0 
 Seg start 0x800000020 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000020 size 34359741920 
 Predessor 0x800000df0 and Successor 0x800000de0 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b70 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b70
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d60 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d90 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d90
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000db0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000db0
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000de0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000de0
+Block size is: 80
+Block is free
+Previous block is allocated
 Free called 0x800000d60
 Next block header 0x800000d88
 calling add to seglist 
 Addtoseglist called with bp 0x800000d60 
 Seg start 0x800000010 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000010 size 34359741792 
 Predessor 0x800000d70 and Successor 0x800000d60 of bp 
 Calling coalesce from free
 Coalesce entered with bp 0x800000d60
 prev_alloc 2 next_alloc 1 
 Case 1 entered 
 Returned from coalesce in free 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b70 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b70
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d60 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d60
+Block size is: 48
+Block is free
+Previous block is allocated
+in_heap() called with p 0x800000d90 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d90
+Block size is: 32
+Block is allocated
+Previous block is free
+in_heap() called with p 0x800000db0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000db0
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000de0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000de0
+Block size is: 80
+Block is free
+Previous block is allocated
 Malloc called with size 24
 Asize 48
 Calling find_fit
 Find_fit called with asize 48
 Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
 Current value 0x800000d60
-Current where block will fit 0x800000d60
+Current where block will fit 0x800000d60 size 48 
 Place called with bp 0x800000d60 and asize 48
 Remove from seglist entered with bp 0x800000d60 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 48 Csize 48 remainsize 0
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b70 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b70
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d60 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d90 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d90
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000db0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000db0
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000de0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000de0
+Block size is: 80
+Block is free
+Previous block is allocated
 Malloc called with size 4
 Asize 32
 Calling find_fit
 Find_fit called with asize 32
 Find called with sizeatstart 0 actual size 32 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 1 actual size 32 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 2 actual size 32 and heap_listp 0x800000000
 Current value 0x800000de0
-Current where block will fit 0x800000de0
+Current where block will fit 0x800000de0 size 80 
 Place called with bp 0x800000de0 and asize 32
 Remove from seglist entered with bp 0x800000de0 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
@@ -720,69 +1766,277 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000e00 
 Seg start 0x800000010 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000010 size 34359741952 
 Predessor 0x800000e10 and Successor 0x800000e00 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b70 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b70
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d60 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d90 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d90
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000db0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000db0
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000de0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000de0
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e00 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000e00
+Block size is: 48
+Block is free
+Previous block is allocated
 Malloc called with size 24
 Asize 48
 Calling find_fit
 Find_fit called with asize 48
 Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
 Current value 0x800000e00
-Current where block will fit 0x800000e00
+Current where block will fit 0x800000e00 size 48 
 Place called with bp 0x800000e00 and asize 48
 Remove from seglist entered with bp 0x800000e00 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
 Asize 48 Csize 48 remainsize 0
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b70 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000b70
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d60 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d90 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000d90
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000db0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000db0
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000de0 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000de0
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e00 heap_hi 0x800000e2f heap_lo 0x800000000
+
+Block pointer: 0x800000e00
+Block size is: 48
+Block is allocated
+Previous block is allocated
 Malloc called with size 32
 Asize 48
 Calling find_fit
 Find_fit called with asize 48
 Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 4 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 6 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 7 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 8 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 9 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 10 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 11 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 12 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 13 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 All if else failed in find_fit 
 No fit found, calling extend heap 
 Extend heap entered 
-BP in extend_heap is 0x800000e30 
+BP in extend_heap is 0x800000e30 mem_heap_lo 0x800000000 mem_heap_hi 0x800000f0f
 Calling addtoseglist 
 Addtoseglist called with bp 0x800000e30 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359742000 
 Predessor 0x800000e40 and Successor 0x800000e30 of bp 
 Returned from addtoseglist 
 New epilogue header 0x800000f08Calling coalesce 
@@ -797,26 +2051,142 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000e60 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359742048 
 Predessor 0x800000e70 and Successor 0x800000e60 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b70 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000b70
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d60 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000d60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d90 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000d90
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000db0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000db0
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000de0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000de0
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e00 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e00
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e30 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e30
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e60 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e60
+Block size is: 176
+Block is free
+Previous block is allocated
 Malloc called with size 32
 Asize 48
 Calling find_fit
 Find_fit called with asize 48
 Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 4 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
 Current value 0x800000e60
-Current where block will fit 0x800000e60
+Current where block will fit 0x800000e60 size 176 
 Place called with bp 0x800000e60 and asize 48
 Remove from seglist entered with bp 0x800000e60 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
@@ -825,20 +2195,142 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000e90 
 Seg start 0x800000030 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000030 size 34359742096 
 Predessor 0x800000ea0 and Successor 0x800000e90 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b70 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000b70
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d60 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000d60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d90 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000d90
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000db0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000db0
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000de0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000de0
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e00 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e00
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e30 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e30
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e60 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e90 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e90
+Block size is: 128
+Block is free
+Previous block is allocated
 Malloc called with size 32
 Asize 48
 Calling find_fit
 Find_fit called with asize 48
 Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
 Current value 0x800000e90
-Current where block will fit 0x800000e90
+Current where block will fit 0x800000e90 size 128 
 Place called with bp 0x800000e90 and asize 48
 Remove from seglist entered with bp 0x800000e90 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
@@ -847,17 +2339,145 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000ec0 
 Seg start 0x800000020 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000020 size 34359742144 
 Predessor 0x800000ed0 and Successor 0x800000ec0 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b70 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000b70
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d60 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000d60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d90 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000d90
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000db0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000db0
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000de0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000de0
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e00 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e00
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e30 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e30
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e60 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e90 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e90
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000ec0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000ec0
+Block size is: 80
+Block is free
+Previous block is allocated
 Malloc called with size 32
 Asize 48
 Calling find_fit
 Find_fit called with asize 48
 Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
 Current value 0x800000ec0
-Current where block will fit 0x800000ec0
+Current where block will fit 0x800000ec0 size 80 
 Place called with bp 0x800000ec0 and asize 48
 Remove from seglist entered with bp 0x800000ec0 next addr (nil) and prev addr (nil)
 Single block with heaplistp 0x800000000
@@ -866,58 +2486,193 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000ef0 
 Seg start 0x800000000 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000000 size 34359742192 
 Predessor 0x800000f00 and Successor 0x800000ef0 of bp 
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b70 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000b70
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d60 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000d60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d90 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000d90
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000db0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000db0
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000de0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000de0
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e00 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e00
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e30 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e30
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e60 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e90 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000e90
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000ec0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000ec0
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000ef0 heap_hi 0x800000f0f heap_lo 0x800000000
+
+Block pointer: 0x800000ef0
+Block size is: 32
+Block is free
+Previous block is allocated
 Malloc called with size 32
 Asize 48
 Calling find_fit
 Find_fit called with asize 48
 Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 4 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 6 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 7 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 8 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 9 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 10 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 11 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 12 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 Find called with sizeatstart 13 actual size 48 and heap_listp 0x800000000
 Current value (nil)
-Current where block will fit (nil)
+Current is null 
 All if else failed in find_fit 
 No fit found, calling extend heap 
 Extend heap entered 
-BP in extend_heap is 0x800000f10 
+BP in extend_heap is 0x800000f10 mem_heap_lo 0x800000000 mem_heap_hi 0x800000fef
 Calling addtoseglist 
 Addtoseglist called with bp 0x800000f10 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359742224 
 Predessor 0x800000f20 and Successor 0x800000f10 of bp 
 Returned from addtoseglist 
 New epilogue header 0x800000fe8Calling coalesce 
@@ -931,6 +2686,7 @@ Single block with heaplistp 0x800000000
 Addtoseglist called with bp 0x800000f10 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359742224 
 Predessor 0x800000f20 and Successor 0x800000f10 of bp 
 Place called with bp 0x800000f10 and asize 48
 Remove from seglist entered with bp 0x800000f10 next addr (nil) and prev addr (nil)
@@ -940,120 +2696,157 @@ splicing of block will happen
 Addtoseglist called with bp 0x800000f40 
 Seg start 0x800000050 listhead (nil) 
 Else of addtoseglist 
+segstart 0x800000050 size 34359742272 
 Predessor 0x800000f50 and Successor 0x800000f40 of bp 
-Malloc called with size 32
-Asize 48
-Calling find_fit
-Find_fit called with asize 48
-Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 4 actual size 48 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
-Current value 0x800000f40
-Current where block will fit 0x800000f40
-Place called with bp 0x800000f40 and asize 48
-Remove from seglist entered with bp 0x800000f40 next addr (nil) and prev addr (nil)
-Single block with heaplistp 0x800000000
-Asize 48 Csize 400 remainsize 352
-splicing of block will happen
-Addtoseglist called with bp 0x800000f70 
-Seg start 0x800000050 listhead (nil) 
-Else of addtoseglist 
-Predessor 0x800000f80 and Successor 0x800000f70 of bp 
-Malloc called with size 32
-Asize 48
-Calling find_fit
-Find_fit called with asize 48
-Find called with sizeatstart 1 actual size 48 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 2 actual size 48 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 3 actual size 48 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 4 actual size 48 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 5 actual size 48 and heap_listp 0x800000000
-Current value 0x800000f70
-Current where block will fit 0x800000f70
-Place called with bp 0x800000f70 and asize 48
-Remove from seglist entered with bp 0x800000f70 next addr (nil) and prev addr (nil)
-Single block with heaplistp 0x800000000
-Asize 48 Csize 352 remainsize 304
-splicing of block will happen
-Addtoseglist called with bp 0x800000fa0 
-Seg start 0x800000050 listhead (nil) 
-Else of addtoseglist 
-Predessor 0x800000fb0 and Successor 0x800000fa0 of bp 
-Malloc called with size 40
-Asize 64
-Calling find_fit
-Find_fit called with asize 64
-Find called with sizeatstart 1 actual size 64 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 2 actual size 64 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 3 actual size 64 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 4 actual size 64 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 5 actual size 64 and heap_listp 0x800000000
-Current value 0x800000fa0
-Current where block will fit 0x800000fa0
-Place called with bp 0x800000fa0 and asize 64
-Remove from seglist entered with bp 0x800000fa0 next addr (nil) and prev addr (nil)
-Single block with heaplistp 0x800000000
-Asize 64 Csize 304 remainsize 240
-splicing of block will happen
-Addtoseglist called with bp 0x800000fe0 
-Seg start 0x800000050 listhead (nil) 
-Else of addtoseglist 
-Predessor 0x800000ff0 and Successor 0x800000fe0 of bp 
-Malloc called with size 40
-Asize 64
-Calling find_fit
-Find_fit called with asize 64
-Find called with sizeatstart 1 actual size 64 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 2 actual size 64 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 3 actual size 64 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 4 actual size 64 and heap_listp 0x800000000
-Current value (nil)
-Current where block will fit (nil)
-Find called with sizeatstart 5 actual size 64 and heap_listp 0x800000000
-Current value 0x800000fe0
-Current where block will fit 0x800000fe0
-Place called with bp 0x800000fe0 and asize 64
-Remove from seglist entered with bp 0x800000fe0 next addr (nil) and prev addr (nil)
-Single block with heaplistp 0x800000000
-Asize 64 Csize 240 remainsize 176
-splicing of block will happen
-Addtoseglist called with bp 0x800001020 
-Seg start 0x800000050 listhead (nil) 
-Else of addtoseglist 
-Predessor 0x800001030 and Successor 0x800001020 of bp 
-ERROR [trace ./traces/bdd-aa32.rep, line 32]: Payload (0x800000fe0:0x800001007) lies outside heap (0x800000000:0x800000fef)
+Very first block ptr 0x800000100
+in_heap() called with p 0x800000100 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000100
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000130 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000130
+Block size is: 224
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000210 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000210
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000260 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000260
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000450 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000450
+Block size is: 96
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000004b0 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x8000004b0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006a0 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x8000006a0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000006f0 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x8000006f0
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x8000008e0 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x8000008e0
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000930 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000930
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b20 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000b20
+Block size is: 80
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000b70 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000b70
+Block size is: 496
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d60 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000d60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000d90 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000d90
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000db0 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000db0
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000de0 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000de0
+Block size is: 32
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e00 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000e00
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e30 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000e30
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e60 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000e60
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000e90 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000e90
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000ec0 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000ec0
+Block size is: 48
+Block is allocated
+Previous block is allocated
+in_heap() called with p 0x800000ef0 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000ef0
+Block size is: 32
+Block is free
+Previous block is allocated
+in_heap() called with p 0x800000f10 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000f10
+Block size is: 48
+Block is allocated
+Previous block is free
+in_heap() called with p 0x800000f40 heap_hi 0x800000fef heap_lo 0x800000000
+
+Block pointer: 0x800000f40
+Block size is: 400
+Block is free
+Previous block is allocated
+in_heap() called with p 0x8000010d0 heap_hi 0x800000fef heap_lo 0x800000000
+Block pointer 0x8000010d0 isn't in heap
+ERROR [trace ./traces/bdd-aa32.rep, line 29]: mm_checkheap returned false
+
 
 
 correctness check finished, by running tracefile "traces/bdd-aa32.rep".
