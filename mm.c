@@ -942,7 +942,7 @@ static void *coalesce(void *bp)
 	size_t prev_alloc = GET_PREV_ALLOC(HDRP(bp));
 	size_t next_alloc = GET_ALLOC(HDRP(NEXT_BLKP(bp)));
 	
-	printf("prev_alloc %zu next_alloc %zu \n",prev_alloc,next_alloc);
+	printf("prev_checked %p prev_alloc %zu next_checked %p next_alloc %zu \n",HDRP(bp),prev_alloc,NEXT_BLKP(bp),next_alloc);
 	
 	/* get size of current, prev, next free block (including header) */
 	size_t size = GET_SIZE(HDRP(bp));
@@ -993,26 +993,27 @@ static void *coalesce(void *bp)
 		/* get previous block's location and header location */
 		prev_blk = PREV_BLKP(bp);
 		prev_hd = HDRP(prev_blk);
-		printf("Case 3 entered with prev_blk %p \n",prev_blk);
+		printf("Case 3 entered with bp %p size %zu and prev_blk %p \n",bp,(GET_SIZE((char *)bp - DSIZE)),prev_blk);
 
 		psize = GET_SIZE(prev_hd);
+		if(prev_blk!=bp)
+		{
+			/* remove current free block and prev free block from lists */
+			removefromseglist(bp, size);
+			removefromseglist(prev_blk, psize);
 
-		/* remove current free block and prev free block from lists */
-		removefromseglist(bp, size);
-		removefromseglist(prev_blk, psize);
+			/* size is current free size plus prev free size */
+			size += psize;
 
-		/* size is current free size plus prev free size */
-		size += psize;
+			/* change header to reflect new size */
+			PUT4BYTES(prev_hd, PACK(size, GET_PREV_ALLOC(prev_hd)));
 
-		/* change header to reflect new size */
-		PUT4BYTES(prev_hd, PACK(size, GET_PREV_ALLOC(prev_hd)));
+			/* change footer to reflect new size */
+			PUT4BYTES(FTRP(prev_blk), GET4BYTES(prev_hd));
 
-		/* change footer to reflect new size */
-		PUT4BYTES(FTRP(prev_blk), GET4BYTES(prev_hd));
-
-		/* add new free block to segregated list */
-		addingtoseglist(prev_blk, size);
-
+			/* add new free block to segregated list */
+			addingtoseglist(prev_blk, size);
+		}
 		/* return prev pointer to prev block 
 		   since block expanded to prev */
 		return prev_blk;
