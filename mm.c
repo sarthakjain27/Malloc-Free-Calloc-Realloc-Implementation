@@ -696,7 +696,7 @@ static void *extend_heap(size_t words)
 	
 	/* Set new free block footer */
 	PUT4BYTES(FTRP(bp), GET4BYTES(HDRP(bp)));
-	
+	printf("HDRP(bp) %p FTRP(bp) %p \n",HDRP(bp),FTRP(bp));	
 	printf("Calling addtoseglist \n");
 	/* Add to segregated list */
 	addingtoseglist(bp, words);
