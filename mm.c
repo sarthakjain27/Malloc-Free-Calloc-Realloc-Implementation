@@ -718,7 +718,7 @@ static void *extend_heap(size_t words)
  */
 static void addingtoseglist(char *bp, size_t size)
 {
-	printf("Addtoseglist called with bp %p \n",bp);
+	printf("Addtoseglist called with bp %p and size %zu \n",bp,size);
 	/* Address of head of a particular list */
 	char *listhead;
 
@@ -838,7 +838,7 @@ static void removefromseglist(char *bp, size_t size)
 	char *nextaddress = (char *) GET(SUCCESSOR(bp));
 	/* Next block address */
 	char *prevaddress = (char *) GET(PREDECESSOR(bp));
-	printf("Remove from seglist entered with bp %p next addr %p and prev addr %p\n",bp,nextaddress,prevaddress);
+	printf("Remove from seglist entered with bp %p size %zu next addr %p and prev addr %p\n",bp,size,nextaddress,prevaddress);
 	/* If head of list, update head pointer to next free block */
 	if (prevaddress == NULL && nextaddress != NULL) {
 		printf("Head of list entered with heap_listp %p\n",heap_listp);
