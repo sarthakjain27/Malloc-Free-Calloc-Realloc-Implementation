@@ -146,6 +146,7 @@ static bool get_alloc(block_t *block);
 static size_t get_size(block_t *block);
 static size_t GET(char *p);
 static void *find_fit(size_t asize);
+static void *find(size_t sizeatstart, size_t actual_size);
 static size_t get_payload_size(block_t *block);
 
 static size_t round_up(size_t size, size_t n);
@@ -492,9 +493,10 @@ bool mm_checkheap(int lineno) {
                 			return false;
 				}
 			}
-			listpointer = find_next(listpointer);
+			listpointer = (char *)find_next((block_t *)listpointer);
 		}
 	}
+	return true;
 }
 
 static block_t *extend_heap(size_t size) 
@@ -610,7 +612,7 @@ static block_t *coalesce(block_t * block)
 
 static void freeList_LIFO_insert(block_f *block,size_t size)
 {
-    printf("FreeList_LIFO_insert called with block %p and size %zu \n",bp,size);
+    printf("FreeList_LIFO_insert called with block %p and size %zu \n",block,size);
     
 	/* Address of head of a particular list */
 	char *listhead;
@@ -618,8 +620,6 @@ static void freeList_LIFO_insert(block_f *block,size_t size)
 	/* Address pointing to the address of head of a particular list */
 	char *segstart;
 	
-    size_t size = get_size(block);
-    
     if (size <= LIST1_LIMIT) {
 		segstart = freeList_start + SEGLIST1;
 		listhead = (char *) GET(segstart);
@@ -685,9 +685,9 @@ static void freeList_LIFO_insert(block_f *block,size_t size)
         printf("If of freeList_lifo_insert \n");
         //set current block as head
         PUT(segstart,(size_t)(block));
-        printf("segstart %p size %zu \n", segstart, (size_t)bp);
-        block->prev_free==NULL;
-        block->next_free==NULL;
+        printf("segstart %p size %zu \n", segstart, (size_t)block);
+        block->prev_free=NULL;
+        block->next_free=NULL;
     }
     //there are blocks in the list
     else
@@ -700,22 +700,10 @@ static void freeList_LIFO_insert(block_f *block,size_t size)
         
         //set current block as head
         PUT(segstart, (size_t) block);
-		printf("segstart %p size %zu \n", segstart, (size_t)bp);
+		printf("segstart %p size %zu \n", segstart, (size_t)block);
         
         block->prev_free=NULL;
     }
-}
-
-static void freeList_FIFO_insert(block_f *block)
-{
-	//printf("FreeList_FIFI called freeList_end %p\n",freeList_end);
-	if(freeList_end!=NULL)
-		freeList_end->next_free=block;
-	block->prev_free=freeList_end;
-	block->next_free=NULL;
-	freeList_end=block;
-	if(freeList_start==NULL)
-		freeList_start=block;
 }
 
 static void freeList_del(block_f *block,size_t size)
