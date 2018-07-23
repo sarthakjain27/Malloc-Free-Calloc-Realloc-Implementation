@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stddef.h>
 
 #include "mm.h"
 #include "memlib.h"
@@ -156,6 +157,7 @@ static size_t MAX(size_t x, size_t y);
 static block_t *payload_to_header(void *bp);
 static void write_footer(block_t *block, size_t size, bool alloc);
 static void write_header(block_t *block, size_t size, bool alloc);
+static size_t extract_size(word_t word);
 
 /*
  * max: returns x if x > y, and y otherwise.
@@ -887,14 +889,16 @@ static void *find(size_t sizeatstart, size_t actual_size)
 	printf("Current value current %p current_f %p \n",current,current_f);
 
 	/* Finding available free block in list */
-	while (current_f != NULL) {
-		if (actual_size <= get_size(current_f) {
+	while (current_f != NULL)
+	{
+		if (actual_size <= get_size(current_f))
+		    {
 			break;
 		}
 		current_f = current_f->next_free;
 	}
 	if(current!=NULL)
-            printf("Current where block will fit %p size %zu \n",current,GET_SIZE(HDRP(current)));
+            printf("Current where block will fit %p size %zu \n",current,get_size(current_f));
 	else 
             printf("Current is null \n");
 	return current;
@@ -905,7 +909,7 @@ static void *find(size_t sizeatstart, size_t actual_size)
      block_t * block=(block_t *)bp;
      printf("Place called with bp %p and asize %zu\n",bp,asize);
      size_t csize = get_size(block);
-     printf("Asize %zu Csize %zu remainsize %zu\n",asize,csize,remainsize);
+     printf("Asize %zu Csize %zu\n",asize,csize);
     
      freeList_del((block_f *)block,csize);
      
@@ -936,6 +940,15 @@ static word_t get_payload_size(block_t *block)
 {
     size_t asize = get_size(block);
     return asize - dsize;
+}
+
+/*
+ * extract_size: returns the size of a given header value based on the header
+ *               specification above.
+ */
+static size_t extract_size(word_t word)
+{
+    return (word & size_mask);
 }
 /*
  * get_size: returns the size of a given block by clearing the lowest 4 bits
