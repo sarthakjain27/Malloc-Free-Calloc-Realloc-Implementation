@@ -230,7 +230,7 @@ bool mm_init(void) {
     printf("Heap_start initialised%p\n",heap_start);
     
     printf("Calling extend heap from mm_init \n");
-    if (extend_heap(chunksize) == NULL)
+    if (extend_heap(CHUNKSIZE) == NULL)
     {
         return false;
     }
@@ -407,6 +407,8 @@ bool mm_checkheap(int lineno) {
 	block_t *i;
 	char *listpointer = NULL;
 	unsigned sizeatstart = 0;
+	unsigned minimumblocksize = 0;
+	unsigned maximumblocksize = 0;
 	for(i=heap_start;get_size(i) > 0; i = find_next(i))
 	{
 		if(get_alloc(i))
@@ -423,59 +425,59 @@ bool mm_checkheap(int lineno) {
 	for (sizeatstart = 0; sizeatstart < TOTALLIST; sizeatstart++) 
     	{
 		if (sizeatstart == 0) {
-			listpointer = (char *) GET(heap_listp + SEGLIST1);
+			listpointer = (char *) GET(freeList_start + SEGLIST1);
 			minimumblocksize = 0;
 			maximumblocksize = LIST1_LIMIT;
 		} else if (sizeatstart == 1) {
-			listpointer = (char *) GET(heap_listp + SEGLIST2);
+			listpointer = (char *) GET(freeList_start + SEGLIST2);
 			minimumblocksize = LIST1_LIMIT;
 			maximumblocksize = LIST2_LIMIT;
 		} else if (sizeatstart == 2) {
-			listpointer = (char *) GET(heap_listp + SEGLIST3);
+			listpointer = (char *) GET(freeList_start + SEGLIST3);
 			minimumblocksize = LIST2_LIMIT;
 			maximumblocksize = LIST3_LIMIT;
 		} else if (sizeatstart == 3) {
-			listpointer = (char *) GET(heap_listp + SEGLIST4);
+			listpointer = (char *) GET(freeList_start + SEGLIST4);
 			minimumblocksize = LIST3_LIMIT;
 			maximumblocksize = LIST4_LIMIT;
 		} else if (sizeatstart == 4) {
-			listpointer = (char *) GET(heap_listp + SEGLIST5);
+			listpointer = (char *) GET(freeList_start + SEGLIST5);
 			minimumblocksize = LIST4_LIMIT;
 			maximumblocksize = LIST5_LIMIT;
 		} else if (sizeatstart == 5) {
-			listpointer = (char *) GET(heap_listp + SEGLIST6);
+			listpointer = (char *) GET(freeList_start + SEGLIST6);
 			minimumblocksize = LIST5_LIMIT;
 			maximumblocksize = LIST6_LIMIT;
 		} else if (sizeatstart == 6) {
-			listpointer = (char *) GET(heap_listp + SEGLIST7);
+			listpointer = (char *) GET(freeList_start + SEGLIST7);
 			minimumblocksize = LIST6_LIMIT;
 			maximumblocksize = LIST7_LIMIT;
 		} else if (sizeatstart == 7) {
-			listpointer = (char *) GET(heap_listp + SEGLIST8);
+			listpointer = (char *) GET(freeList_start + SEGLIST8);
 			minimumblocksize = LIST7_LIMIT;
 			maximumblocksize = LIST8_LIMIT;
 		} else if (sizeatstart == 8) {
-			listpointer = (char *) GET(heap_listp + SEGLIST9);
+			listpointer = (char *) GET(freeList_start + SEGLIST9);
 			minimumblocksize = LIST8_LIMIT;
 			maximumblocksize = LIST9_LIMIT;
 		} else if (sizeatstart == 9) {
-			listpointer = (char *) GET(heap_listp + SEGLIST10);
+			listpointer = (char *) GET(freeList_start + SEGLIST10);
 			minimumblocksize = LIST9_LIMIT;
 			maximumblocksize = LIST10_LIMIT;
 		} else if (sizeatstart == 10) {
-			listpointer = (char *) GET(heap_listp + SEGLIST11);
+			listpointer = (char *) GET(freeList_start + SEGLIST11);
 			minimumblocksize = LIST10_LIMIT;
 			maximumblocksize = LIST11_LIMIT;
 		} else if (sizeatstart == 11) {
-			listpointer = (char *) GET(heap_listp + SEGLIST12);
+			listpointer = (char *) GET(freeList_start + SEGLIST12);
 			minimumblocksize = LIST11_LIMIT;
 			maximumblocksize = LIST12_LIMIT;
 		} else if (sizeatstart == 12) {
-			listpointer = (char *) GET(heap_listp + SEGLIST13);
+			listpointer = (char *) GET(freeList_start + SEGLIST13);
 			minimumblocksize = LIST12_LIMIT;
 			maximumblocksize = LIST13_LIMIT;
 		} else {
-			listpointer = (char *) GET(heap_listp + SEGLIST14);
+			listpointer = (char *) GET(freeList_start + SEGLIST14);
 			minimumblocksize = LIST13_LIMIT;
 			maximumblocksize = ~0;
 		}
