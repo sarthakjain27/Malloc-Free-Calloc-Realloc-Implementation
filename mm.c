@@ -159,6 +159,12 @@ static void write_footer(block_t *block, size_t size, bool alloc);
 static void write_header(block_t *block, size_t size, bool alloc);
 static size_t extract_size(word_t word);
 
+/* Read and write 8 bytes at address p */
+static size_t GET(char *p)
+{
+    return (*((size_t*) (p)));   
+}
+
 /*
  * max: returns x if x > y, and y otherwise.
  */
