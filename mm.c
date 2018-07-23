@@ -59,7 +59,7 @@ typedef uint64_t word_t;
 static const size_t wsize = sizeof(word_t);   // word and header size (bytes)
 static const size_t dsize = 2*wsize;          // double word size (bytes)
 static const size_t min_block_size = 2*dsize; // Minimum block size
-static const size_t chunksize = (224);    // requires (chunksize % 16 == 0)
+static const size_t CHUNKSIZE = 224;    // requires (chunksize % 16 == 0)
 
 static const word_t alloc_mask = 0x1;
 static const word_t size_mask = ~(word_t)0xF;
@@ -99,6 +99,7 @@ static const word_t size_mask = ~(word_t)0xF;
 #define LIST12_LIMIT     40960
 #define LIST13_LIMIT     81920
 
+#define TOTALLIST   14
 /* rounds up to the nearest multiple of ALIGNMENT */
 static size_t align(size_t x) {
     return ALIGNMENT * ((x+ALIGNMENT-1)/ALIGNMENT);
@@ -146,6 +147,39 @@ static size_t get_size(block_t *block);
 static size_t GET(char *p);
 static void *find_fit(size_t asize);
 static size_t get_payload_size(block_t *block);
+
+static size_t round_up(size_t size, size_t n);
+static word_t pack(size_t size, bool alloc);
+static void place(void *bp, size_t asize);
+static size_t MAX(size_t x, size_t y);
+static block_t *payload_to_header(void *bp);
+static void write_footer(block_t *block, size_t size, bool alloc);
+static void write_header(block_t *block, size_t size, bool alloc);
+
+/*
+ * max: returns x if x > y, and y otherwise.
+ */
+static size_t MAX(size_t x, size_t y)
+{
+    return (x > y) ? x : y;
+}
+
+/*
+ * round_up: Rounds size up to next multiple of n
+ */
+static size_t round_up(size_t size, size_t n)
+{
+    return (n * ((size + (n-1)) / n));
+}
+
+/*
+ * pack: returns a header reflecting a specified size and its alloc status.
+ *       If the block is allocated, the lowest bit is set to 1, and 0 otherwise.
+ */
+static word_t pack(size_t size, bool alloc)
+{
+    return alloc ? (size | alloc_mask) : size;
+}
 
 static void PUT(char *p,size_t val)
 {
@@ -266,7 +300,7 @@ void free (void *ptr) {
 /*
  * realloc
  */
-void *realloc(void *oldptr, size_t size) {
+void *realloc(void *ptr, size_t size) {
     block_t *block = payload_to_header(ptr);
     size_t copysize;
     void *newptr;
@@ -310,7 +344,7 @@ void *realloc(void *oldptr, size_t size) {
  * calloc
  * This function is not tested by mdriver
  */
-void *calloc (size_t nmemb, size_t size) {
+void *calloc (size_t elements, size_t size) {
     void *bp;
     size_t asize = elements * size;
 
@@ -371,6 +405,7 @@ static bool aligned(const void *p) {
 bool mm_checkheap(int lineno) {
 	printf("Printing Heap blocks \n");
 	block_t *i;
+	char *listpointer = NULL;
 	unsigned sizeatstart = 0;
 	for(i=heap_start;get_size(i) > 0; i = find_next(i))
 	{
