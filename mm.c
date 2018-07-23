@@ -145,6 +145,7 @@ static bool get_alloc(block_t *block);
 static size_t get_size(block_t *block);
 static size_t GET(char *p);
 static void *find_fit(size_t asize);
+static size_t get_payload_size(block_t *block);
 
 static void PUT(char *p,size_t val)
 {
@@ -256,9 +257,9 @@ void free (void *ptr) {
 
     printf("calling freeList_LIFO_insert in seglist \n");
 	/* Add free block to appropriate segregated list */
-	freeList_LIFO_insert((block_f *)ptr, size);
+	freeList_LIFO_insert((block_f *)block, size);
 	printf("Calling coalesce from free\n");
-	coalesce((block_t *)ptr);
+	coalesce((block_t *)block);
 	printf("Returned from coalesce in free \n");
 }
 
@@ -266,7 +267,43 @@ void free (void *ptr) {
  * realloc
  */
 void *realloc(void *oldptr, size_t size) {
-    return NULL;
+    block_t *block = payload_to_header(ptr);
+    size_t copysize;
+    void *newptr;
+
+    // If size == 0, then free block and return NULL
+    if (size == 0)
+    {
+        free(ptr);
+        return NULL;
+    }
+
+    // If ptr is NULL, then equivalent to malloc
+    if (ptr == NULL)
+    {
+        return malloc(size);
+    }
+
+    // Otherwise, proceed with reallocation
+    newptr = malloc(size);
+    // If malloc fails, the original block is left untouched
+    if (newptr == NULL)
+    {
+        return NULL;
+    }
+
+    // Copy the old data
+    copysize = get_payload_size(block); // gets size of old payload
+    if(size < copysize)
+    {
+        copysize = size;
+    }
+    memcpy(newptr, ptr, copysize);
+
+    // Free the old block
+    free(ptr);
+
+    return newptr;
 }
 
 /*
@@ -274,7 +311,22 @@ void *realloc(void *oldptr, size_t size) {
  * This function is not tested by mdriver
  */
 void *calloc (size_t nmemb, size_t size) {
+    void *bp;
+    size_t asize = elements * size;
+
+    if (asize/elements != size)
+    // Multiplication overflowed
     return NULL;
+    
+    bp = malloc(asize);
+    if (bp == NULL)
+    {
+        return NULL;
+    }
+    // Initialize all bits to 0
+    memset(bp, 0, asize);
+
+    return bp;
 }
 
 
@@ -317,7 +369,95 @@ static bool aligned(const void *p) {
  * mm_checkheap
  */
 bool mm_checkheap(int lineno) {
-    return true;
+	printf("Printing Heap blocks \n");
+	block_t *i;
+	unsigned sizeatstart = 0;
+	for(i=heap_start;get_size(i) > 0; i = find_next(i))
+	{
+		if(get_alloc(i))
+			printf("Heap Block %p size %zu\n",i,get_size(i));
+	}
+	for(i=heap_start;get_size(i) > 0; i = find_next(i))
+	{
+		if(!get_alloc(i))
+			printf("FreeList Block %p size %zu\n",i,get_size(i));
+	}
+	
+	/* Checking if all blocks in each freelist fall within
+	   the appropriate ranges (Different segregated lists) */
+	for (sizeatstart = 0; sizeatstart < TOTALLIST; sizeatstart++) 
+    	{
+		if (sizeatstart == 0) {
+			listpointer = (char *) GET(heap_listp + SEGLIST1);
+			minimumblocksize = 0;
+			maximumblocksize = LIST1_LIMIT;
+		} else if (sizeatstart == 1) {
+			listpointer = (char *) GET(heap_listp + SEGLIST2);
+			minimumblocksize = LIST1_LIMIT;
+			maximumblocksize = LIST2_LIMIT;
+		} else if (sizeatstart == 2) {
+			listpointer = (char *) GET(heap_listp + SEGLIST3);
+			minimumblocksize = LIST2_LIMIT;
+			maximumblocksize = LIST3_LIMIT;
+		} else if (sizeatstart == 3) {
+			listpointer = (char *) GET(heap_listp + SEGLIST4);
+			minimumblocksize = LIST3_LIMIT;
+			maximumblocksize = LIST4_LIMIT;
+		} else if (sizeatstart == 4) {
+			listpointer = (char *) GET(heap_listp + SEGLIST5);
+			minimumblocksize = LIST4_LIMIT;
+			maximumblocksize = LIST5_LIMIT;
+		} else if (sizeatstart == 5) {
+			listpointer = (char *) GET(heap_listp + SEGLIST6);
+			minimumblocksize = LIST5_LIMIT;
+			maximumblocksize = LIST6_LIMIT;
+		} else if (sizeatstart == 6) {
+			listpointer = (char *) GET(heap_listp + SEGLIST7);
+			minimumblocksize = LIST6_LIMIT;
+			maximumblocksize = LIST7_LIMIT;
+		} else if (sizeatstart == 7) {
+			listpointer = (char *) GET(heap_listp + SEGLIST8);
+			minimumblocksize = LIST7_LIMIT;
+			maximumblocksize = LIST8_LIMIT;
+		} else if (sizeatstart == 8) {
+			listpointer = (char *) GET(heap_listp + SEGLIST9);
+			minimumblocksize = LIST8_LIMIT;
+			maximumblocksize = LIST9_LIMIT;
+		} else if (sizeatstart == 9) {
+			listpointer = (char *) GET(heap_listp + SEGLIST10);
+			minimumblocksize = LIST9_LIMIT;
+			maximumblocksize = LIST10_LIMIT;
+		} else if (sizeatstart == 10) {
+			listpointer = (char *) GET(heap_listp + SEGLIST11);
+			minimumblocksize = LIST10_LIMIT;
+			maximumblocksize = LIST11_LIMIT;
+		} else if (sizeatstart == 11) {
+			listpointer = (char *) GET(heap_listp + SEGLIST12);
+			minimumblocksize = LIST11_LIMIT;
+			maximumblocksize = LIST12_LIMIT;
+		} else if (sizeatstart == 12) {
+			listpointer = (char *) GET(heap_listp + SEGLIST13);
+			minimumblocksize = LIST12_LIMIT;
+			maximumblocksize = LIST13_LIMIT;
+		} else {
+			listpointer = (char *) GET(heap_listp + SEGLIST14);
+			minimumblocksize = LIST13_LIMIT;
+			maximumblocksize = ~0;
+		}
+
+		while (listpointer != NULL) 
+        	{
+			if(!get_alloc((block_t *)listpointer))
+			{
+				if (!(minimumblocksize < get_size((block_t *)listpointer) && get_size((block_t *)listpointer) <= maximumblocksize)) 
+            			{
+					printf("Free block pointer %p is not in the appropriate list", listpointer);
+                			return false;
+				}
+			}
+			listpointer = find_next(listpointer);
+		}
+	}
 }
 
 static block_t *extend_heap(size_t size) 
@@ -762,6 +902,16 @@ static void *find(size_t sizeatstart, size_t actual_size)
          write_footer(block, csize, true);
      }
  }
+		    
+/*
+ * get_payload_size: returns the payload size of a given block, equal to
+ *                   the entire block size minus the header and footer sizes.
+ */
+static word_t get_payload_size(block_t *block)
+{
+    size_t asize = get_size(block);
+    return asize - dsize;
+}
 /*
  * get_size: returns the size of a given block by clearing the lowest 4 bits
  *           (as the heap is 16-byte aligned).
