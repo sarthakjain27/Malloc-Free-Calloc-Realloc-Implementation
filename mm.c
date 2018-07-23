@@ -415,6 +415,7 @@ bool mm_checkheap(int lineno) {
 	printf("Printing Heap blocks \n");
 	block_t *i;
 	char *listpointer = NULL;
+	char *prevlistpointer=NULL;
 	unsigned sizeatstart = 0;
 	unsigned minimumblocksize = 0;
 	unsigned maximumblocksize = 0;
@@ -428,11 +429,12 @@ bool mm_checkheap(int lineno) {
 		if(!get_alloc(i))
 			printf("FreeList Block %p size %zu\n",i,get_size(i));
 	}
-	
+	printf("All blocks printed now checking for each free block's range \n");	
 	/* Checking if all blocks in each freelist fall within
 	   the appropriate ranges (Different segregated lists) */
 	for (sizeatstart = 0; sizeatstart < TOTALLIST; sizeatstart++) 
     	{
+			printf("sizeatstart %d \n",sizeatstart);
 		if (sizeatstart == 0) {
 			listpointer = (char *) GET(freeList_start + SEGLIST1);
 			minimumblocksize = 0;
@@ -490,10 +492,11 @@ bool mm_checkheap(int lineno) {
 			minimumblocksize = LIST13_LIMIT;
 			maximumblocksize = ~0;
 		}
-
-		while (listpointer != NULL) 
+		
+		while (prevlistpointer!=listpointer && listpointer != NULL) 
         	{
-			if(!get_alloc((block_t *)listpointer))
+			printf("listpointer %p \n",listpointer);
+			if(!(get_alloc((block_t *)listpointer)))
 			{
 				if (!(minimumblocksize < get_size((block_t *)listpointer) && get_size((block_t *)listpointer) <= maximumblocksize)) 
             			{
@@ -501,6 +504,7 @@ bool mm_checkheap(int lineno) {
                 			return false;
 				}
 			}
+			prevlistpointer=listpointer;
 			listpointer = (char *)find_next((block_t *)listpointer);
 		}
 	}
