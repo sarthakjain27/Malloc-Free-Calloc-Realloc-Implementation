@@ -895,7 +895,7 @@ static void *find(size_t sizeatstart, size_t actual_size)
 		    {
 			break;
 		}
-		current_f = current_f->next_free;
+		current_f = (block_t *)(((block_f *)current_f)->next_free);
 	}
 	if(current!=NULL)
             printf("Current where block will fit %p size %zu \n",current,get_size(current_f));
