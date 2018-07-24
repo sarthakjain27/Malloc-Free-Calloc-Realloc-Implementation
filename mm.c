@@ -415,8 +415,8 @@ static bool aligned(const void *p) {
 bool mm_checkheap(int lineno) {
 	printf("Printing Heap blocks \n");
 	block_t *i;
+	block_f *f=NULL;
 	char *listpointer = NULL;
-	char *prevlistpointer=NULL;
 	unsigned sizeatstart = 0;
 	unsigned minimumblocksize = 0;
 	unsigned maximumblocksize = 0;
@@ -493,21 +493,20 @@ bool mm_checkheap(int lineno) {
 			minimumblocksize = LIST13_LIMIT;
 			maximumblocksize = ~0;
 		}
-		
-		while (prevlistpointer!=listpointer && listpointer != NULL) 
+		f=(block_f *)listpointer;
+		while (f != NULL) 
         	{
-			printf("listpointer %p \n",listpointer);
-			if(!(get_alloc((block_t *)listpointer)))
+			printf("f %p \n",listpointer);
+			if(!(get_alloc((block_t *)f)))
 			{
-				printf("listpointer %p is free \n",listpointer);
-				if (!(minimumblocksize < get_size((block_t *)listpointer) && get_size((block_t *)listpointer) <= maximumblocksize)) 
+				printf("f %p is free \n",f);
+				if (!(minimumblocksize < get_size((block_t *)f) && get_size((block_t *)f) <= maximumblocksize)) 
             			{
-					printf("Free block pointer %p is not in the appropriate list", listpointer);
+					printf("Free block pointer %p is not in the appropriate list", f);
                 			return false;
 				}
 			}
-			prevlistpointer=listpointer;
-			listpointer = (char *)find_next((block_t *)listpointer);
+			f=f->next_free;
 		}
 	}
 	return true;
