@@ -499,6 +499,7 @@ bool mm_checkheap(int lineno) {
 			printf("listpointer %p \n",listpointer);
 			if(!(get_alloc((block_t *)listpointer)))
 			{
+				printf("listpointer %p is free \n",listpointer);
 				if (!(minimumblocksize < get_size((block_t *)listpointer) && get_size((block_t *)listpointer) <= maximumblocksize)) 
             			{
 					printf("Free block pointer %p is not in the appropriate list", listpointer);
