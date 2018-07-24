@@ -71,19 +71,19 @@ static const word_t size_mask = ~(word_t)0xF;
 /* Variables used as offsets for
    segregated lists headers */
 #define SEGLIST1     0
-#define SEGLIST2     wsize
-#define SEGLIST3     2*wsize
-#define SEGLIST4     3*wsize
-#define SEGLIST5     4*wsize
-#define SEGLIST6     5*wsize
-#define SEGLIST7     6*wsize
-#define SEGLIST8     7*wsize
-#define SEGLIST9     8*wsize
-#define SEGLIST10    9*wsize
-#define SEGLIST11    10*wsize
-#define SEGLIST12    11*wsize
-#define SEGLIST13    12*wsize
-#define SEGLIST14    13*wsize
+#define SEGLIST2     dsize
+#define SEGLIST3     2*dsize
+#define SEGLIST4     3*dsize
+#define SEGLIST5     4*dsize
+#define SEGLIST6     5*dsize
+#define SEGLIST7     6*dsize
+#define SEGLIST8     7*dsize
+#define SEGLIST9     8*dsize
+#define SEGLIST10    9*dsize
+#define SEGLIST11    10*dsize
+#define SEGLIST12    11*dsize
+#define SEGLIST13    12*dsize
+#define SEGLIST14    13*dsize
 
 /* Maximum size limit of each list */
 #define LIST1_LIMIT      32
@@ -203,7 +203,7 @@ bool mm_init(void) {
     printf("mm_init called \n");
     
     printf("Initialising memory location for storing start pointers of seg list on heap \n");
-    freeList_start=(char *)(mem_sbrk(14*wsize));
+    freeList_start=(char *)(mem_sbrk(14*dsize));
     if (freeList_start == (void *)-1) 
     {
         return false;
@@ -270,16 +270,17 @@ void *malloc (size_t size) {
     printf("Calling find_fit\n");
 	/* Search through heap for possible fit */
 	if ((bp = find_fit(asize)) != NULL) {
-		place(bp, asize);	/* Actual assignment */
-		return bp;
+		place(bp, asize);
+		printf("Returning from malloc %p \n",bp+wsize);
+		return bp+wsize;
 	}
     printf("No fit found, calling extend heap \n");
 	/* If no fit, get more memory and allocate memory */
 	extendsize = MAX(asize, CHUNKSIZE);
 	if ((bp = extend_heap(extendsize)) == NULL)
 		return NULL;
-	place(bp, asize);		/* Assignment */
-	return bp;
+	place(bp, asize);		
+	return bp+wsize;
 }
 
 /*
@@ -513,7 +514,7 @@ bool mm_checkheap(int lineno) {
 
 static block_t *extend_heap(size_t size) 
 {
-    printf("Extend heap called with size %zu",size);
+    printf("Extend heap called with size %zu\n",size);
     void *bp;
 
     // Allocate an even number of words to maintain alignment
@@ -541,7 +542,7 @@ static block_t *extend_heap(size_t size)
     
     printf("Calling coalesce from extend_heap\n");
     // Coalesce in case the previous block was free
-    return coalesce(block);
+    return coalesce((block_t *)block);
 }
 
 /*
@@ -865,6 +866,7 @@ static void *find(size_t sizeatstart, size_t actual_size)
 	printf("Find called with sizeatstart %zu actual size %zu and freeList_start %p\n",sizeatstart,actual_size,freeList_start);
 	char *current = NULL;
     block_t *current_f=NULL;
+	block_f *current_free=NULL;
 	/* Finding which list to look into */
 	if (sizeatstart == 0)
 		current = (char *) GET(freeList_start + SEGLIST1);
@@ -901,17 +903,19 @@ static void *find(size_t sizeatstart, size_t actual_size)
 	/* Finding available free block in list */
 	while (current_f != NULL)
 	{
+		current_free=(block_f *)current_f;
+		printf("current_f %p current_free %p free's next %p its size %zu\n",current_f,current_free,current_free->next_free,get_size(current_f));
 		if (actual_size <= get_size(current_f))
 		    {
 			break;
 		}
-		current_f = (block_t *)(((block_f *)current_f)->next_free);
+		current_f = (block_t *)(current_free->next_free);
 	}
-	if(current!=NULL)
-            printf("Current where block will fit %p size %zu \n",current,get_size(current_f));
+	if(current_f!=NULL)
+            printf("Current where block will fit %p size %zu \n",current_f,get_size(current_f));
 	else 
             printf("Current is null \n");
-	return current;
+	return current_f;
 }
 
  static void place(void *bp, size_t asize)
@@ -930,7 +934,8 @@ static void *find(size_t sizeatstart, size_t actual_size)
          write_footer(block, asize, true);
          
          block_t *block_next=find_next(block);
-         write_header(block_next, csize-asize, false);
+         printf("Block_next %p\n",block_next);
+		 write_header(block_next, csize-asize, false);
          write_footer(block_next, csize-asize, false);
          
          freeList_LIFO_insert((block_f *)block_next,csize-asize);
@@ -1005,6 +1010,7 @@ static block_t *find_next(block_t *block)
  */
 static word_t *find_prev_footer(block_t *block)
 {
+	printf("find_prev footer called with block %p and its headwer address is %p an prev footer %p\n",block,&(block->header),((&(block->header))-1));
     // Compute previous footer position as one word before the header
     return (&(block->header)) - 1;
 }
@@ -1039,7 +1045,8 @@ static void write_header(block_t *block, size_t size, bool alloc)
  */
 static void write_footer(block_t *block, size_t size, bool alloc)
 {
-    word_t *footerp = (word_t *)((block->payload) + get_size(block) - dsize);
+    printf("write footer called with block %p, its footer is %p\n",block,((block->payload)+get_size(block)-dsize));
+	word_t *footerp = (word_t *)((block->payload) + get_size(block) - dsize);
     *footerp = pack(size, alloc);
 }
 
