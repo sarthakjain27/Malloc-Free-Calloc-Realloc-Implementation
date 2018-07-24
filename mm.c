@@ -200,9 +200,9 @@ static void PUT(char *p,size_t val)
  */
 bool mm_init(void) {
     // Create the initial empty heap 
-    printf("mm_init called \n");
+    //printf("mm_init called \n");
     
-    printf("Initialising memory location for storing start pointers of seg list on heap \n");
+    //printf("Initialising memory location for storing start pointers of seg list on heap \n");
     freeList_start=(char *)(mem_sbrk(14*dsize));
     if (freeList_start == (void *)-1) 
     {
@@ -225,7 +225,7 @@ bool mm_init(void) {
 	PUT(freeList_start + SEGLIST13, (size_t) NULL);
 	PUT(freeList_start + SEGLIST14, (size_t) NULL);
    
-    printf("FreeList_start initialised %p mem_heap_lo %p mem_heap_hi %p \n",freeList_start,mem_heap_lo(),mem_heap_hi());
+    //printf("FreeList_start initialised %p mem_heap_lo %p mem_heap_hi %p \n",freeList_start,mem_heap_lo(),mem_heap_hi());
     
     word_t *start = (word_t *)(mem_sbrk(2*wsize));
     if (start == (void *)-1) 
@@ -236,9 +236,9 @@ bool mm_init(void) {
     start[1] = pack(0, true); // Epilogue header
     // Heap starts with first "block header", currently the epilogue footer
     heap_start=(block_t *) &(start[1]);
-    printf("Heap_start initialised%p\n",heap_start);
+    //printf("Heap_start initialised%p\n",heap_start);
     
-    printf("Calling extend heap from mm_init \n");
+    //printf("Calling extend heap from mm_init \n");
     if (extend_heap(CHUNKSIZE) == NULL)
     {
         return false;
@@ -250,7 +250,7 @@ bool mm_init(void) {
  * malloc
  */
 void *malloc (size_t size) {
-    printf("Malloc called with size %zu\n",size);
+    //printf("Malloc called with size %zu\n",size);
     size_t asize, extendsize;;
     void *bp=NULL;
     if (heap_start == NULL) // Initialize heap if it isn't initialized
@@ -265,16 +265,16 @@ void *malloc (size_t size) {
     }
     // Adjust block size to include overhead and to meet alignment requirements
     asize = round_up(size + dsize, dsize);
-    printf("Size %zu Asize %zu\n",size,asize);
+    //printf("Size %zu Asize %zu\n",size,asize);
     
-    printf("Calling find_fit\n");
+    //printf("Calling find_fit\n");
 	/* Search through heap for possible fit */
 	if ((bp = find_fit(asize)) != NULL) {
 		place(bp, asize);
-		printf("Returning from malloc %p \n",bp+wsize);
+		//printf("Returning from malloc %p \n",bp+wsize);
 		return bp+wsize;
 	}
-    printf("No fit found, calling extend heap \n");
+    //printf("No fit found, calling extend heap \n");
 	/* If no fit, get more memory and allocate memory */
 	extendsize = MAX(asize, CHUNKSIZE);
 	if ((bp = extend_heap(extendsize)) == NULL)
@@ -287,24 +287,24 @@ void *malloc (size_t size) {
  * free
  */
 void free (void *ptr) {
-    printf("Free called %p\n",ptr);
+    //printf("Free called %p\n",ptr);
     if (ptr == NULL)
     {
         return;
     }
     block_t *block = payload_to_header(ptr);
-    printf("Free block pointer %p\n",block);
+    //printf("Free block pointer %p\n",block);
 	size_t size = get_size(block);
 
     write_header(block, size, false);
     write_footer(block, size, false);
 
-    printf("calling freeList_LIFO_insert in seglist \n");
+    //printf("calling freeList_LIFO_insert in seglist \n");
 	/* Add free block to appropriate segregated list */
 	freeList_LIFO_insert((block_f *)block, size);
-	printf("Calling coalesce from free\n");
+	//printf("Calling coalesce from free\n");
 	coalesce((block_t *)block);
-	printf("Returned from coalesce in free \n");
+	//printf("Returned from coalesce in free \n");
 }
 
 /*
@@ -514,7 +514,7 @@ bool mm_checkheap(int lineno) {
 
 static block_t *extend_heap(size_t size) 
 {
-    printf("Extend heap called with size %zu\n",size);
+    //printf("Extend heap called with size %zu\n",size);
     void *bp;
 
     // Allocate an even number of words to maintain alignment
@@ -528,19 +528,19 @@ static block_t *extend_heap(size_t size)
     block_t *block = payload_to_header(bp);
     write_header(block, size, false);
     write_footer(block, size, false);
-    printf("new extend heap block address %p size %zu and original bp %p\n",block,size,bp);
+    //printf("new extend heap block address %p size %zu and original bp %p\n",block,size,bp);
 	
-    printf("Calling freeList_LIFO_insert in extend heap \n");
+    //printf("Calling freeList_LIFO_insert in extend heap \n");
     /* Add to segregated list */
 	freeList_LIFO_insert((block_f *)block, size);
-	printf("Returned from freeList_LIFO_insert in extend heap \n");
+	//printf("Returned from freeList_LIFO_insert in extend heap \n");
     
     // Create new epilogue header
     block_t *block_next = find_next(block);
-    printf("new epilogue %p\n",block_next);
+    //printf("new epilogue %p\n",block_next);
     write_header(block_next, 0, true);
     
-    printf("Calling coalesce from extend_heap\n");
+    //printf("Calling coalesce from extend_heap\n");
     // Coalesce in case the previous block was free
     return coalesce((block_t *)block);
 }
@@ -550,7 +550,7 @@ static block_t *extend_heap(size_t size)
  */
 static block_t *coalesce(block_t * block) 
 {
-	printf("Coalesce called \n");
+	//printf("Coalesce called \n");
     block_t *block_next = find_next(block);
     block_t *block_prev = find_prev(block);
 
@@ -558,7 +558,7 @@ static block_t *coalesce(block_t * block)
     block_f *block_next_free=(block_f *)block_next;
     block_f *block_prev_free=(block_f *)block_prev;
    	
-	printf("block_free %p block_f_next %p block_p_next %p\n",block_free,block_next_free,block_prev_free);
+	//printf("block_free %p block_f_next %p block_p_next %p\n",block_free,block_next_free,block_prev_free);
  
     bool prev_alloc = extract_alloc(*(find_prev_footer(block)));
     bool next_alloc = get_alloc(block_next);
@@ -566,13 +566,13 @@ static block_t *coalesce(block_t * block)
 
     if (prev_alloc && next_alloc)              // Case 1
     {
-	    printf("Case 1 entered \n");
+	    //printf("Case 1 entered \n");
 		return block;
     }
 
     else if (prev_alloc && !next_alloc)        // Case 2
     {
-	    printf("Case 2 entered \n");
+	    //printf("Case 2 entered \n");
         
         freeList_del(block_free,size);
 	    freeList_del(block_next_free,get_size(block_next));
@@ -580,14 +580,14 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next);
         write_header(block, size, false);
         write_footer(block, size, false);
-	    printf("block %p size %zu\n",block,block->header);
+	    //printf("block %p size %zu\n",block,block->header);
         freeList_LIFO_insert(block_free,size);
 	    
     }
 
     else if (!prev_alloc && next_alloc)        // Case 3
     {
-	    printf("Case 3 entered \n");
+	    //printf("Case 3 entered \n");
         
         freeList_del(block_free,size);
 	    freeList_del(block_prev_free,get_size(block_prev));
@@ -595,7 +595,7 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
-        printf("block %p size %zu\n",block_prev,block_prev->header);    
+        //printf("block %p size %zu\n",block_prev,block_prev->header);    
 	    
 	    freeList_LIFO_insert(block_prev_free,get_size(block_prev));
 	        
@@ -604,7 +604,7 @@ static block_t *coalesce(block_t * block)
 
     else                                        // Case 4
     {
-	    printf("Case 4 entered \n");
+	    //printf("Case 4 entered \n");
         
         freeList_del(block_free,size);
         freeList_del(block_next_free,get_size(block_next));
@@ -613,19 +613,19 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next) + get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
-		printf("block %p sze %zu \n",block_prev,block_prev->header);
+		//printf("block %p sze %zu \n",block_prev,block_prev->header);
 	    
 	    freeList_LIFO_insert(block_prev_free,get_size(block_prev));
 	    
         block=block_prev;
     }
-	printf("Returning from coalesce \n");
+	//printf("Returning from coalesce \n");
     return block;
 }
 
 static void freeList_LIFO_insert(block_f *block,size_t size)
 {
-    printf("FreeList_LIFO_insert called with block %p and size %zu \n",block,size);
+    //printf("FreeList_LIFO_insert called with block %p and size %zu \n",block,size);
     
 	/* Address of head of a particular list */
 	char *listhead;
@@ -690,22 +690,22 @@ static void freeList_LIFO_insert(block_f *block,size_t size)
 		listhead = (char *) GET(segstart);
 	}
 	
-	printf("Seg start %p listhead %p \n",segstart,listhead);
+	//printf("Seg start %p listhead %p \n",segstart,listhead);
     
     // if there are no blocks in the list
     if(listhead==NULL)
     {
-        printf("If of freeList_lifo_insert \n");
+        //printf("If of freeList_lifo_insert \n");
         //set current block as head
         PUT(segstart,(size_t)(block));
-        printf("segstart %p size %zu \n", segstart, (size_t)block);
+        //printf("segstart %p size %zu \n", segstart, (size_t)block);
         block->prev_free=NULL;
         block->next_free=NULL;
     }
     //there are blocks in the list
     else
     {
-        printf("Else of freeList_lifo_insert \n");
+        //printf("Else of freeList_lifo_insert \n");
         block_f * listhead_blockf=(block_f *)listhead;
         
         block->next_free=listhead_blockf;
@@ -713,7 +713,7 @@ static void freeList_LIFO_insert(block_f *block,size_t size)
         
         //set current block as head
         PUT(segstart, (size_t) block);
-		printf("segstart %p size %zu \n", segstart, (size_t)block);
+		//printf("segstart %p size %zu \n", segstart, (size_t)block);
         
         block->prev_free=NULL;
     }
@@ -721,10 +721,10 @@ static void freeList_LIFO_insert(block_f *block,size_t size)
 
 static void freeList_del(block_f *block,size_t size)
 {
-	printf("freeList_del called for block %p and size %zu \n",block,size);
+	//printf("freeList_del called for block %p and size %zu \n",block,size);
 	if(block->prev_free==NULL) //at start of freeList
 	{
-		printf("block at start of freelist\n");
+		//printf("block at start of freelist\n");
 		
         if (size <= LIST1_LIMIT)
 			PUT(freeList_start + SEGLIST1, (size_t) (block->next_free));
@@ -760,12 +760,12 @@ static void freeList_del(block_f *block,size_t size)
 	}
 	else if(block->next_free==NULL) //Last block of freeList
 	{
-        printf("it is last block in its list \n");
+        //printf("it is last block in its list \n");
 		block->prev_free->next_free=NULL;
 	}
 	else //in middle of freeList
 	{
-	    printf("in Middle of its list\n");
+	    //printf("in Middle of its list\n");
 		block->prev_free->next_free=block->next_free;
 		block->next_free->prev_free=block->prev_free;
 	}
@@ -774,7 +774,7 @@ static void freeList_del(block_f *block,size_t size)
 
 static void *find_fit(size_t asize)
 {
-	printf("Find_fit called with asize %zu\n",asize);
+	//printf("Find_fit called with asize %zu\n",asize);
 	size_t sizeatstart;
 	char *bp = NULL;
 
@@ -850,7 +850,7 @@ static void *find_fit(size_t asize)
 			return bp;
 		}
 	}
-	printf("All if else failed in find_fit \n");
+	//printf("All if else failed in find_fit \n");
 	return bp;
 }
 
@@ -863,7 +863,7 @@ static void *find_fit(size_t asize)
  */
 static void *find(size_t sizeatstart, size_t actual_size)
 {
-	printf("Find called with sizeatstart %zu actual size %zu and freeList_start %p\n",sizeatstart,actual_size,freeList_start);
+	//printf("Find called with sizeatstart %zu actual size %zu and freeList_start %p\n",sizeatstart,actual_size,freeList_start);
 	char *current = NULL;
     block_t *current_f=NULL;
 	block_f *current_free=NULL;
@@ -898,13 +898,13 @@ static void *find(size_t sizeatstart, size_t actual_size)
 		current = (char *) GET(freeList_start + SEGLIST14);
 
     current_f=(block_t *)current;
-	printf("Current value current %p current_f %p \n",current,current_f);
+	//printf("Current value current %p current_f %p \n",current,current_f);
 
 	/* Finding available free block in list */
 	while (current_f != NULL)
 	{
 		current_free=(block_f *)current_f;
-		printf("current_f %p current_free %p free's next %p its size %zu\n",current_f,current_free,current_free->next_free,get_size(current_f));
+		//printf("current_f %p current_free %p free's next %p its size %zu\n",current_f,current_free,current_free->next_free,get_size(current_f));
 		if (actual_size <= get_size(current_f))
 		    {
 			break;
@@ -912,29 +912,29 @@ static void *find(size_t sizeatstart, size_t actual_size)
 		current_f = (block_t *)(current_free->next_free);
 	}
 	if(current_f!=NULL)
-            printf("Current where block will fit %p size %zu \n",current_f,get_size(current_f));
+            //printf("Current where block will fit %p size %zu \n",current_f,get_size(current_f));
 	else 
-            printf("Current is null \n");
+            //printf("Current is null \n");
 	return current_f;
 }
 
  static void place(void *bp, size_t asize)
  {
      block_t * block=(block_t *)bp;
-     printf("Place called with bp %p and asize %zu\n",bp,asize);
+     //printf("Place called with bp %p and asize %zu\n",bp,asize);
      size_t csize = get_size(block);
-     printf("Asize %zu Csize %zu\n",asize,csize);
+     //printf("Asize %zu Csize %zu\n",asize,csize);
     
      freeList_del((block_f *)block,csize);
      
      if ((csize - asize) >= min_block_size)
      {
-         printf("If entered of place \n");	
+         //printf("If entered of place \n");	
          write_header(block, asize, true);
          write_footer(block, asize, true);
          
          block_t *block_next=find_next(block);
-         printf("Block_next %p\n",block_next);
+         //printf("Block_next %p\n",block_next);
 		 write_header(block_next, csize-asize, false);
          write_footer(block_next, csize-asize, false);
          
@@ -1010,7 +1010,7 @@ static block_t *find_next(block_t *block)
  */
 static word_t *find_prev_footer(block_t *block)
 {
-	printf("find_prev footer called with block %p and its headwer address is %p an prev footer %p\n",block,&(block->header),((&(block->header))-1));
+	//printf("find_prev footer called with block %p and its headwer address is %p an prev footer %p\n",block,&(block->header),((&(block->header))-1));
     // Compute previous footer position as one word before the header
     return (&(block->header)) - 1;
 }
@@ -1045,7 +1045,7 @@ static void write_header(block_t *block, size_t size, bool alloc)
  */
 static void write_footer(block_t *block, size_t size, bool alloc)
 {
-    printf("write footer called with block %p, its footer is %p\n",block,((block->payload)+get_size(block)-dsize));
+    //printf("write footer called with block %p, its footer is %p\n",block,((block->payload)+get_size(block)-dsize));
 	word_t *footerp = (word_t *)((block->payload) + get_size(block) - dsize);
     *footerp = pack(size, alloc);
 }
