@@ -267,7 +267,7 @@ bool mm_init(void) {
  * malloc
  */
 void *malloc (size_t size) {
-    //printf("Malloc called with size %zu\n",size);
+    dbg_printf("Malloc called with size %zu\n",size);
     size_t asize, extendsize;;
     void *bp=NULL;
     if (heap_start == NULL) // Initialize heap if it isn't initialized
@@ -284,11 +284,11 @@ void *malloc (size_t size) {
     asize = round_up(size + dsize, dsize);
     dbg_printf("Size %zu Asize %zu\n",size,asize);
     
-    dbg_printf("Calling find_fit\n");
+    //dbg_printf("Calling find_fit\n");
 	/* Search through heap for possible fit */
 	if ((bp = find_fit(asize)) != NULL) {
 		place(bp, asize);
-		dbg_printf("Returning from malloc %p \n",bp+wsize);
+		//dbg_printf("Returning from malloc %p \n",bp+wsize);
 		return bp+wsize;
 	}
     dbg_printf("No fit found, calling extend heap \n");
@@ -310,19 +310,19 @@ void free (void *ptr) {
         return;
     }
     block_t *block = payload_to_header(ptr);
-    dbg_printf("Free block pointer %p\n",block);
+    //dbg_printf("Free block pointer %p\n",block);
 	size_t size = get_size(block);
 
     write_header(block, size, false);
     write_footer(block, size, false);
 
-    dbg_printf("calling freeList_FIFO_insert in seglist \n");
+    //dbg_printf("calling freeList_FIFO_insert in seglist \n");
 	/* Add free block to appropriate segregated list */
 	//freeList_LIFO_insert((block_f *)block, size);
 	freeList_FIFO_insert((block_f *)block, size);
-	dbg_printf("Calling coalesce from free\n");
+	//dbg_printf("Calling coalesce from free\n");
 	coalesce((block_t *)block);
-	dbg_printf("Returned from coalesce in free \n");
+	//dbg_printf("Returned from coalesce in free \n");
 }
 
 /*
@@ -514,7 +514,6 @@ bool mm_checkheap(int lineno) {
 		f=(block_f *)listpointer;
 		while (f != NULL) 
         	{
-			printf("f %p \n",listpointer);
 			if(!(get_alloc((block_t *)f)))
 			{
 				printf("f %p is free \n",f);
@@ -548,7 +547,7 @@ static block_t *extend_heap(size_t size)
     write_footer(block, size, false);
     dbg_printf("new extend heap block address %p size %zu and original bp %p\n",block,size,bp);
 	
-    dbg_printf("Calling freeList_FIFO_insert in extend heap \n");
+    //dbg_printf("Calling freeList_FIFO_insert in extend heap \n");
     /* Add to segregated list */
 	//freeList_LIFO_insert((block_f *)block, size);
 	freeList_FIFO_insert((block_f *)block, size);
@@ -559,7 +558,7 @@ static block_t *extend_heap(size_t size)
     dbg_printf("new epilogue %p\n",block_next);
     write_header(block_next, 0, true);
     
-    dbg_printf("Calling coalesce from extend_heap\n");
+    //dbg_printf("Calling coalesce from extend_heap\n");
     // Coalesce in case the previous block was free
     return coalesce((block_t *)block);
 }
@@ -577,7 +576,7 @@ static block_t *coalesce(block_t * block)
     block_f *block_next_free=(block_f *)block_next;
     block_f *block_prev_free=(block_f *)block_prev;
    	
-	dbg_printf("block_free %p block_f_next %p block_p_next %p\n",block_free,block_next_free,block_prev_free);
+    dbg_printf("block_free %p block_f_next %p block_p_next %p\n",block_free,block_next_free,block_prev_free);
  
     bool prev_alloc = extract_alloc(*(find_prev_footer(block)));
     bool next_alloc = get_alloc(block_next);
@@ -599,7 +598,7 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next);
         write_header(block, size, false);
         write_footer(block, size, false);
-	    dbg_printf("block %p size %zu\n",block,block->header);
+	    //dbg_printf("block %p size %zu\n",block,block->header);
         //freeList_LIFO_insert(block_free,size);
 	    freeList_FIFO_insert(block_free,size);
     }
@@ -614,7 +613,7 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
-        dbg_printf("block %p size %zu\n",block_prev,block_prev->header);    
+      	//dbg_printf("block %p size %zu\n",block_prev,block_prev->header);    
 	    
 	    //freeList_LIFO_insert(block_prev_free,get_size(block_prev));
 	    freeList_FIFO_insert(block_prev_free,get_size(block_prev));
@@ -633,7 +632,7 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_next) + get_size(block_prev);
         write_header(block_prev, size, false);
         write_footer(block_prev, size, false);
-		dbg_printf("block %p sze %zu \n",block_prev,block_prev->header);
+		//dbg_printf("block %p sze %zu \n",block_prev,block_prev->header);
 	    
 	    //freeList_LIFO_insert(block_prev_free,get_size(block_prev));
 	    freeList_FIFO_insert(block_prev_free,get_size(block_prev));
@@ -823,14 +822,14 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
         	//set current block as head
         	PUT(segstart,(size_t)(block));
 		PUT(segend,(size_t)(block));
-        	//printf("segstart %p size %zu \n", segstart, (size_t)block);
+        	dbg_printf("segstart %p segend size %zu \n", segstart, segend,(size_t)block);
         	block->prev_free=NULL;
         	block->next_free=NULL;
     	}
 	else
 	{
 		dbg_printf("Else of fifo insert \n");
-       	block_f * listend_blockf=(block_f *)listend;
+       		block_f * listend_blockf=(block_f *)listend;
 		dbg_printf("listend_blockf %p \n",listend_blockf);
 		block->prev_free=listend_blockf;
 		block->next_free=NULL;
@@ -1108,16 +1107,16 @@ static void *find(size_t sizeatstart, size_t actual_size)
 	while (current_f != NULL)
 	{
 		current_free=(block_f *)current_f;
-		dbg_printf("current_f %p current_free %p free's next %p its size %zu\n",current_f,current_free,current_free->next_free,get_size(current_f));
+		//dbg_printf("current_f %p current_free %p free's next %p its size %zu\n",current_f,current_free,current_free->next_free,get_size(current_f));
 		if (actual_size <= get_size(current_f))
 		    {
 			break;
 		}
 		current_f = (block_t *)(current_free->next_free);
 	}
-	//if(current_f!=NULL)
-            //dbg_printf("Current where block will fit %p size %zu \n",current_f,get_size(current_f));
-	//else 
+	if(current_f!=NULL)
+            dbg_printf("Current where block will fit %p size %zu \n",current_f,get_size(current_f));
+	else 
             dbg_printf("Current is null \n");
 	return current_f;
 }
@@ -1125,9 +1124,8 @@ static void *find(size_t sizeatstart, size_t actual_size)
  static void place(void *bp, size_t asize)
  {
      block_t * block=(block_t *)bp;
-     dbg_printf("Place called with bp %p and asize %zu\n",bp,asize);
      size_t csize = get_size(block);
-     dbg_printf("Asize %zu Csize %zu\n",asize,csize);
+     dbg_printf("place called with bp %p Asize %zu Csize %zu\n",bp,asize,csize);
     
      freeList_del((block_f *)block,csize);
      
@@ -1215,7 +1213,7 @@ static block_t *find_next(block_t *block)
  */
 static word_t *find_prev_footer(block_t *block)
 {
-	dbg_printf("find_prev footer called with block %p and its headwer address is %p an prev footer %p\n",block,&(block->header),((&(block->header))-1));
+	//dbg_printf("find_prev footer called with block %p and its headwer address is %p an prev footer %p\n",block,&(block->header),((&(block->header))-1));
     // Compute previous footer position as one word before the header
     return (&(block->header)) - 1;
 }
@@ -1250,7 +1248,7 @@ static void write_header(block_t *block, size_t size, bool alloc)
  */
 static void write_footer(block_t *block, size_t size, bool alloc)
 {
-    dbg_printf("write footer called with block %p, its footer is %p\n",block,((block->payload)+get_size(block)-dsize));
+    //dbg_printf("write footer called with block %p, its footer is %p\n",block,((block->payload)+get_size(block)-dsize));
 	word_t *footerp = (word_t *)((block->payload) + get_size(block) - dsize);
     *footerp = pack(size, alloc);
 }
