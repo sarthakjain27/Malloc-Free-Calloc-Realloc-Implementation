@@ -61,7 +61,7 @@
 typedef uint64_t word_t;
 static const size_t wsize = sizeof(word_t);   // word and header size (bytes)
 static const size_t dsize = 2*wsize;          // double word size (bytes)
-static const size_t min_block_size = 2*dsize; // Minimum block size
+static const size_t min_block_size = 24; // Minimum block size
 static const size_t CHUNKSIZE = 224;    // requires (chunksize % 16 == 0)
 
 static const word_t alloc_mask = 0x1;
@@ -88,21 +88,23 @@ static const word_t size_mask = ~(word_t)0xF;
 #define SEGLIST14    13*dsize
 
 /* Maximum size limit of each list */
-#define LIST1_LIMIT      32
-#define LIST2_LIMIT      64
-#define LIST3_LIMIT      96
-#define LIST4_LIMIT      128
-#define LIST5_LIMIT      160
-#define LIST6_LIMIT      640
-#define LIST7_LIMIT      1280
-#define LIST8_LIMIT      2560
-#define LIST9_LIMIT      5120
-#define LIST10_LIMIT     10240
-#define LIST11_LIMIT     20480
-#define LIST12_LIMIT     40960
-#define LIST13_LIMIT     81920
+#define LIST1_LIMIT      24
+#define LIST2_LIMIT      48
+#define LIST3_LIMIT      72
+#define LIST4_LIMIT      96
+#define LIST5_LIMIT      120
+#define LIST6_LIMIT      480
+#define LIST7_LIMIT      960
+#define LIST8_LIMIT      1920
+#define LIST9_LIMIT      3840
+#define LIST10_LIMIT     7680
+#define LIST11_LIMIT     15360
+#define LIST12_LIMIT     30720
+#define LIST13_LIMIT     61440
 
 #define TOTALLIST   14
+#define CURRENTALLOCATED   1
+#define PREVIOUSALLOCATED  2
 /* rounds up to the nearest multiple of ALIGNMENT */
 static size_t align(size_t x) {
     return ALIGNMENT * ((x+ALIGNMENT-1)/ALIGNMENT);
@@ -145,7 +147,8 @@ static void freeList_LIFO_insert(block_f *block,size_t size);
 static void freeList_FIFO_insert(block_f *block,size_t size);
 static void freeList_del(block_f *block,size_t size);
 static bool extract_alloc(word_t header);
-static bool get_alloc(block_t *block);
+static size_t get_alloc(block_t *block);
+static size_t GET_PREV_ALLOC(block_t *block);
 
 static size_t get_size(block_t *block);
 static size_t GET(char *p);
@@ -155,7 +158,7 @@ static void *find(size_t sizeatstart, size_t actual_size);
 static size_t get_payload_size(block_t *block);
 
 static size_t round_up(size_t size, size_t n);
-static word_t pack(size_t size, bool alloc);
+static word_t pack(size_t size, size_t alloc);
 static void place(void *bp, size_t asize);
 static size_t MAX(size_t x, size_t y);
 static block_t *payload_to_header(void *bp);
@@ -167,6 +170,11 @@ static size_t extract_size(word_t word);
 static size_t GET(char *p)
 {
     return (*((size_t*) (p)));   
+}
+
+static size_t GET_PREV_ALLOC(block_t *block)
+{
+	return ((*(block)) & 0x2);	
 }
 
 /*
@@ -189,9 +197,9 @@ static size_t round_up(size_t size, size_t n)
  * pack: returns a header reflecting a specified size and its alloc status.
  *       If the block is allocated, the lowest bit is set to 1, and 0 otherwise.
  */
-static word_t pack(size_t size, bool alloc)
+static word_t pack(size_t size, size_t alloc)
 {
-    return alloc ? (size | alloc_mask) : size;
+    return (size | alloc);
 }
 
 static void PUT(char *p,size_t val)
@@ -252,8 +260,8 @@ bool mm_init(void) {
     {
         return false;
     }
-    start[0] = pack(0, true); // Prologue footer
-    start[1] = pack(0, true); // Epilogue header
+    start[0] = pack(0, 1); // Prologue footer
+    start[1] = pack(0, PREVIOUSALLOCATED | CURRENTALLOCATED); // Epilogue header
     // Heap starts with first "block header", currently the epilogue footer
     heap_start=(block_t *) &(start[1]);
     dbg_printf("Heap_start initialised%p\n",heap_start);
@@ -316,9 +324,9 @@ void free (void *ptr) {
     //dbg_printf("Free block pointer %p\n",block);
 	size_t size = get_size(block);
 
-    write_header(block, size, false);
-    write_footer(block, size, false);
-
+    write_header(block, size, GET_PREV_ALLOC(block));
+    write_footer(block, size, GET_PREV_ALLOC(block));
+    
     //dbg_printf("calling freeList_FIFO_insert in seglist \n");
 	/* Add free block to appropriate segregated list */
 	//freeList_LIFO_insert((block_f *)block, size);
@@ -546,8 +554,8 @@ static block_t *extend_heap(size_t size)
     
     // Initialize free block header/footer 
     block_t *block = payload_to_header(bp);
-    write_header(block, size, false);
-    write_footer(block, size, false);
+    write_header(block, size, GET_PREV_ALLOC(block));
+    write_footer(block, size, GET_PREV_ALLOC(block));
     dbg_printf("new extend heap block address %p size %zu and original bp %p\n",block,size,bp);
 	
     //dbg_printf("Calling freeList_FIFO_insert in extend heap \n");
@@ -559,7 +567,7 @@ static block_t *extend_heap(size_t size)
     // Create new epilogue header
     block_t *block_next = find_next(block);
     dbg_printf("new epilogue %p\n",block_next);
-    write_header(block_next, 0, true);
+    write_header(block_next, 0, 1);
     
     //dbg_printf("Calling coalesce from extend_heap\n");
     // Coalesce in case the previous block was free
@@ -581,8 +589,8 @@ static block_t *coalesce(block_t * block)
    	
     dbg_printf("block_free %p block_f_next %p block_p_next %p\n",block_free,block_next_free,block_prev_free);
  
-    bool prev_alloc = extract_alloc(*(find_prev_footer(block)));
-    bool next_alloc = get_alloc(block_next);
+    size_t prev_alloc = GET_PREV_ALLOC(block);
+    size_t next_alloc = get_alloc(block_next);
     size_t size = get_size(block);
 
     if (prev_alloc && next_alloc)              // Case 1
@@ -599,8 +607,8 @@ static block_t *coalesce(block_t * block)
 	    freeList_del(block_next_free,get_size(block_next));
 	    
         size += get_size(block_next);
-        write_header(block, size, false);
-        write_footer(block, size, false);
+        write_header(block, size, prev_alloc);
+        write_footer(block, size, prev_alloc);
 	    //dbg_printf("block %p size %zu\n",block,block->header);
         //freeList_LIFO_insert(block_free,size);
 	    freeList_FIFO_insert(block_free,size);
@@ -614,8 +622,9 @@ static block_t *coalesce(block_t * block)
 	    freeList_del(block_prev_free,get_size(block_prev));
         
         size += get_size(block_prev);
-        write_header(block_prev, size, false);
-        write_footer(block_prev, size, false);
+	write_header(block_prev, size, GET_PREV_ALLOC(block_prev));
+        write_footer(block_prev, size, GET_PREV_ALLOC(block_prev));
+	write_header(block_next,get_size(block_next),1)
       	//dbg_printf("block %p size %zu\n",block_prev,block_prev->header);    
 	    
 	    //freeList_LIFO_insert(block_prev_free,get_size(block_prev));
@@ -633,8 +642,8 @@ static block_t *coalesce(block_t * block)
 	    freeList_del(block_prev_free,get_size(block_prev));
         
         size += get_size(block_next) + get_size(block_prev);
-        write_header(block_prev, size, false);
-        write_footer(block_prev, size, false);
+        write_header(block_prev, size, GET_PREV_ALLOC(block_prev));
+        write_footer(block_prev, size, GET_PREV_ALLOC(block_prev));
 		//dbg_printf("block %p sze %zu \n",block_prev,block_prev->header);
 	    
 	    //freeList_LIFO_insert(block_prev_free,get_size(block_prev));
@@ -1217,21 +1226,21 @@ static void *find_best(size_t sizeatstart, size_t actual_size)
      if ((csize - asize) >= min_block_size)
      {
          dbg_printf("If entered of place \n");	
-         write_header(block, asize, true);
-         write_footer(block, asize, true);
+         write_header(block, asize, (GET_PREV_ALLOC(block) | CURRENTALLOCATED));
+         //write_footer(block, asize, true);
          
          block_t *block_next=find_next(block);
          dbg_printf("Block_next %p\n",block_next);
-		 write_header(block_next, csize-asize, false);
-         write_footer(block_next, csize-asize, false);
+	 write_header(block_next, csize-asize, PREVIOUSALLOCATED);
+         write_footer(block_next, csize-asize, PREVIOUSALLOCATED);
          
          //freeList_LIFO_insert((block_f *)block_next,csize-asize);
 	 freeList_FIFO_insert((block_f *)block_next,csize-asize);
      }
      else
      {
-         write_header(block, csize, true);
-         write_footer(block, csize, true);
+         write_header(block, csize, (GET_PREV_ALLOC(block) | CURRENTALLOCATED));
+         write_footer(block, csize, (GET_PREV_ALLOC(block) | CURRENTALLOCATED));
      }
  }
 		    
@@ -1262,22 +1271,14 @@ static size_t get_size(block_t *block)
     return extract_size(block->header);
 }
 
-/*
- * extract_alloc: returns the allocation status of a given header value based
- *                on the header specification above.
- */
-static bool extract_alloc(word_t word)
-{
-    return (bool)(word & alloc_mask);
-}
 
 /*
  * get_alloc: returns true when the block is allocated based on the
  *            block header's lowest bit, and false otherwise.
  */
-static bool get_alloc(block_t *block)
+static size_t get_alloc(block_t *block)
 {
-    return extract_alloc(block->header);
+    return ((*(block)) & 0x1);
 }
 
 /*
@@ -1320,7 +1321,7 @@ static block_t *find_prev(block_t *block)
  * write_header: given a block and its size and allocation status,
  *               writes an appropriate value to the block header.
  */
-static void write_header(block_t *block, size_t size, bool alloc)
+static void write_header(block_t *block, size_t size, size_t alloc)
 {
     block->header = pack(size, alloc);
 }
@@ -1331,7 +1332,7 @@ static void write_header(block_t *block, size_t size, bool alloc)
  *               writes an appropriate value to the block footer by first
  *               computing the position of the footer.
  */
-static void write_footer(block_t *block, size_t size, bool alloc)
+static void write_footer(block_t *block, size_t size, size_t alloc)
 {
     //dbg_printf("write footer called with block %p, its footer is %p\n",block,((block->payload)+get_size(block)-dsize));
 	word_t *footerp = (word_t *)((block->payload) + get_size(block) - dsize);
