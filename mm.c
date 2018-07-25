@@ -606,7 +606,7 @@ static block_t *coalesce(block_t * block)
 
     else if (!prev_alloc && next_alloc)        // Case 3
     {
-	    printf("Case 3 entered \n");
+	    dbg_printf("Case 3 entered \n");
         
         freeList_del(block_free,size);
 	    freeList_del(block_prev_free,get_size(block_prev));
@@ -1115,10 +1115,10 @@ static void *find(size_t sizeatstart, size_t actual_size)
 		}
 		current_f = (block_t *)(current_free->next_free);
 	}
-	if(current_f!=NULL)
-            printf("Current where block will fit %p size %zu \n",current_f,get_size(current_f));
-	else 
-            printf("Current is null \n");
+	//if(current_f!=NULL)
+            //dbg_printf("Current where block will fit %p size %zu \n",current_f,get_size(current_f));
+	//else 
+            dbg_printf("Current is null \n");
 	return current_f;
 }
 
