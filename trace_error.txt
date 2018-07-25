@@ -1,23 +1,18 @@
 Found benchmark throughput 13056 for cpu type Intel(R)Xeon(R)CPUE5520@2.27GHz, benchmark regular
 
 Throughput targets: min=6528, max=11750, benchmark=13056
-
-Testing mm malloc
-Reading tracefile: traces/bdd-aa32.rep
-Checking mm_malloc for correctness, mm_init called 
+mm_init called 
 Initialising memory location for storing start pointers of seg list on heap 
-FreeList_start initialised 0x800000000 mem_heap_lo 0x800000000 mem_heap_hi 0x8000000df 
+FreeList_start initialised 0x800000000 FreeList_end 0x800000008 mem_heap_lo 0x800000000 mem_heap_hi 0x8000000df 
 Heap_start initialised0x8000000e8
 Calling extend heap from mm_init 
 Extend heap called with size 224
 write footer called with block 0x8000000e8, its footer is 0x8000001c0
 new extend heap block address 0x8000000e8 size 224 and original bp 0x8000000f0
-Calling freeList_LIFO_insert in extend heap 
-FreeList_LIFO_insert called with block 0x8000000e8 and size 224 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359738600 
-Returned from freeList_LIFO_insert in extend heap 
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x8000000e8 and size 224 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
 new epilogue 0x8000001c8
 Calling coalesce from extend_heap
 Coalesce called 
@@ -25,26 +20,6 @@ find_prev footer called with block 0x8000000e8 and its headwer address is 0x8000
 block_free 0x8000000e8 block_f_next 0x8000001c8 block_p_next 0x8000000e8
 find_prev footer called with block 0x8000000e8 and its headwer address is 0x8000000e8 an prev footer 0x8000000e0
 Case 1 entered 
-Printing Heap blocks 
-FreeList Block 0x8000000e8 size 224
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-sizeatstart 2 
-sizeatstart 3 
-sizeatstart 4 
-sizeatstart 5 
-listpointer 0x8000000e8 
-listpointer 0x8000001c8 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 24
 Size 24 Asize 48
 Calling find_fit
 Find_fit called with asize 48
@@ -72,32 +47,9 @@ If entered of place
 write footer called with block 0x8000000e8, its footer is 0x800000110
 Block_next 0x800000118
 write footer called with block 0x800000118, its footer is 0x8000001c0
-FreeList_LIFO_insert called with block 0x800000118 and size 176 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359738648 
+freelist_fifo entered with blck pointer 0x800000118 and size 176 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
 Returning from malloc 0x8000000f0 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-FreeList Block 0x800000118 size 176
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-sizeatstart 2 
-sizeatstart 3 
-sizeatstart 4 
-sizeatstart 5 
-listpointer 0x800000118 
-listpointer 0x8000001c8 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 208
 Size 208 Asize 224
 Calling find_fit
 Find_fit called with asize 224
@@ -106,7 +58,8 @@ Current value current 0x800000118 current_f 0x800000118
 current_f 0x800000118 current_free 0x800000118 free's next (nil) its size 176
 Current is null 
 Find called with sizeatstart 6 actual size 224 and freeList_start 0x800000000
-Current value current (nil) current_f (nil) 
+Current value current 0x800000118 current_f 0x800000118 
+current_f 0x800000118 current_free 0x800000118 free's next (nil) its size 176
 Current is null 
 Find called with sizeatstart 7 actual size 224 and freeList_start 0x800000000
 Current value current (nil) current_f (nil) 
@@ -134,12 +87,11 @@ No fit found, calling extend heap
 Extend heap called with size 224
 write footer called with block 0x8000001c8, its footer is 0x8000002a0
 new extend heap block address 0x8000001c8 size 224 and original bp 0x8000001d0
-Calling freeList_LIFO_insert in extend heap 
-FreeList_LIFO_insert called with block 0x8000001c8 and size 224 
-Seg start 0x800000050 listhead 0x800000118 
-Else of freeList_lifo_insert 
-segstart 0x800000050 size 34359738824 
-Returned from freeList_LIFO_insert in extend heap 
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x8000001c8 and size 224 
+segstart 0x800000028 segend 0x800000030 listend 0x800000118Else of fifo insert 
+listend_blockf 0x800000118 
+Returned from freeList_FIFO_insert in extend heap 
 new epilogue 0x8000002a8
 Calling coalesce from extend_heap
 Coalesce called 
@@ -148,15 +100,13 @@ block_free 0x8000001c8 block_f_next 0x8000002a8 block_p_next 0x800000118
 find_prev footer called with block 0x8000001c8 and its headwer address is 0x8000001c8 an prev footer 0x8000001c0
 Case 3 entered 
 freeList_del called for block 0x8000001c8 and size 224 
-block at start of freelist
+it is last block in its list 
 freeList_del called for block 0x800000118 and size 176 
 block at start of freelist
 write footer called with block 0x800000118, its footer is 0x8000002a0
 block 0x800000118 size 400
-FreeList_LIFO_insert called with block 0x800000118 and size 400 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359738648 
+freelist_fifo entered with blck pointer 0x800000118 and size 400 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
 Returning from coalesce 
 Place called with bp 0x800000118 and asize 224
 Asize 224 Csize 400
@@ -166,32 +116,8 @@ If entered of place
 write footer called with block 0x800000118, its footer is 0x8000001f0
 Block_next 0x8000001f8
 write footer called with block 0x8000001f8, its footer is 0x8000002a0
-FreeList_LIFO_insert called with block 0x8000001f8 and size 176 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359738872 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-FreeList Block 0x8000001f8 size 176
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-sizeatstart 2 
-sizeatstart 3 
-sizeatstart 4 
-sizeatstart 5 
-listpointer 0x8000001f8 
-listpointer 0x8000002a8 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 64
+freelist_fifo entered with blck pointer 0x8000001f8 and size 176 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
 Size 64 Asize 80
 Calling find_fit
 Find_fit called with asize 80
@@ -216,34 +142,9 @@ If entered of place
 write footer called with block 0x8000001f8, its footer is 0x800000240
 Block_next 0x800000248
 write footer called with block 0x800000248, its footer is 0x8000002a0
-FreeList_LIFO_insert called with block 0x800000248 and size 96 
-Seg start 0x800000020 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000020 size 34359738952 
+freelist_fifo entered with blck pointer 0x800000248 and size 96 
+segstart 0x800000010 segend 0x800000018 listend (nil)If of freeList_fifo_insert 
 Returning from malloc 0x800000200 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-Heap Block 0x8000001f8 size 80
-FreeList Block 0x800000248 size 96
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-sizeatstart 2 
-listpointer 0x800000248 
-listpointer 0x8000002a8 
-sizeatstart 3 
-sizeatstart 4 
-sizeatstart 5 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 472
 Size 472 Asize 496
 Calling find_fit
 Find_fit called with asize 496
@@ -279,12 +180,10 @@ No fit found, calling extend heap
 Extend heap called with size 496
 write footer called with block 0x8000002a8, its footer is 0x800000490
 new extend heap block address 0x8000002a8 size 496 and original bp 0x8000002b0
-Calling freeList_LIFO_insert in extend heap 
-FreeList_LIFO_insert called with block 0x8000002a8 and size 496 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359739048 
-Returned from freeList_LIFO_insert in extend heap 
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x8000002a8 and size 496 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
 new epilogue 0x800000498
 Calling coalesce from extend_heap
 Coalesce called 
@@ -298,10 +197,8 @@ freeList_del called for block 0x800000248 and size 96
 block at start of freelist
 write footer called with block 0x800000248, its footer is 0x800000490
 block 0x800000248 size 592
-FreeList_LIFO_insert called with block 0x800000248 and size 592 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359738952 
+freelist_fifo entered with blck pointer 0x800000248 and size 592 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
 Returning from coalesce 
 Place called with bp 0x800000248 and asize 496
 Asize 496 Csize 592
@@ -311,34 +208,8 @@ If entered of place
 write footer called with block 0x800000248, its footer is 0x800000430
 Block_next 0x800000438
 write footer called with block 0x800000438, its footer is 0x800000490
-FreeList_LIFO_insert called with block 0x800000438 and size 96 
-Seg start 0x800000020 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000020 size 34359739448 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-Heap Block 0x8000001f8 size 80
-Heap Block 0x800000248 size 496
-FreeList Block 0x800000438 size 96
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-sizeatstart 2 
-listpointer 0x800000438 
-listpointer 0x800000498 
-sizeatstart 3 
-sizeatstart 4 
-sizeatstart 5 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 64
+freelist_fifo entered with blck pointer 0x800000438 and size 96 
+segstart 0x800000010 segend 0x800000018 listend (nil)If of freeList_fifo_insert 
 Size 64 Asize 80
 Calling find_fit
 Find_fit called with asize 80
@@ -352,28 +223,6 @@ freeList_del called for block 0x800000438 and size 96
 block at start of freelist
 write footer called with block 0x800000438, its footer is 0x800000490
 Returning from malloc 0x800000440 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-Heap Block 0x8000001f8 size 80
-Heap Block 0x800000248 size 496
-Heap Block 0x800000438 size 96
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-sizeatstart 2 
-sizeatstart 3 
-sizeatstart 4 
-sizeatstart 5 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 472
 Size 472 Asize 496
 Calling find_fit
 Find_fit called with asize 496
@@ -409,12 +258,10 @@ No fit found, calling extend heap
 Extend heap called with size 496
 write footer called with block 0x800000498, its footer is 0x800000680
 new extend heap block address 0x800000498 size 496 and original bp 0x8000004a0
-Calling freeList_LIFO_insert in extend heap 
-FreeList_LIFO_insert called with block 0x800000498 and size 496 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359739544 
-Returned from freeList_LIFO_insert in extend heap 
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800000498 and size 496 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
 new epilogue 0x800000688
 Calling coalesce from extend_heap
 Coalesce called 
@@ -427,29 +274,6 @@ Asize 496 Csize 496
 freeList_del called for block 0x800000498 and size 496 
 block at start of freelist
 write footer called with block 0x800000498, its footer is 0x800000680
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-Heap Block 0x8000001f8 size 80
-Heap Block 0x800000248 size 496
-Heap Block 0x800000438 size 96
-Heap Block 0x800000498 size 496
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-sizeatstart 2 
-sizeatstart 3 
-sizeatstart 4 
-sizeatstart 5 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 64
 Size 64 Asize 80
 Calling find_fit
 Find_fit called with asize 80
@@ -494,12 +318,10 @@ No fit found, calling extend heap
 Extend heap called with size 224
 write footer called with block 0x800000688, its footer is 0x800000760
 new extend heap block address 0x800000688 size 224 and original bp 0x800000690
-Calling freeList_LIFO_insert in extend heap 
-FreeList_LIFO_insert called with block 0x800000688 and size 224 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359740040 
-Returned from freeList_LIFO_insert in extend heap 
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800000688 and size 224 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
 new epilogue 0x800000768
 Calling coalesce from extend_heap
 Coalesce called 
@@ -515,42 +337,14 @@ If entered of place
 write footer called with block 0x800000688, its footer is 0x8000006d0
 Block_next 0x8000006d8
 write footer called with block 0x8000006d8, its footer is 0x800000760
-FreeList_LIFO_insert called with block 0x8000006d8 and size 144 
-Seg start 0x800000040 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000040 size 34359740120 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-Heap Block 0x8000001f8 size 80
-Heap Block 0x800000248 size 496
-Heap Block 0x800000438 size 96
-Heap Block 0x800000498 size 496
-Heap Block 0x800000688 size 80
-FreeList Block 0x8000006d8 size 144
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-sizeatstart 2 
-sizeatstart 3 
-sizeatstart 4 
-listpointer 0x8000006d8 
-listpointer 0x800000768 
-sizeatstart 5 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 472
+freelist_fifo entered with blck pointer 0x8000006d8 and size 144 
+segstart 0x800000020 segend 0x800000028 listend (nil)If of freeList_fifo_insert 
 Size 472 Asize 496
 Calling find_fit
 Find_fit called with asize 496
 Find called with sizeatstart 5 actual size 496 and freeList_start 0x800000000
-Current value current (nil) current_f (nil) 
+Current value current 0x8000006d8 current_f 0x8000006d8 
+current_f 0x8000006d8 current_free 0x8000006d8 free's next (nil) its size 144
 Current is null 
 Find called with sizeatstart 6 actual size 496 and freeList_start 0x800000000
 Current value current (nil) current_f (nil) 
@@ -581,12 +375,10 @@ No fit found, calling extend heap
 Extend heap called with size 496
 write footer called with block 0x800000768, its footer is 0x800000950
 new extend heap block address 0x800000768 size 496 and original bp 0x800000770
-Calling freeList_LIFO_insert in extend heap 
-FreeList_LIFO_insert called with block 0x800000768 and size 496 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359740264 
-Returned from freeList_LIFO_insert in extend heap 
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800000768 and size 496 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
 new epilogue 0x800000958
 Calling coalesce from extend_heap
 Coalesce called 
@@ -600,10 +392,8 @@ freeList_del called for block 0x8000006d8 and size 144
 block at start of freelist
 write footer called with block 0x8000006d8, its footer is 0x800000950
 block 0x8000006d8 size 640
-FreeList_LIFO_insert called with block 0x8000006d8 and size 640 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359740120 
+freelist_fifo entered with blck pointer 0x8000006d8 and size 640 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
 Returning from coalesce 
 Place called with bp 0x8000006d8 and asize 496
 Asize 496 Csize 640
@@ -613,38 +403,8 @@ If entered of place
 write footer called with block 0x8000006d8, its footer is 0x8000008c0
 Block_next 0x8000008c8
 write footer called with block 0x8000008c8, its footer is 0x800000950
-FreeList_LIFO_insert called with block 0x8000008c8 and size 144 
-Seg start 0x800000040 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000040 size 34359740616 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-Heap Block 0x8000001f8 size 80
-Heap Block 0x800000248 size 496
-Heap Block 0x800000438 size 96
-Heap Block 0x800000498 size 496
-Heap Block 0x800000688 size 80
-Heap Block 0x8000006d8 size 496
-FreeList Block 0x8000008c8 size 144
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-sizeatstart 2 
-sizeatstart 3 
-sizeatstart 4 
-listpointer 0x8000008c8 
-listpointer 0x800000958 
-sizeatstart 5 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 64
+freelist_fifo entered with blck pointer 0x8000008c8 and size 144 
+segstart 0x800000020 segend 0x800000028 listend (nil)If of freeList_fifo_insert 
 Size 64 Asize 80
 Calling find_fit
 Find_fit called with asize 80
@@ -666,40 +426,9 @@ If entered of place
 write footer called with block 0x8000008c8, its footer is 0x800000910
 Block_next 0x800000918
 write footer called with block 0x800000918, its footer is 0x800000950
-FreeList_LIFO_insert called with block 0x800000918 and size 64 
-Seg start 0x800000010 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000010 size 34359740696 
+freelist_fifo entered with blck pointer 0x800000918 and size 64 
+segstart 0x800000008 segend 0x800000010 listend (nil)If of freeList_fifo_insert 
 Returning from malloc 0x8000008d0 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-Heap Block 0x8000001f8 size 80
-Heap Block 0x800000248 size 496
-Heap Block 0x800000438 size 96
-Heap Block 0x800000498 size 496
-Heap Block 0x800000688 size 80
-Heap Block 0x8000006d8 size 496
-Heap Block 0x8000008c8 size 80
-FreeList Block 0x800000918 size 64
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-listpointer 0x800000918 
-listpointer 0x800000958 
-sizeatstart 2 
-sizeatstart 3 
-sizeatstart 4 
-sizeatstart 5 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 472
 Size 472 Asize 496
 Calling find_fit
 Find_fit called with asize 496
@@ -735,12 +464,10 @@ No fit found, calling extend heap
 Extend heap called with size 496
 write footer called with block 0x800000958, its footer is 0x800000b40
 new extend heap block address 0x800000958 size 496 and original bp 0x800000960
-Calling freeList_LIFO_insert in extend heap 
-FreeList_LIFO_insert called with block 0x800000958 and size 496 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359740760 
-Returned from freeList_LIFO_insert in extend heap 
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800000958 and size 496 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
 new epilogue 0x800000b48
 Calling coalesce from extend_heap
 Coalesce called 
@@ -754,10 +481,8 @@ freeList_del called for block 0x800000918 and size 64
 block at start of freelist
 write footer called with block 0x800000918, its footer is 0x800000b40
 block 0x800000918 size 560
-FreeList_LIFO_insert called with block 0x800000918 and size 560 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359740696 
+freelist_fifo entered with blck pointer 0x800000918 and size 560 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
 Returning from coalesce 
 Place called with bp 0x800000918 and asize 496
 Asize 496 Csize 560
@@ -767,45 +492,14 @@ If entered of place
 write footer called with block 0x800000918, its footer is 0x800000b00
 Block_next 0x800000b08
 write footer called with block 0x800000b08, its footer is 0x800000b40
-FreeList_LIFO_insert called with block 0x800000b08 and size 64 
-Seg start 0x800000010 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000010 size 34359741192 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-Heap Block 0x8000001f8 size 80
-Heap Block 0x800000248 size 496
-Heap Block 0x800000438 size 96
-Heap Block 0x800000498 size 496
-Heap Block 0x800000688 size 80
-Heap Block 0x8000006d8 size 496
-Heap Block 0x8000008c8 size 80
-Heap Block 0x800000918 size 496
-FreeList Block 0x800000b08 size 64
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-listpointer 0x800000b08 
-listpointer 0x800000b48 
-sizeatstart 2 
-sizeatstart 3 
-sizeatstart 4 
-sizeatstart 5 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 64
+freelist_fifo entered with blck pointer 0x800000b08 and size 64 
+segstart 0x800000008 segend 0x800000010 listend (nil)If of freeList_fifo_insert 
 Size 64 Asize 80
 Calling find_fit
 Find_fit called with asize 80
 Find called with sizeatstart 2 actual size 80 and freeList_start 0x800000000
-Current value current (nil) current_f (nil) 
+Current value current 0x800000b08 current_f 0x800000b08 
+current_f 0x800000b08 current_free 0x800000b08 free's next (nil) its size 64
 Current is null 
 Find called with sizeatstart 3 actual size 80 and freeList_start 0x800000000
 Current value current (nil) current_f (nil) 
@@ -845,12 +539,10 @@ No fit found, calling extend heap
 Extend heap called with size 224
 write footer called with block 0x800000b48, its footer is 0x800000c20
 new extend heap block address 0x800000b48 size 224 and original bp 0x800000b50
-Calling freeList_LIFO_insert in extend heap 
-FreeList_LIFO_insert called with block 0x800000b48 and size 224 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359741256 
-Returned from freeList_LIFO_insert in extend heap 
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800000b48 and size 224 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
 new epilogue 0x800000c28
 Calling coalesce from extend_heap
 Coalesce called 
@@ -864,10 +556,8 @@ freeList_del called for block 0x800000b08 and size 64
 block at start of freelist
 write footer called with block 0x800000b08, its footer is 0x800000c20
 block 0x800000b08 size 288
-FreeList_LIFO_insert called with block 0x800000b08 and size 288 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359741192 
+freelist_fifo entered with blck pointer 0x800000b08 and size 288 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
 Returning from coalesce 
 Place called with bp 0x800000b08 and asize 80
 Asize 80 Csize 288
@@ -877,41 +567,8 @@ If entered of place
 write footer called with block 0x800000b08, its footer is 0x800000b50
 Block_next 0x800000b58
 write footer called with block 0x800000b58, its footer is 0x800000c20
-FreeList_LIFO_insert called with block 0x800000b58 and size 208 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359741272 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-Heap Block 0x8000001f8 size 80
-Heap Block 0x800000248 size 496
-Heap Block 0x800000438 size 96
-Heap Block 0x800000498 size 496
-Heap Block 0x800000688 size 80
-Heap Block 0x8000006d8 size 496
-Heap Block 0x8000008c8 size 80
-Heap Block 0x800000918 size 496
-Heap Block 0x800000b08 size 80
-FreeList Block 0x800000b58 size 208
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-sizeatstart 2 
-sizeatstart 3 
-sizeatstart 4 
-sizeatstart 5 
-listpointer 0x800000b58 
-listpointer 0x800000c28 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 472
+freelist_fifo entered with blck pointer 0x800000b58 and size 208 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
 Size 472 Asize 496
 Calling find_fit
 Find_fit called with asize 496
@@ -920,7 +577,8 @@ Current value current 0x800000b58 current_f 0x800000b58
 current_f 0x800000b58 current_free 0x800000b58 free's next (nil) its size 208
 Current is null 
 Find called with sizeatstart 6 actual size 496 and freeList_start 0x800000000
-Current value current (nil) current_f (nil) 
+Current value current 0x800000b58 current_f 0x800000b58 
+current_f 0x800000b58 current_free 0x800000b58 free's next (nil) its size 208
 Current is null 
 Find called with sizeatstart 7 actual size 496 and freeList_start 0x800000000
 Current value current (nil) current_f (nil) 
@@ -948,12 +606,11 @@ No fit found, calling extend heap
 Extend heap called with size 496
 write footer called with block 0x800000c28, its footer is 0x800000e10
 new extend heap block address 0x800000c28 size 496 and original bp 0x800000c30
-Calling freeList_LIFO_insert in extend heap 
-FreeList_LIFO_insert called with block 0x800000c28 and size 496 
-Seg start 0x800000050 listhead 0x800000b58 
-Else of freeList_lifo_insert 
-segstart 0x800000050 size 34359741480 
-Returned from freeList_LIFO_insert in extend heap 
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800000c28 and size 496 
+segstart 0x800000028 segend 0x800000030 listend 0x800000b58Else of fifo insert 
+listend_blockf 0x800000b58 
+Returned from freeList_FIFO_insert in extend heap 
 new epilogue 0x800000e18
 Calling coalesce from extend_heap
 Coalesce called 
@@ -962,15 +619,13 @@ block_free 0x800000c28 block_f_next 0x800000e18 block_p_next 0x800000b58
 find_prev footer called with block 0x800000c28 and its headwer address is 0x800000c28 an prev footer 0x800000c20
 Case 3 entered 
 freeList_del called for block 0x800000c28 and size 496 
-block at start of freelist
+it is last block in its list 
 freeList_del called for block 0x800000b58 and size 208 
 block at start of freelist
 write footer called with block 0x800000b58, its footer is 0x800000e10
 block 0x800000b58 size 704
-FreeList_LIFO_insert called with block 0x800000b58 and size 704 
-Seg start 0x800000060 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000060 size 34359741272 
+freelist_fifo entered with blck pointer 0x800000b58 and size 704 
+segstart 0x800000030 segend 0x800000038 listend (nil)If of freeList_fifo_insert 
 Returning from coalesce 
 Place called with bp 0x800000b58 and asize 496
 Asize 496 Csize 704
@@ -980,42 +635,8 @@ If entered of place
 write footer called with block 0x800000b58, its footer is 0x800000d40
 Block_next 0x800000d48
 write footer called with block 0x800000d48, its footer is 0x800000e10
-FreeList_LIFO_insert called with block 0x800000d48 and size 208 
-Seg start 0x800000050 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000050 size 34359741768 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-Heap Block 0x8000001f8 size 80
-Heap Block 0x800000248 size 496
-Heap Block 0x800000438 size 96
-Heap Block 0x800000498 size 496
-Heap Block 0x800000688 size 80
-Heap Block 0x8000006d8 size 496
-Heap Block 0x8000008c8 size 80
-Heap Block 0x800000918 size 496
-Heap Block 0x800000b08 size 80
-Heap Block 0x800000b58 size 496
-FreeList Block 0x800000d48 size 208
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-sizeatstart 2 
-sizeatstart 3 
-sizeatstart 4 
-sizeatstart 5 
-listpointer 0x800000d48 
-listpointer 0x800000e18 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 24
+freelist_fifo entered with blck pointer 0x800000d48 and size 208 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
 Size 24 Asize 48
 Calling find_fit
 Find_fit called with asize 48
@@ -1043,44 +664,9 @@ If entered of place
 write footer called with block 0x800000d48, its footer is 0x800000d70
 Block_next 0x800000d78
 write footer called with block 0x800000d78, its footer is 0x800000e10
-FreeList_LIFO_insert called with block 0x800000d78 and size 160 
-Seg start 0x800000040 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000040 size 34359741816 
+freelist_fifo entered with blck pointer 0x800000d78 and size 160 
+segstart 0x800000020 segend 0x800000028 listend (nil)If of freeList_fifo_insert 
 Returning from malloc 0x800000d50 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-Heap Block 0x8000001f8 size 80
-Heap Block 0x800000248 size 496
-Heap Block 0x800000438 size 96
-Heap Block 0x800000498 size 496
-Heap Block 0x800000688 size 80
-Heap Block 0x8000006d8 size 496
-Heap Block 0x8000008c8 size 80
-Heap Block 0x800000918 size 496
-Heap Block 0x800000b08 size 80
-Heap Block 0x800000b58 size 496
-Heap Block 0x800000d48 size 48
-FreeList Block 0x800000d78 size 160
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-sizeatstart 2 
-sizeatstart 3 
-sizeatstart 4 
-listpointer 0x800000d78 
-listpointer 0x800000e18 
-sizeatstart 5 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 5
 Size 5 Asize 32
 Calling find_fit
 Find_fit called with asize 32
@@ -1108,45 +694,9 @@ If entered of place
 write footer called with block 0x800000d78, its footer is 0x800000d90
 Block_next 0x800000d98
 write footer called with block 0x800000d98, its footer is 0x800000e10
-FreeList_LIFO_insert called with block 0x800000d98 and size 128 
-Seg start 0x800000030 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000030 size 34359741848 
+freelist_fifo entered with blck pointer 0x800000d98 and size 128 
+segstart 0x800000018 segend 0x800000020 listend (nil)If of freeList_fifo_insert 
 Returning from malloc 0x800000d80 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-Heap Block 0x8000001f8 size 80
-Heap Block 0x800000248 size 496
-Heap Block 0x800000438 size 96
-Heap Block 0x800000498 size 496
-Heap Block 0x800000688 size 80
-Heap Block 0x8000006d8 size 496
-Heap Block 0x8000008c8 size 80
-Heap Block 0x800000918 size 496
-Heap Block 0x800000b08 size 80
-Heap Block 0x800000b58 size 496
-Heap Block 0x800000d48 size 48
-Heap Block 0x800000d78 size 32
-FreeList Block 0x800000d98 size 128
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-sizeatstart 2 
-sizeatstart 3 
-listpointer 0x800000d98 
-listpointer 0x800000e18 
-sizeatstart 4 
-sizeatstart 5 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
-Malloc called with size 24
 Size 24 Asize 48
 Calling find_fit
 Find_fit called with asize 48
@@ -1168,53 +718,16 @@ If entered of place
 write footer called with block 0x800000d98, its footer is 0x800000dc0
 Block_next 0x800000dc8
 write footer called with block 0x800000dc8, its footer is 0x800000e10
-FreeList_LIFO_insert called with block 0x800000dc8 and size 80 
-Seg start 0x800000020 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000020 size 34359741896 
+freelist_fifo entered with blck pointer 0x800000dc8 and size 80 
+segstart 0x800000010 segend 0x800000018 listend (nil)If of freeList_fifo_insert 
 Returning from malloc 0x800000da0 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-Heap Block 0x8000001f8 size 80
-Heap Block 0x800000248 size 496
-Heap Block 0x800000438 size 96
-Heap Block 0x800000498 size 496
-Heap Block 0x800000688 size 80
-Heap Block 0x8000006d8 size 496
-Heap Block 0x8000008c8 size 80
-Heap Block 0x800000918 size 496
-Heap Block 0x800000b08 size 80
-Heap Block 0x800000b58 size 496
-Heap Block 0x800000d48 size 48
-Heap Block 0x800000d78 size 32
-Heap Block 0x800000d98 size 48
-FreeList Block 0x800000dc8 size 80
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-sizeatstart 2 
-listpointer 0x800000dc8 
-listpointer 0x800000e18 
-sizeatstart 3 
-sizeatstart 4 
-sizeatstart 5 
-sizeatstart 6 
-sizeatstart 7 
-sizeatstart 8 
-sizeatstart 9 
-sizeatstart 10 
-sizeatstart 11 
-sizeatstart 12 
-sizeatstart 13 
 Free called 0x800000d50
 Free block pointer 0x800000d48
 write footer called with block 0x800000d48, its footer is 0x800000d70
-calling freeList_LIFO_insert in seglist 
-FreeList_LIFO_insert called with block 0x800000d48 and size 48 
-Seg start 0x800000010 listhead (nil) 
-If of freeList_lifo_insert 
-segstart 0x800000010 size 34359741768 
+calling freeList_FIFO_insert in seglist 
+freelist_fifo entered with blck pointer 0x800000d48 and size 48 
+segstart 0x800000008 segend 0x800000010 listend 0x800000dc8Else of fifo insert 
+listend_blockf 0x800000dc8 
 Calling coalesce from free
 Coalesce called 
 find_prev footer called with block 0x800000d48 and its headwer address is 0x800000d48 an prev footer 0x800000d40
@@ -1222,35 +735,1546 @@ block_free 0x800000d48 block_f_next 0x800000d78 block_p_next 0x800000b58
 find_prev footer called with block 0x800000d48 and its headwer address is 0x800000d48 an prev footer 0x800000d40
 Case 1 entered 
 Returned from coalesce in free 
-Printing Heap blocks 
-Heap Block 0x8000000e8 size 48
-Heap Block 0x800000118 size 224
-Heap Block 0x8000001f8 size 80
-Heap Block 0x800000248 size 496
-Heap Block 0x800000438 size 96
-Heap Block 0x800000498 size 496
-Heap Block 0x800000688 size 80
-Heap Block 0x8000006d8 size 496
-Heap Block 0x8000008c8 size 80
-Heap Block 0x800000918 size 496
-Heap Block 0x800000b08 size 80
-Heap Block 0x800000b58 size 496
-Heap Block 0x800000d78 size 32
-Heap Block 0x800000d98 size 48
-FreeList Block 0x800000d48 size 48
-FreeList Block 0x800000dc8 size 80
-All blocks printed now checking for each free block's range 
-sizeatstart 0 
-sizeatstart 1 
-listpointer 0x800000d48 
-listpointer 0x800000d78 
-listpointer 0x800000d98 
-listpointer 0x800000dc8 
-Free block pointer 0x800000dc8 is not in the appropriate listERROR [trace ./traces/bdd-aa32.rep, line 21]: mm_checkheap returned false
-
-
-
-correctness check finished, by running tracefile "traces/bdd-aa32.rep".
- => incorrect.
-
-Terminated with 1 errors
+Size 24 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current 0x800000d48 current_f 0x800000d48 
+current_f 0x800000d48 current_free 0x800000d48 free's next (nil) its size 48
+Current where block will fit 0x800000d48 size 48 
+Place called with bp 0x800000d48 and asize 48
+Asize 48 Csize 48
+freeList_del called for block 0x800000d48 and size 48 
+it is last block in its list 
+write footer called with block 0x800000d48, its footer is 0x800000d70
+Returning from malloc 0x800000d50 
+Size 4 Asize 32
+Calling find_fit
+Find_fit called with asize 32
+Find called with sizeatstart 0 actual size 32 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 1 actual size 32 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 32 and freeList_start 0x800000000
+Current value current 0x800000dc8 current_f 0x800000dc8 
+current_f 0x800000dc8 current_free 0x800000dc8 free's next (nil) its size 80
+Current where block will fit 0x800000dc8 size 80 
+Place called with bp 0x800000dc8 and asize 32
+Asize 32 Csize 80
+freeList_del called for block 0x800000dc8 and size 80 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800000dc8, its footer is 0x800000de0
+Block_next 0x800000de8
+write footer called with block 0x800000de8, its footer is 0x800000e10
+freelist_fifo entered with blck pointer 0x800000de8 and size 48 
+segstart 0x800000008 segend 0x800000010 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x800000dd0 
+Size 24 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current 0x800000de8 current_f 0x800000de8 
+current_f 0x800000de8 current_free 0x800000de8 free's next (nil) its size 48
+Current where block will fit 0x800000de8 size 48 
+Place called with bp 0x800000de8 and asize 48
+Asize 48 Csize 48
+freeList_del called for block 0x800000de8 and size 48 
+block at start of freelist
+write footer called with block 0x800000de8, its footer is 0x800000e10
+Returning from malloc 0x800000df0 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 6 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 7 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 8 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 9 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 10 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 11 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 12 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 13 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap called with size 224
+write footer called with block 0x800000e18, its footer is 0x800000ef0
+new extend heap block address 0x800000e18 size 224 and original bp 0x800000e20
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800000e18 and size 224 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
+new epilogue 0x800000ef8
+Calling coalesce from extend_heap
+Coalesce called 
+find_prev footer called with block 0x800000e18 and its headwer address is 0x800000e18 an prev footer 0x800000e10
+block_free 0x800000e18 block_f_next 0x800000ef8 block_p_next 0x800000de8
+find_prev footer called with block 0x800000e18 and its headwer address is 0x800000e18 an prev footer 0x800000e10
+Case 1 entered 
+Place called with bp 0x800000e18 and asize 48
+Asize 48 Csize 224
+freeList_del called for block 0x800000e18 and size 224 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800000e18, its footer is 0x800000e40
+Block_next 0x800000e48
+write footer called with block 0x800000e48, its footer is 0x800000ef0
+freelist_fifo entered with blck pointer 0x800000e48 and size 176 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 48 and freeList_start 0x800000000
+Current value current 0x800000e48 current_f 0x800000e48 
+current_f 0x800000e48 current_free 0x800000e48 free's next (nil) its size 176
+Current where block will fit 0x800000e48 size 176 
+Place called with bp 0x800000e48 and asize 48
+Asize 48 Csize 176
+freeList_del called for block 0x800000e48 and size 176 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800000e48, its footer is 0x800000e70
+Block_next 0x800000e78
+write footer called with block 0x800000e78, its footer is 0x800000ef0
+freelist_fifo entered with blck pointer 0x800000e78 and size 128 
+segstart 0x800000018 segend 0x800000020 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x800000e50 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current 0x800000e78 current_f 0x800000e78 
+current_f 0x800000e78 current_free 0x800000e78 free's next (nil) its size 128
+Current where block will fit 0x800000e78 size 128 
+Place called with bp 0x800000e78 and asize 48
+Asize 48 Csize 128
+freeList_del called for block 0x800000e78 and size 128 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800000e78, its footer is 0x800000ea0
+Block_next 0x800000ea8
+write footer called with block 0x800000ea8, its footer is 0x800000ef0
+freelist_fifo entered with blck pointer 0x800000ea8 and size 80 
+segstart 0x800000010 segend 0x800000018 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x800000e80 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current 0x800000ea8 current_f 0x800000ea8 
+current_f 0x800000ea8 current_free 0x800000ea8 free's next (nil) its size 80
+Current where block will fit 0x800000ea8 size 80 
+Place called with bp 0x800000ea8 and asize 48
+Asize 48 Csize 80
+freeList_del called for block 0x800000ea8 and size 80 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800000ea8, its footer is 0x800000ed0
+Block_next 0x800000ed8
+write footer called with block 0x800000ed8, its footer is 0x800000ef0
+freelist_fifo entered with blck pointer 0x800000ed8 and size 32 
+segstart 0x800000000 segend 0x800000008 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x800000eb0 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current 0x800000ed8 current_f 0x800000ed8 
+current_f 0x800000ed8 current_free 0x800000ed8 free's next (nil) its size 32
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 6 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 7 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 8 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 9 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 10 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 11 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 12 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 13 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap called with size 224
+write footer called with block 0x800000ef8, its footer is 0x800000fd0
+new extend heap block address 0x800000ef8 size 224 and original bp 0x800000f00
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800000ef8 and size 224 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
+new epilogue 0x800000fd8
+Calling coalesce from extend_heap
+Coalesce called 
+find_prev footer called with block 0x800000ef8 and its headwer address is 0x800000ef8 an prev footer 0x800000ef0
+block_free 0x800000ef8 block_f_next 0x800000fd8 block_p_next 0x800000ed8
+find_prev footer called with block 0x800000ef8 and its headwer address is 0x800000ef8 an prev footer 0x800000ef0
+Case 3 entered 
+freeList_del called for block 0x800000ef8 and size 224 
+block at start of freelist
+freeList_del called for block 0x800000ed8 and size 32 
+block at start of freelist
+write footer called with block 0x800000ed8, its footer is 0x800000fd0
+block 0x800000ed8 size 256
+freelist_fifo entered with blck pointer 0x800000ed8 and size 256 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returning from coalesce 
+Place called with bp 0x800000ed8 and asize 48
+Asize 48 Csize 256
+freeList_del called for block 0x800000ed8 and size 256 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800000ed8, its footer is 0x800000f00
+Block_next 0x800000f08
+write footer called with block 0x800000f08, its footer is 0x800000fd0
+freelist_fifo entered with blck pointer 0x800000f08 and size 208 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 48 and freeList_start 0x800000000
+Current value current 0x800000f08 current_f 0x800000f08 
+current_f 0x800000f08 current_free 0x800000f08 free's next (nil) its size 208
+Current where block will fit 0x800000f08 size 208 
+Place called with bp 0x800000f08 and asize 48
+Asize 48 Csize 208
+freeList_del called for block 0x800000f08 and size 208 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800000f08, its footer is 0x800000f30
+Block_next 0x800000f38
+write footer called with block 0x800000f38, its footer is 0x800000fd0
+freelist_fifo entered with blck pointer 0x800000f38 and size 160 
+segstart 0x800000020 segend 0x800000028 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x800000f10 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current 0x800000f38 current_f 0x800000f38 
+current_f 0x800000f38 current_free 0x800000f38 free's next (nil) its size 160
+Current where block will fit 0x800000f38 size 160 
+Place called with bp 0x800000f38 and asize 48
+Asize 48 Csize 160
+freeList_del called for block 0x800000f38 and size 160 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800000f38, its footer is 0x800000f60
+Block_next 0x800000f68
+write footer called with block 0x800000f68, its footer is 0x800000fd0
+freelist_fifo entered with blck pointer 0x800000f68 and size 112 
+segstart 0x800000018 segend 0x800000020 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x800000f40 
+Size 40 Asize 64
+Calling find_fit
+Find_fit called with asize 64
+Find called with sizeatstart 1 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 64 and freeList_start 0x800000000
+Current value current 0x800000f68 current_f 0x800000f68 
+current_f 0x800000f68 current_free 0x800000f68 free's next (nil) its size 112
+Current where block will fit 0x800000f68 size 112 
+Place called with bp 0x800000f68 and asize 64
+Asize 64 Csize 112
+freeList_del called for block 0x800000f68 and size 112 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800000f68, its footer is 0x800000fa0
+Block_next 0x800000fa8
+write footer called with block 0x800000fa8, its footer is 0x800000fd0
+freelist_fifo entered with blck pointer 0x800000fa8 and size 48 
+segstart 0x800000008 segend 0x800000010 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x800000f70 
+Size 40 Asize 64
+Calling find_fit
+Find_fit called with asize 64
+Find called with sizeatstart 1 actual size 64 and freeList_start 0x800000000
+Current value current 0x800000fa8 current_f 0x800000fa8 
+current_f 0x800000fa8 current_free 0x800000fa8 free's next (nil) its size 48
+Current is null 
+Find called with sizeatstart 2 actual size 64 and freeList_start 0x800000000
+Current value current 0x800000fa8 current_f 0x800000fa8 
+current_f 0x800000fa8 current_free 0x800000fa8 free's next (nil) its size 48
+Current is null 
+Find called with sizeatstart 3 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 6 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 7 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 8 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 9 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 10 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 11 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 12 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 13 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap called with size 224
+write footer called with block 0x800000fd8, its footer is 0x8000010b0
+new extend heap block address 0x800000fd8 size 224 and original bp 0x800000fe0
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800000fd8 and size 224 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
+new epilogue 0x8000010b8
+Calling coalesce from extend_heap
+Coalesce called 
+find_prev footer called with block 0x800000fd8 and its headwer address is 0x800000fd8 an prev footer 0x800000fd0
+block_free 0x800000fd8 block_f_next 0x8000010b8 block_p_next 0x800000fa8
+find_prev footer called with block 0x800000fd8 and its headwer address is 0x800000fd8 an prev footer 0x800000fd0
+Case 3 entered 
+freeList_del called for block 0x800000fd8 and size 224 
+block at start of freelist
+freeList_del called for block 0x800000fa8 and size 48 
+block at start of freelist
+write footer called with block 0x800000fa8, its footer is 0x8000010b0
+block 0x800000fa8 size 272
+freelist_fifo entered with blck pointer 0x800000fa8 and size 272 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returning from coalesce 
+Place called with bp 0x800000fa8 and asize 64
+Asize 64 Csize 272
+freeList_del called for block 0x800000fa8 and size 272 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800000fa8, its footer is 0x800000fe0
+Block_next 0x800000fe8
+write footer called with block 0x800000fe8, its footer is 0x8000010b0
+freelist_fifo entered with blck pointer 0x800000fe8 and size 208 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Size 40 Asize 64
+Calling find_fit
+Find_fit called with asize 64
+Find called with sizeatstart 1 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 64 and freeList_start 0x800000000
+Current value current 0x800000fe8 current_f 0x800000fe8 
+current_f 0x800000fe8 current_free 0x800000fe8 free's next (nil) its size 208
+Current where block will fit 0x800000fe8 size 208 
+Place called with bp 0x800000fe8 and asize 64
+Asize 64 Csize 208
+freeList_del called for block 0x800000fe8 and size 208 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800000fe8, its footer is 0x800001020
+Block_next 0x800001028
+write footer called with block 0x800001028, its footer is 0x8000010b0
+freelist_fifo entered with blck pointer 0x800001028 and size 144 
+segstart 0x800000020 segend 0x800000028 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x800000ff0 
+Size 40 Asize 64
+Calling find_fit
+Find_fit called with asize 64
+Find called with sizeatstart 1 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 64 and freeList_start 0x800000000
+Current value current 0x800001028 current_f 0x800001028 
+current_f 0x800001028 current_free 0x800001028 free's next (nil) its size 144
+Current where block will fit 0x800001028 size 144 
+Place called with bp 0x800001028 and asize 64
+Asize 64 Csize 144
+freeList_del called for block 0x800001028 and size 144 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800001028, its footer is 0x800001060
+Block_next 0x800001068
+write footer called with block 0x800001068, its footer is 0x8000010b0
+freelist_fifo entered with blck pointer 0x800001068 and size 80 
+segstart 0x800000010 segend 0x800000018 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x800001030 
+Size 40 Asize 64
+Calling find_fit
+Find_fit called with asize 64
+Find called with sizeatstart 1 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 64 and freeList_start 0x800000000
+Current value current 0x800001068 current_f 0x800001068 
+current_f 0x800001068 current_free 0x800001068 free's next (nil) its size 80
+Current where block will fit 0x800001068 size 80 
+Place called with bp 0x800001068 and asize 64
+Asize 64 Csize 80
+freeList_del called for block 0x800001068 and size 80 
+block at start of freelist
+write footer called with block 0x800001068, its footer is 0x8000010b0
+Returning from malloc 0x800001070 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 6 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 7 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 8 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 9 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 10 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 11 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 12 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 13 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap called with size 224
+write footer called with block 0x8000010b8, its footer is 0x800001190
+new extend heap block address 0x8000010b8 size 224 and original bp 0x8000010c0
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x8000010b8 and size 224 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
+new epilogue 0x800001198
+Calling coalesce from extend_heap
+Coalesce called 
+find_prev footer called with block 0x8000010b8 and its headwer address is 0x8000010b8 an prev footer 0x8000010b0
+block_free 0x8000010b8 block_f_next 0x800001198 block_p_next 0x800001068
+find_prev footer called with block 0x8000010b8 and its headwer address is 0x8000010b8 an prev footer 0x8000010b0
+Case 1 entered 
+Place called with bp 0x8000010b8 and asize 48
+Asize 48 Csize 224
+freeList_del called for block 0x8000010b8 and size 224 
+block at start of freelist
+If entered of place 
+write footer called with block 0x8000010b8, its footer is 0x8000010e0
+Block_next 0x8000010e8
+write footer called with block 0x8000010e8, its footer is 0x800001190
+freelist_fifo entered with blck pointer 0x8000010e8 and size 176 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 48 and freeList_start 0x800000000
+Current value current 0x8000010e8 current_f 0x8000010e8 
+current_f 0x8000010e8 current_free 0x8000010e8 free's next (nil) its size 176
+Current where block will fit 0x8000010e8 size 176 
+Place called with bp 0x8000010e8 and asize 48
+Asize 48 Csize 176
+freeList_del called for block 0x8000010e8 and size 176 
+block at start of freelist
+If entered of place 
+write footer called with block 0x8000010e8, its footer is 0x800001110
+Block_next 0x800001118
+write footer called with block 0x800001118, its footer is 0x800001190
+freelist_fifo entered with blck pointer 0x800001118 and size 128 
+segstart 0x800000018 segend 0x800000020 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x8000010f0 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current 0x800001118 current_f 0x800001118 
+current_f 0x800001118 current_free 0x800001118 free's next (nil) its size 128
+Current where block will fit 0x800001118 size 128 
+Place called with bp 0x800001118 and asize 48
+Asize 48 Csize 128
+freeList_del called for block 0x800001118 and size 128 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800001118, its footer is 0x800001140
+Block_next 0x800001148
+write footer called with block 0x800001148, its footer is 0x800001190
+freelist_fifo entered with blck pointer 0x800001148 and size 80 
+segstart 0x800000010 segend 0x800000018 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x800001120 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current 0x800001148 current_f 0x800001148 
+current_f 0x800001148 current_free 0x800001148 free's next (nil) its size 80
+Current where block will fit 0x800001148 size 80 
+Place called with bp 0x800001148 and asize 48
+Asize 48 Csize 80
+freeList_del called for block 0x800001148 and size 80 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800001148, its footer is 0x800001170
+Block_next 0x800001178
+write footer called with block 0x800001178, its footer is 0x800001190
+freelist_fifo entered with blck pointer 0x800001178 and size 32 
+segstart 0x800000000 segend 0x800000008 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x800001150 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current 0x800001178 current_f 0x800001178 
+current_f 0x800001178 current_free 0x800001178 free's next (nil) its size 32
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 6 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 7 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 8 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 9 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 10 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 11 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 12 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 13 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap called with size 224
+write footer called with block 0x800001198, its footer is 0x800001270
+new extend heap block address 0x800001198 size 224 and original bp 0x8000011a0
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800001198 and size 224 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
+new epilogue 0x800001278
+Calling coalesce from extend_heap
+Coalesce called 
+find_prev footer called with block 0x800001198 and its headwer address is 0x800001198 an prev footer 0x800001190
+block_free 0x800001198 block_f_next 0x800001278 block_p_next 0x800001178
+find_prev footer called with block 0x800001198 and its headwer address is 0x800001198 an prev footer 0x800001190
+Case 3 entered 
+freeList_del called for block 0x800001198 and size 224 
+block at start of freelist
+freeList_del called for block 0x800001178 and size 32 
+block at start of freelist
+write footer called with block 0x800001178, its footer is 0x800001270
+block 0x800001178 size 256
+freelist_fifo entered with blck pointer 0x800001178 and size 256 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returning from coalesce 
+Place called with bp 0x800001178 and asize 48
+Asize 48 Csize 256
+freeList_del called for block 0x800001178 and size 256 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800001178, its footer is 0x8000011a0
+Block_next 0x8000011a8
+write footer called with block 0x8000011a8, its footer is 0x800001270
+freelist_fifo entered with blck pointer 0x8000011a8 and size 208 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 48 and freeList_start 0x800000000
+Current value current 0x8000011a8 current_f 0x8000011a8 
+current_f 0x8000011a8 current_free 0x8000011a8 free's next (nil) its size 208
+Current where block will fit 0x8000011a8 size 208 
+Place called with bp 0x8000011a8 and asize 48
+Asize 48 Csize 208
+freeList_del called for block 0x8000011a8 and size 208 
+block at start of freelist
+If entered of place 
+write footer called with block 0x8000011a8, its footer is 0x8000011d0
+Block_next 0x8000011d8
+write footer called with block 0x8000011d8, its footer is 0x800001270
+freelist_fifo entered with blck pointer 0x8000011d8 and size 160 
+segstart 0x800000020 segend 0x800000028 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x8000011b0 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current 0x8000011d8 current_f 0x8000011d8 
+current_f 0x8000011d8 current_free 0x8000011d8 free's next (nil) its size 160
+Current where block will fit 0x8000011d8 size 160 
+Place called with bp 0x8000011d8 and asize 48
+Asize 48 Csize 160
+freeList_del called for block 0x8000011d8 and size 160 
+block at start of freelist
+If entered of place 
+write footer called with block 0x8000011d8, its footer is 0x800001200
+Block_next 0x800001208
+write footer called with block 0x800001208, its footer is 0x800001270
+freelist_fifo entered with blck pointer 0x800001208 and size 112 
+segstart 0x800000018 segend 0x800000020 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x8000011e0 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current 0x800001208 current_f 0x800001208 
+current_f 0x800001208 current_free 0x800001208 free's next (nil) its size 112
+Current where block will fit 0x800001208 size 112 
+Place called with bp 0x800001208 and asize 48
+Asize 48 Csize 112
+freeList_del called for block 0x800001208 and size 112 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800001208, its footer is 0x800001230
+Block_next 0x800001238
+write footer called with block 0x800001238, its footer is 0x800001270
+freelist_fifo entered with blck pointer 0x800001238 and size 64 
+segstart 0x800000008 segend 0x800000010 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x800001210 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current 0x800001238 current_f 0x800001238 
+current_f 0x800001238 current_free 0x800001238 free's next (nil) its size 64
+Current where block will fit 0x800001238 size 64 
+Place called with bp 0x800001238 and asize 48
+Asize 48 Csize 64
+freeList_del called for block 0x800001238 and size 64 
+block at start of freelist
+write footer called with block 0x800001238, its footer is 0x800001270
+Returning from malloc 0x800001240 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 6 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 7 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 8 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 9 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 10 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 11 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 12 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 13 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap called with size 224
+write footer called with block 0x800001278, its footer is 0x800001350
+new extend heap block address 0x800001278 size 224 and original bp 0x800001280
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800001278 and size 224 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
+new epilogue 0x800001358
+Calling coalesce from extend_heap
+Coalesce called 
+find_prev footer called with block 0x800001278 and its headwer address is 0x800001278 an prev footer 0x800001270
+block_free 0x800001278 block_f_next 0x800001358 block_p_next 0x800001238
+find_prev footer called with block 0x800001278 and its headwer address is 0x800001278 an prev footer 0x800001270
+Case 1 entered 
+Place called with bp 0x800001278 and asize 48
+Asize 48 Csize 224
+freeList_del called for block 0x800001278 and size 224 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800001278, its footer is 0x8000012a0
+Block_next 0x8000012a8
+write footer called with block 0x8000012a8, its footer is 0x800001350
+freelist_fifo entered with blck pointer 0x8000012a8 and size 176 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 48 and freeList_start 0x800000000
+Current value current 0x8000012a8 current_f 0x8000012a8 
+current_f 0x8000012a8 current_free 0x8000012a8 free's next (nil) its size 176
+Current where block will fit 0x8000012a8 size 176 
+Place called with bp 0x8000012a8 and asize 48
+Asize 48 Csize 176
+freeList_del called for block 0x8000012a8 and size 176 
+block at start of freelist
+If entered of place 
+write footer called with block 0x8000012a8, its footer is 0x8000012d0
+Block_next 0x8000012d8
+write footer called with block 0x8000012d8, its footer is 0x800001350
+freelist_fifo entered with blck pointer 0x8000012d8 and size 128 
+segstart 0x800000018 segend 0x800000020 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x8000012b0 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current 0x8000012d8 current_f 0x8000012d8 
+current_f 0x8000012d8 current_free 0x8000012d8 free's next (nil) its size 128
+Current where block will fit 0x8000012d8 size 128 
+Place called with bp 0x8000012d8 and asize 48
+Asize 48 Csize 128
+freeList_del called for block 0x8000012d8 and size 128 
+block at start of freelist
+If entered of place 
+write footer called with block 0x8000012d8, its footer is 0x800001300
+Block_next 0x800001308
+write footer called with block 0x800001308, its footer is 0x800001350
+freelist_fifo entered with blck pointer 0x800001308 and size 80 
+segstart 0x800000010 segend 0x800000018 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x8000012e0 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current 0x800001308 current_f 0x800001308 
+current_f 0x800001308 current_free 0x800001308 free's next (nil) its size 80
+Current where block will fit 0x800001308 size 80 
+Place called with bp 0x800001308 and asize 48
+Asize 48 Csize 80
+freeList_del called for block 0x800001308 and size 80 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800001308, its footer is 0x800001330
+Block_next 0x800001338
+write footer called with block 0x800001338, its footer is 0x800001350
+freelist_fifo entered with blck pointer 0x800001338 and size 32 
+segstart 0x800000000 segend 0x800000008 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x800001310 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current 0x800001338 current_f 0x800001338 
+current_f 0x800001338 current_free 0x800001338 free's next (nil) its size 32
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 6 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 7 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 8 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 9 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 10 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 11 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 12 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 13 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap called with size 224
+write footer called with block 0x800001358, its footer is 0x800001430
+new extend heap block address 0x800001358 size 224 and original bp 0x800001360
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800001358 and size 224 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
+new epilogue 0x800001438
+Calling coalesce from extend_heap
+Coalesce called 
+find_prev footer called with block 0x800001358 and its headwer address is 0x800001358 an prev footer 0x800001350
+block_free 0x800001358 block_f_next 0x800001438 block_p_next 0x800001338
+find_prev footer called with block 0x800001358 and its headwer address is 0x800001358 an prev footer 0x800001350
+Case 3 entered 
+freeList_del called for block 0x800001358 and size 224 
+block at start of freelist
+freeList_del called for block 0x800001338 and size 32 
+block at start of freelist
+write footer called with block 0x800001338, its footer is 0x800001430
+block 0x800001338 size 256
+freelist_fifo entered with blck pointer 0x800001338 and size 256 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returning from coalesce 
+Place called with bp 0x800001338 and asize 48
+Asize 48 Csize 256
+freeList_del called for block 0x800001338 and size 256 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800001338, its footer is 0x800001360
+Block_next 0x800001368
+write footer called with block 0x800001368, its footer is 0x800001430
+freelist_fifo entered with blck pointer 0x800001368 and size 208 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 48 and freeList_start 0x800000000
+Current value current 0x800001368 current_f 0x800001368 
+current_f 0x800001368 current_free 0x800001368 free's next (nil) its size 208
+Current where block will fit 0x800001368 size 208 
+Place called with bp 0x800001368 and asize 48
+Asize 48 Csize 208
+freeList_del called for block 0x800001368 and size 208 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800001368, its footer is 0x800001390
+Block_next 0x800001398
+write footer called with block 0x800001398, its footer is 0x800001430
+freelist_fifo entered with blck pointer 0x800001398 and size 160 
+segstart 0x800000020 segend 0x800000028 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x800001370 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current value current 0x800001398 current_f 0x800001398 
+current_f 0x800001398 current_free 0x800001398 free's next (nil) its size 160
+Current where block will fit 0x800001398 size 160 
+Place called with bp 0x800001398 and asize 48
+Asize 48 Csize 160
+freeList_del called for block 0x800001398 and size 160 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800001398, its footer is 0x8000013c0
+Block_next 0x8000013c8
+write footer called with block 0x8000013c8, its footer is 0x800001430
+freelist_fifo entered with blck pointer 0x8000013c8 and size 112 
+segstart 0x800000018 segend 0x800000020 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x8000013a0 
+Size 32 Asize 48
+Calling find_fit
+Find_fit called with asize 48
+Find called with sizeatstart 1 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current value current 0x8000013c8 current_f 0x8000013c8 
+current_f 0x8000013c8 current_free 0x8000013c8 free's next (nil) its size 112
+Current where block will fit 0x8000013c8 size 112 
+Place called with bp 0x8000013c8 and asize 48
+Asize 48 Csize 112
+freeList_del called for block 0x8000013c8 and size 112 
+block at start of freelist
+If entered of place 
+write footer called with block 0x8000013c8, its footer is 0x8000013f0
+Block_next 0x8000013f8
+write footer called with block 0x8000013f8, its footer is 0x800001430
+freelist_fifo entered with blck pointer 0x8000013f8 and size 64 
+segstart 0x800000008 segend 0x800000010 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x8000013d0 
+Size 40 Asize 64
+Calling find_fit
+Find_fit called with asize 64
+Find called with sizeatstart 1 actual size 64 and freeList_start 0x800000000
+Current value current 0x8000013f8 current_f 0x8000013f8 
+current_f 0x8000013f8 current_free 0x8000013f8 free's next (nil) its size 64
+Current where block will fit 0x8000013f8 size 64 
+Place called with bp 0x8000013f8 and asize 64
+Asize 64 Csize 64
+freeList_del called for block 0x8000013f8 and size 64 
+block at start of freelist
+write footer called with block 0x8000013f8, its footer is 0x800001430
+Returning from malloc 0x800001400 
+Size 40 Asize 64
+Calling find_fit
+Find_fit called with asize 64
+Find called with sizeatstart 1 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 5 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 6 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 7 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 8 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 9 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 10 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 11 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 12 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 13 actual size 64 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap called with size 224
+write footer called with block 0x800001438, its footer is 0x800001510
+new extend heap block address 0x800001438 size 224 and original bp 0x800001440
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800001438 and size 224 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
+new epilogue 0x800001518
+Calling coalesce from extend_heap
+Coalesce called 
+find_prev footer called with block 0x800001438 and its headwer address is 0x800001438 an prev footer 0x800001430
+block_free 0x800001438 block_f_next 0x800001518 block_p_next 0x8000013f8
+find_prev footer called with block 0x800001438 and its headwer address is 0x800001438 an prev footer 0x800001430
+Case 1 entered 
+Place called with bp 0x800001438 and asize 64
+Asize 64 Csize 224
+freeList_del called for block 0x800001438 and size 224 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800001438, its footer is 0x800001470
+Block_next 0x800001478
+write footer called with block 0x800001478, its footer is 0x800001510
+freelist_fifo entered with blck pointer 0x800001478 and size 160 
+segstart 0x800000020 segend 0x800000028 listend (nil)If of freeList_fifo_insert 
+Size 8216 Asize 8240
+Calling find_fit
+Find_fit called with asize 8240
+Find called with sizeatstart 9 actual size 8240 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 10 actual size 8240 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 11 actual size 8240 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 12 actual size 8240 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 13 actual size 8240 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap called with size 8240
+write footer called with block 0x800001518, its footer is 0x800003540
+new extend heap block address 0x800001518 size 8240 and original bp 0x800001520
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800001518 and size 8240 
+segstart 0x800000048 segend 0x800000050 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
+new epilogue 0x800003548
+Calling coalesce from extend_heap
+Coalesce called 
+find_prev footer called with block 0x800001518 and its headwer address is 0x800001518 an prev footer 0x800001510
+block_free 0x800001518 block_f_next 0x800003548 block_p_next 0x800001478
+find_prev footer called with block 0x800001518 and its headwer address is 0x800001518 an prev footer 0x800001510
+Case 3 entered 
+freeList_del called for block 0x800001518 and size 8240 
+block at start of freelist
+freeList_del called for block 0x800001478 and size 160 
+block at start of freelist
+write footer called with block 0x800001478, its footer is 0x800003540
+block 0x800001478 size 8400
+freelist_fifo entered with blck pointer 0x800001478 and size 8400 
+segstart 0x800000048 segend 0x800000050 listend (nil)If of freeList_fifo_insert 
+Returning from coalesce 
+Place called with bp 0x800001478 and asize 8240
+Asize 8240 Csize 8400
+freeList_del called for block 0x800001478 and size 8400 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800001478, its footer is 0x8000034a0
+Block_next 0x8000034a8
+write footer called with block 0x8000034a8, its footer is 0x800003540
+freelist_fifo entered with blck pointer 0x8000034a8 and size 160 
+segstart 0x800000020 segend 0x800000028 listend (nil)If of freeList_fifo_insert 
+Size 6 Asize 32
+Calling find_fit
+Find_fit called with asize 32
+Find called with sizeatstart 0 actual size 32 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 1 actual size 32 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 32 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 32 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 4 actual size 32 and freeList_start 0x800000000
+Current value current 0x8000034a8 current_f 0x8000034a8 
+current_f 0x8000034a8 current_free 0x8000034a8 free's next (nil) its size 160
+Current where block will fit 0x8000034a8 size 160 
+Place called with bp 0x8000034a8 and asize 32
+Asize 32 Csize 160
+freeList_del called for block 0x8000034a8 and size 160 
+block at start of freelist
+If entered of place 
+write footer called with block 0x8000034a8, its footer is 0x8000034c0
+Block_next 0x8000034c8
+write footer called with block 0x8000034c8, its footer is 0x800003540
+freelist_fifo entered with blck pointer 0x8000034c8 and size 128 
+segstart 0x800000018 segend 0x800000020 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x8000034b0 
+Size 8 Asize 32
+Calling find_fit
+Find_fit called with asize 32
+Find called with sizeatstart 0 actual size 32 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 1 actual size 32 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 32 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 3 actual size 32 and freeList_start 0x800000000
+Current value current 0x8000034c8 current_f 0x8000034c8 
+current_f 0x8000034c8 current_free 0x8000034c8 free's next (nil) its size 128
+Current where block will fit 0x8000034c8 size 128 
+Place called with bp 0x8000034c8 and asize 32
+Asize 32 Csize 128
+freeList_del called for block 0x8000034c8 and size 128 
+block at start of freelist
+If entered of place 
+write footer called with block 0x8000034c8, its footer is 0x8000034e0
+Block_next 0x8000034e8
+write footer called with block 0x8000034e8, its footer is 0x800003540
+freelist_fifo entered with blck pointer 0x8000034e8 and size 96 
+segstart 0x800000010 segend 0x800000018 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x8000034d0 
+Size 5 Asize 32
+Calling find_fit
+Find_fit called with asize 32
+Find called with sizeatstart 0 actual size 32 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 1 actual size 32 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 2 actual size 32 and freeList_start 0x800000000
+Current value current 0x8000034e8 current_f 0x8000034e8 
+current_f 0x8000034e8 current_free 0x8000034e8 free's next (nil) its size 96
+Current where block will fit 0x8000034e8 size 96 
+Place called with bp 0x8000034e8 and asize 32
+Asize 32 Csize 96
+freeList_del called for block 0x8000034e8 and size 96 
+block at start of freelist
+If entered of place 
+write footer called with block 0x8000034e8, its footer is 0x800003500
+Block_next 0x800003508
+write footer called with block 0x800003508, its footer is 0x800003540
+freelist_fifo entered with blck pointer 0x800003508 and size 64 
+segstart 0x800000008 segend 0x800000010 listend (nil)If of freeList_fifo_insert 
+Returning from malloc 0x8000034f0 
+Free called 0x8000034b0
+Free block pointer 0x8000034a8
+write footer called with block 0x8000034a8, its footer is 0x8000034c0
+calling freeList_FIFO_insert in seglist 
+freelist_fifo entered with blck pointer 0x8000034a8 and size 32 
+segstart 0x800000000 segend 0x800000008 listend 0x800003508Else of fifo insert 
+listend_blockf 0x800003508 
+Calling coalesce from free
+Coalesce called 
+find_prev footer called with block 0x8000034a8 and its headwer address is 0x8000034a8 an prev footer 0x8000034a0
+block_free 0x8000034a8 block_f_next 0x8000034c8 block_p_next 0x800001478
+find_prev footer called with block 0x8000034a8 and its headwer address is 0x8000034a8 an prev footer 0x8000034a0
+Case 1 entered 
+Returned from coalesce in free 
+Free called 0x8000034f0
+Free block pointer 0x8000034e8
+write footer called with block 0x8000034e8, its footer is 0x800003500
+calling freeList_FIFO_insert in seglist 
+freelist_fifo entered with blck pointer 0x8000034e8 and size 32 
+segstart 0x800000000 segend 0x800000008 listend 0x8000034a8Else of fifo insert 
+listend_blockf 0x8000034a8 
+Calling coalesce from free
+Coalesce called 
+find_prev footer called with block 0x8000034e8 and its headwer address is 0x8000034e8 an prev footer 0x8000034e0
+block_free 0x8000034e8 block_f_next 0x800003508 block_p_next 0x8000034c8
+find_prev footer called with block 0x8000034e8 and its headwer address is 0x8000034e8 an prev footer 0x8000034e0
+Case 2 entered 
+freeList_del called for block 0x8000034e8 and size 32 
+it is last block in its list 
+freeList_del called for block 0x800003508 and size 64 
+block at start of freelist
+write footer called with block 0x8000034e8, its footer is 0x800003540
+block 0x8000034e8 size 96
+freelist_fifo entered with blck pointer 0x8000034e8 and size 96 
+segstart 0x800000010 segend 0x800000018 listend (nil)If of freeList_fifo_insert 
+Returning from coalesce 
+Returned from coalesce in free 
+Free called 0x8000034d0
+Free block pointer 0x8000034c8
+write footer called with block 0x8000034c8, its footer is 0x8000034e0
+calling freeList_FIFO_insert in seglist 
+freelist_fifo entered with blck pointer 0x8000034c8 and size 32 
+segstart 0x800000000 segend 0x800000008 listend 0x8000034a8Else of fifo insert 
+listend_blockf 0x8000034a8 
+Calling coalesce from free
+Coalesce called 
+find_prev footer called with block 0x8000034c8 and its headwer address is 0x8000034c8 an prev footer 0x8000034c0
+block_free 0x8000034c8 block_f_next 0x8000034e8 block_p_next 0x8000034a8
+find_prev footer called with block 0x8000034c8 and its headwer address is 0x8000034c8 an prev footer 0x8000034c0
+Case 4 entered 
+freeList_del called for block 0x8000034c8 and size 32 
+it is last block in its list 
+freeList_del called for block 0x8000034e8 and size 96 
+block at start of freelist
+freeList_del called for block 0x8000034a8 and size 32 
+block at start of freelist
+write footer called with block 0x8000034a8, its footer is 0x800003540
+block 0x8000034a8 sze 160 
+freelist_fifo entered with blck pointer 0x8000034a8 and size 160 
+segstart 0x800000020 segend 0x800000028 listend (nil)If of freeList_fifo_insert 
+Returning from coalesce 
+Returned from coalesce in free 
+Size 455 Asize 480
+Calling find_fit
+Find_fit called with asize 480
+Find called with sizeatstart 5 actual size 480 and freeList_start 0x800000000
+Current value current 0x8000034a8 current_f 0x8000034a8 
+current_f 0x8000034a8 current_free 0x8000034a8 free's next (nil) its size 160
+Current is null 
+Find called with sizeatstart 6 actual size 480 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 7 actual size 480 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 8 actual size 480 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 9 actual size 480 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 10 actual size 480 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 11 actual size 480 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 12 actual size 480 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 13 actual size 480 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap called with size 480
+write footer called with block 0x800003548, its footer is 0x800003720
+new extend heap block address 0x800003548 size 480 and original bp 0x800003550
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800003548 and size 480 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
+new epilogue 0x800003728
+Calling coalesce from extend_heap
+Coalesce called 
+find_prev footer called with block 0x800003548 and its headwer address is 0x800003548 an prev footer 0x800003540
+block_free 0x800003548 block_f_next 0x800003728 block_p_next 0x8000034a8
+find_prev footer called with block 0x800003548 and its headwer address is 0x800003548 an prev footer 0x800003540
+Case 3 entered 
+freeList_del called for block 0x800003548 and size 480 
+block at start of freelist
+freeList_del called for block 0x8000034a8 and size 160 
+block at start of freelist
+write footer called with block 0x8000034a8, its footer is 0x800003720
+block 0x8000034a8 size 640
+freelist_fifo entered with blck pointer 0x8000034a8 and size 640 
+segstart 0x800000028 segend 0x800000030 listend (nil)If of freeList_fifo_insert 
+Returning from coalesce 
+Place called with bp 0x8000034a8 and asize 480
+Asize 480 Csize 640
+freeList_del called for block 0x8000034a8 and size 640 
+block at start of freelist
+If entered of place 
+write footer called with block 0x8000034a8, its footer is 0x800003680
+Block_next 0x800003688
+write footer called with block 0x800003688, its footer is 0x800003720
+freelist_fifo entered with blck pointer 0x800003688 and size 160 
+segstart 0x800000020 segend 0x800000028 listend (nil)If of freeList_fifo_insert 
+Size 776 Asize 800
+Calling find_fit
+Find_fit called with asize 800
+Find called with sizeatstart 6 actual size 800 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 7 actual size 800 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 8 actual size 800 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 9 actual size 800 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 10 actual size 800 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 11 actual size 800 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 12 actual size 800 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 13 actual size 800 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap called with size 800
+write footer called with block 0x800003728, its footer is 0x800003a40
+new extend heap block address 0x800003728 size 800 and original bp 0x800003730
+Calling freeList_FIFO_insert in extend heap 
+freelist_fifo entered with blck pointer 0x800003728 and size 800 
+segstart 0x800000030 segend 0x800000038 listend (nil)If of freeList_fifo_insert 
+Returned from freeList_FIFO_insert in extend heap 
+new epilogue 0x800003a48
+Calling coalesce from extend_heap
+Coalesce called 
+find_prev footer called with block 0x800003728 and its headwer address is 0x800003728 an prev footer 0x800003720
+block_free 0x800003728 block_f_next 0x800003a48 block_p_next 0x800003688
+find_prev footer called with block 0x800003728 and its headwer address is 0x800003728 an prev footer 0x800003720
+Case 3 entered 
+freeList_del called for block 0x800003728 and size 800 
+block at start of freelist
+freeList_del called for block 0x800003688 and size 160 
+block at start of freelist
+write footer called with block 0x800003688, its footer is 0x800003a40
+block 0x800003688 size 960
+freelist_fifo entered with blck pointer 0x800003688 and size 960 
+segstart 0x800000030 segend 0x800000038 listend (nil)If of freeList_fifo_insert 
+Returning from coalesce 
+Place called with bp 0x800003688 and asize 800
+Asize 800 Csize 960
+freeList_del called for block 0x800003688 and size 960 
+block at start of freelist
+If entered of place 
+write footer called with block 0x800003688, its footer is 0x8000039a0
+Block_next 0x8000039a8
+write footer called with block 0x8000039a8, its footer is 0x800003a40
+freelist_fifo entered with blck pointer 0x8000039a8 and size 160 
+segstart 0x800000020 segend 0x800000028 listend (nil)If of freeList_fifo_insert 
+Size 4 Asize 32
+Calling find_fit
+Find_fit called with asize 32
+Find called with sizeatstart 0 actual size 32 and freeList_start 0x800000000
+Current value current (nil) current_f (nil) 
+Current is null 
+Find called with sizeatstart 1 actual size 32 and freeList_start 0x800000000
+Current value current 0x8000034a8 current_f 0x8000034a8 
+current_f 0x8000034a8 current_free 0x8000034a8 free's next 0xdfb914e84b77b3f0 its size 480
+Current where block will fit 0x8000034a8 size 480 
+Place called with bp 0x8000034a8 and asize 32
+Asize 32 Csize 480
+freeList_del called for block 0x8000034a8 and size 480 
+in Middle of its list
