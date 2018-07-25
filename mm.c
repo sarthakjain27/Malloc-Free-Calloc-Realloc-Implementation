@@ -68,7 +68,7 @@ static const size_t CHUNKSIZE = 224;    // requires (chunksize % 16 == 0)
 static const word_t size_mask = ~(word_t)0xF;
 
 /* What is the correct alignment? */
-#define ALIGNMENT 2*dsize
+#define ALIGNMENT dsize
 
 /* Variables used as offsets for
    segregated lists headers */
@@ -292,7 +292,7 @@ void *malloc (size_t size) {
         return bp;
     }
     // Adjust block size to include overhead and to meet alignment requirements
-    asize = round_up(size + dsize, dsize);
+    asize = round_up(size + wsize, dsize);
     dbg_printf("Size %zu Asize %zu\n",size,asize);
     
     //dbg_printf("Calling find_fit\n");
@@ -1240,7 +1240,10 @@ static void *find_best(size_t sizeatstart, size_t actual_size)
      else
      {
          write_header(block, csize, (GET_PREV_ALLOC(block) | CURRENTALLOCATED));
-         write_footer(block, csize, (GET_PREV_ALLOC(block) | CURRENTALLOCATED));
+		 block_t *block_next=find_next(block);
+		 write_header(block_next,get_size(block_next),(PREVIOUSALLOCATED | get_alloc(block_next)));
+		 if(!get_alloc(block_next))
+			write_footer(block_next,get_size(block_next), (PREVIOUSALLOCATED | get_alloc(block_next)));
      }
  }
 		    
