@@ -24,7 +24,7 @@
  * If you want debugging output, uncomment the following. Be sure not
  * to have debugging enabled in your final submission
  */
- #define DEBUG
+ //#define DEBUG
 
 #ifdef DEBUG
 /* When debugging is enabled, the underlying functions get called */
@@ -71,19 +71,19 @@ static const word_t size_mask = ~(word_t)0xF;
 /* Variables used as offsets for
    segregated lists headers */
 #define SEGLIST1     0
-#define SEGLIST2     wsize
-#define SEGLIST3     2*wsize
-#define SEGLIST4     3*wsize
-#define SEGLIST5     4*wsize
-#define SEGLIST6     5*wsize
-#define SEGLIST7     6*wsize
-#define SEGLIST8     7*wsize
-#define SEGLIST9     8*wsize
-#define SEGLIST10    9*wsize
-#define SEGLIST11    10*wsize
-#define SEGLIST12    11*wsize
-#define SEGLIST13    12*wsize
-#define SEGLIST14    13*wsize
+#define SEGLIST2     dsize
+#define SEGLIST3     2*dsize
+#define SEGLIST4     3*dsize
+#define SEGLIST5     4*dsize
+#define SEGLIST6     5*dsize
+#define SEGLIST7     6*dsize
+#define SEGLIST8     7*dsize
+#define SEGLIST9     8*dsize
+#define SEGLIST10    9*dsize
+#define SEGLIST11    10*dsize
+#define SEGLIST12    11*dsize
+#define SEGLIST13    12*dsize
+#define SEGLIST14    13*dsize
 
 /* Maximum size limit of each list */
 #define LIST1_LIMIT      32
