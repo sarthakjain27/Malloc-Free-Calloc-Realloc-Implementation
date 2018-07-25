@@ -987,20 +987,20 @@ static void *find_fit(size_t asize)
 	/* Segregated lists- Size breakdown */
 	if (asize <= LIST1_LIMIT) {
 		for (sizeatstart = 0; sizeatstart < TOTALLIST; sizeatstart++) {
-			//if ((bp = find(sizeatstart, asize)) != NULL)
-			if ((bp = find_best(sizeatstart, asize)) != NULL)
+			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST2_LIMIT) {
 		for (sizeatstart = 1; sizeatstart < TOTALLIST; sizeatstart++) {
-			//if ((bp = find(sizeatstart, asize)) != NULL)
-			if ((bp = find_best(sizeatstart, asize)) != NULL)
+			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST3_LIMIT) {
 		for (sizeatstart = 2; sizeatstart < TOTALLIST; sizeatstart++) {
-			//if ((bp = find(sizeatstart, asize)) != NULL)
-			if ((bp = find_best(sizeatstart, asize)) != NULL)
+			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST4_LIMIT) {
@@ -1011,14 +1011,14 @@ static void *find_fit(size_t asize)
 		}
 	} else if (asize <= LIST5_LIMIT) {
 		for (sizeatstart = 4; sizeatstart < TOTALLIST; sizeatstart++) {
-			//if ((bp = find(sizeatstart, asize)) != NULL)
-			if ((bp = find_best(sizeatstart, asize)) != NULL)
+			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST6_LIMIT) {
 		for (sizeatstart = 5; sizeatstart < TOTALLIST; sizeatstart++) {
-			//if ((bp = find(sizeatstart, asize)) != NULL)
-			if ((bp = find_best(sizeatstart, asize)) != NULL)
+			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST7_LIMIT) {
@@ -1029,44 +1029,44 @@ static void *find_fit(size_t asize)
 		}
 	} else if (asize <= LIST8_LIMIT) {
 		for (sizeatstart = 7; sizeatstart < TOTALLIST; sizeatstart++) {
-			//if ((bp = find(sizeatstart, asize)) != NULL)
-			if ((bp = find_best(sizeatstart, asize)) != NULL)
+			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST9_LIMIT) {
 		for (sizeatstart = 8; sizeatstart < TOTALLIST; sizeatstart++) {
-			//if ((bp = find(sizeatstart, asize)) != NULL)
-			if ((bp = find_best(sizeatstart, asize)) != NULL)
+			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST10_LIMIT) {
 		for (sizeatstart = 9; sizeatstart < TOTALLIST; sizeatstart++) {
-			//if ((bp = find(sizeatstart, asize)) != NULL)
-			if ((bp = find_best(sizeatstart, asize)) != NULL)
+			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST11_LIMIT) {
 		for (sizeatstart = 10; sizeatstart < TOTALLIST; sizeatstart++) {
-			//if ((bp = find(sizeatstart, asize)) != NULL)
-			if ((bp = find_best(sizeatstart, asize)) != NULL)
+			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST12_LIMIT) {
 		for (sizeatstart = 11; sizeatstart < TOTALLIST; sizeatstart++) {
-			//if ((bp = find(sizeatstart, asize)) != NULL)
-			if ((bp = find_best(sizeatstart, asize)) != NULL)
+			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST13_LIMIT) {
 		for (sizeatstart = 12; sizeatstart < TOTALLIST; sizeatstart++) {
-			//if ((bp = find(sizeatstart, asize)) != NULL)
-			if ((bp = find_best(sizeatstart, asize)) != NULL)
+			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else {
 		sizeatstart = 13;
-		//if ((bp = find(sizeatstart, asize)) != NULL) {
-		if ((bp = find_best(sizeatstart, asize)) != NULL){
+		if ((bp = find(sizeatstart, asize)) != NULL) {
+		//if ((bp = find_best(sizeatstart, asize)) != NULL){
 			return bp;
 		}
 	}
