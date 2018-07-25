@@ -1,4 +1,6 @@
 /*
+ * Name: Sarthak Jain
+ * Andrew ID: sarthak3
  * mm.c
  *
  * NOTE TO STUDENTS: Replace this header comment with your own header
@@ -815,7 +817,7 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
 		segend = freeList_end + SEGLIST14;
 		listend = (char *) GET(segend);
 	}
-	dbg_printf("segstart %p segend %p listend %p",segstart,segend,listend);
+	dbg_printf("segstart %p segend %p listend %p\n",segstart,segend,listend);
 	if(listend==NULL)
     	{
         	dbg_printf("If of freeList_fifo_insert \n");
@@ -847,85 +849,85 @@ static void freeList_del(block_f *block,size_t size)
 		
         	if (size <= LIST1_LIMIT)
 		{
-			if( (*(freeList_start + SEGLIST1)) == (*(freeList_end + SEGLIST1)) )
+			if( block->next_free==NULL  )
 				PUT(freeList_end + SEGLIST1, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST1, (size_t) (block->next_free));
 		}
 		else if (size <= LIST2_LIMIT)
 		{
-			if( (*(freeList_start + SEGLIST2)) == (*(freeList_end + SEGLIST2)) )
+			if( block->next_free==NULL )
 				PUT(freeList_end + SEGLIST2, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST2, (size_t) (block->next_free));
 		}
 		else if (size <= LIST3_LIMIT)
 		{
-			if( (*(freeList_start + SEGLIST3)) == (*(freeList_end + SEGLIST3)) )
+			if( block->next_free==NULL )
 				PUT(freeList_end + SEGLIST3, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST3, (size_t) (block->next_free));
 		}
 		else if (size <= LIST4_LIMIT)
 		{
-			if( (*(freeList_start + SEGLIST4)) == (*(freeList_end + SEGLIST4)) )
+			if( block->next_free==NULL )
 				PUT(freeList_end + SEGLIST4, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST4, (size_t) (block->next_free));
 		}
 		else if (size <= LIST5_LIMIT)
 		{
-			if( (*(freeList_start + SEGLIST5)) == (*(freeList_end + SEGLIST5)) )
+			if( block->next_free==NULL )
 				PUT(freeList_end + SEGLIST5, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST5, (size_t) (block->next_free));
 		}
 		else if (size <= LIST6_LIMIT)
 		{
-			if( (*(freeList_start + SEGLIST6)) == (*(freeList_end + SEGLIST6)) )
+			if(block->next_free==NULL )
 				PUT(freeList_end + SEGLIST6, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST6, (size_t) (block->next_free));
 		}
 		else if (size <= LIST7_LIMIT)
 		{
-			if( (*(freeList_start + SEGLIST7)) == (*(freeList_end + SEGLIST7)) )
+			if( block->next_free==NULL )
 				PUT(freeList_end + SEGLIST7, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST7, (size_t) (block->next_free));
 		}
 		else if (size <= LIST8_LIMIT)
 		{
-			if( (*(freeList_start + SEGLIST8)) == (*(freeList_end + SEGLIST8)) )
+			if( block->next_free==NULL )
 				PUT(freeList_end + SEGLIST8, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST8, (size_t) (block->next_free));
 		}
 		else if (size <= LIST9_LIMIT)
 		{
-			if( (*(freeList_start + SEGLIST9)) == (*(freeList_end + SEGLIST9)) )
+			if(block->next_free==NULL  )
 				PUT(freeList_end + SEGLIST9, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST9, (size_t) (block->next_free));
 		}
 		else if (size <= LIST10_LIMIT)
 		{
-			if( (*(freeList_start + SEGLIST10)) == (*(freeList_end + SEGLIST10)) )
+			if( block->next_free==NULL )
 				PUT(freeList_end + SEGLIST10, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST10, (size_t) (block->next_free));
 		}
 		else if (size <= LIST11_LIMIT)
 		{
-			if( (*(freeList_start + SEGLIST11)) == (*(freeList_end + SEGLIST11)) )
+			if( block->next_free==NULL )
 				PUT(freeList_end + SEGLIST11, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST11, (size_t) (block->next_free));
 		}
 		else if (size <= LIST12_LIMIT)
 		{
-			if( (*(freeList_start + SEGLIST12)) == (*(freeList_end + SEGLIST12)) )
+			if( block->next_free==NULL )
 				PUT(freeList_end + SEGLIST12, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST12, (size_t) (block->next_free));
 		}
 		else if (size <= LIST13_LIMIT)
 		{
-			if( (*(freeList_start + SEGLIST13)) == (*(freeList_end + SEGLIST13)) )
+			if( block->next_free==NULL )
 				PUT(freeList_end + SEGLIST13, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST13, (size_t) (block->next_free));
 		}
 		else
 		{
-			if( (*(freeList_start + SEGLIST14)) == (*(freeList_end + SEGLIST14)) )
+			if( block->next_free==NULL )
 				PUT(freeList_end + SEGLIST14, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST14, (size_t) (block->next_free));
 		}
