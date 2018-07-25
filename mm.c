@@ -1194,11 +1194,16 @@ static void *find_best(size_t sizeatstart, size_t actual_size)
 		}
 		current_f = (block_t *)(current_free->next_free);
 	}
-	if(min_current_f!=NULL)
-            dbg_printf("Current where block will fit %p size %zu \n",min_current_f,get_size(min_current_f));
+	if(actual_size <= min_current_size && min_current_f!=NULL)
+	{
+		dbg_printf("Current where block will fit %p size %zu \n",min_current_f,get_size(min_current_f));
+		return min_current_f;
+	}
 	else 
-            dbg_printf("Current is null \n");
-	return min_current_f;
+	{
+		dbg_printf("Current is null \n");
+		return NULL;
+	}
 }
 
  static void place(void *bp, size_t asize)
