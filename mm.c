@@ -71,19 +71,19 @@ static const word_t size_mask = ~(word_t)0xF;
 /* Variables used as offsets for
    segregated lists headers */
 #define SEGLIST1     0
-#define SEGLIST2     dsize
-#define SEGLIST3     2*dsize
-#define SEGLIST4     3*dsize
-#define SEGLIST5     4*dsize
-#define SEGLIST6     5*dsize
-#define SEGLIST7     6*dsize
-#define SEGLIST8     7*dsize
-#define SEGLIST9     8*dsize
-#define SEGLIST10    9*dsize
-#define SEGLIST11    10*dsize
-#define SEGLIST12    11*dsize
-#define SEGLIST13    12*dsize
-#define SEGLIST14    13*dsize
+#define SEGLIST2     wsize
+#define SEGLIST3     2*wsize
+#define SEGLIST4     3*wsize
+#define SEGLIST5     4*wsize
+#define SEGLIST6     5*wsize
+#define SEGLIST7     6*wsize
+#define SEGLIST8     7*wsize
+#define SEGLIST9     8*wsize
+#define SEGLIST10    9*wsize
+#define SEGLIST11    10*wsize
+#define SEGLIST12    11*wsize
+#define SEGLIST13    12*wsize
+#define SEGLIST14    13*wsize
 
 /* Maximum size limit of each list */
 #define LIST1_LIMIT      32
@@ -130,7 +130,8 @@ typedef struct free_block
 } block_f;
 
 block_t *heap_start = NULL;
-char *freeList_start=NULL;
+char *freeList_start=NULL
+char *freeList_end=NULL;
 
 static void PUT(char *p,size_t val);
 static block_t *extend_heap(size_t size);
@@ -139,7 +140,7 @@ static block_t *find_next(block_t *block);
 static word_t *find_prev_footer(block_t *block);
 static block_t *find_prev(block_t *block);
 static void freeList_LIFO_insert(block_f *block,size_t size);
-static void freeList_FIFO_insert(block_f *block);
+static void freeList_FIFO_insert(block_f *block,sze_t size);
 static void freeList_del(block_f *block,size_t size);
 static bool extract_alloc(word_t header);
 static bool get_alloc(block_t *block);
@@ -204,6 +205,7 @@ bool mm_init(void) {
     
     //printf("Initialising memory location for storing start pointers of seg list on heap \n");
     freeList_start=(char *)(mem_sbrk(14*dsize));
+    freeList_end = freeList_start + wsize;
     if (freeList_start == (void *)-1) 
     {
         return false;
@@ -224,7 +226,22 @@ bool mm_init(void) {
 	PUT(freeList_start + SEGLIST12, (size_t) NULL);
 	PUT(freeList_start + SEGLIST13, (size_t) NULL);
 	PUT(freeList_start + SEGLIST14, (size_t) NULL);
-   
+	
+	PUT(freeList_end + SEGLIST1, (size_t) NULL);
+	PUT(freeList_end + SEGLIST2, (size_t) NULL);
+	PUT(freeList_end + SEGLIST3, (size_t) NULL);
+	PUT(freeList_end + SEGLIST4, (size_t) NULL);
+	PUT(freeList_end + SEGLIST5, (size_t) NULL);
+	PUT(freeList_end + SEGLIST6, (size_t) NULL);
+	PUT(freeList_end + SEGLIST7, (size_t) NULL);
+	PUT(freeList_end + SEGLIST8, (size_t) NULL);
+	PUT(freeList_end + SEGLIST9, (size_t) NULL);
+	PUT(freeList_end + SEGLIST10, (size_t) NULL);
+	PUT(freeList_end + SEGLIST11, (size_t) NULL);
+	PUT(freeList_end + SEGLIST12, (size_t) NULL);
+	PUT(freeList_end + SEGLIST13, (size_t) NULL);
+	PUT(freeList_end + SEGLIST14, (size_t) NULL);
+	
     //printf("FreeList_start initialised %p mem_heap_lo %p mem_heap_hi %p \n",freeList_start,mem_heap_lo(),mem_heap_hi());
     
     word_t *start = (word_t *)(mem_sbrk(2*wsize));
@@ -301,7 +318,8 @@ void free (void *ptr) {
 
     //printf("calling freeList_LIFO_insert in seglist \n");
 	/* Add free block to appropriate segregated list */
-	freeList_LIFO_insert((block_f *)block, size);
+	//freeList_LIFO_insert((block_f *)block, size);
+	freeList_FIFO_insert((block_f *)block, size);
 	//printf("Calling coalesce from free\n");
 	coalesce((block_t *)block);
 	//printf("Returned from coalesce in free \n");
@@ -532,7 +550,8 @@ static block_t *extend_heap(size_t size)
 	
     //printf("Calling freeList_LIFO_insert in extend heap \n");
     /* Add to segregated list */
-	freeList_LIFO_insert((block_f *)block, size);
+	//freeList_LIFO_insert((block_f *)block, size);
+	freeList_FIFO_insert((block_f *)block, size);
 	//printf("Returned from freeList_LIFO_insert in extend heap \n");
     
     // Create new epilogue header
@@ -581,8 +600,8 @@ static block_t *coalesce(block_t * block)
         write_header(block, size, false);
         write_footer(block, size, false);
 	    //printf("block %p size %zu\n",block,block->header);
-        freeList_LIFO_insert(block_free,size);
-	    
+        //freeList_LIFO_insert(block_free,size);
+	    freeList_FIFO_insert(block_free,size);
     }
 
     else if (!prev_alloc && next_alloc)        // Case 3
@@ -597,7 +616,8 @@ static block_t *coalesce(block_t * block)
         write_footer(block_prev, size, false);
         //printf("block %p size %zu\n",block_prev,block_prev->header);    
 	    
-	    freeList_LIFO_insert(block_prev_free,get_size(block_prev));
+	    //freeList_LIFO_insert(block_prev_free,get_size(block_prev));
+	    freeList_FIFO_insert(block_prev_free,get_size(block_prev));
 	        
         block=block_prev;
     }
@@ -615,8 +635,8 @@ static block_t *coalesce(block_t * block)
         write_footer(block_prev, size, false);
 		//printf("block %p sze %zu \n",block_prev,block_prev->header);
 	    
-	    freeList_LIFO_insert(block_prev_free,get_size(block_prev));
-	    
+	    //freeList_LIFO_insert(block_prev_free,get_size(block_prev));
+	    freeList_FIFO_insert(block_prev_free,get_size(block_prev));
         block=block_prev;
     }
 	//printf("Returning from coalesce \n");
@@ -719,6 +739,103 @@ static void freeList_LIFO_insert(block_f *block,size_t size)
     }
 }
 
+static void freeList_FIFO_insert(block_f *block,size_t size)
+{
+	char *listend;
+	char *segstart;
+	char *segend;
+	
+	if (size <= LIST1_LIMIT) {
+		segstart = freeList_start + SEGLIST1;
+		segend = freeList_end + SEGLIST1;
+		listend = (char *) GET(segend);
+
+	} else if (size <= LIST2_LIMIT) {
+		segstart = freeList_start + SEGLIST2;
+		segend = freeList_end + SEGLIST2;
+		listend = (char *) GET(segend);
+
+	} else if (size <= LIST3_LIMIT) {
+		segstart = freeList_start + SEGLIST3;
+		segend = freeList_end + SEGLIST3;
+		listend = (char *) GET(segend);
+
+	} else if (size <= LIST4_LIMIT) {
+		segstart = freeList_start + SEGLIST4;
+		segend = freeList_end + SEGLIST4;
+		listend = (char *) GET(segend);
+
+	} else if (size <= LIST5_LIMIT) {
+		segstart = freeList_start + SEGLIST5;
+		segend = freeList_end + SEGLIST5;
+		listend = (char *) GET(segend);
+
+	} else if (size <= LIST6_LIMIT) {
+		segstart = freeList_start + SEGLIST6;
+		segend = freeList_end + SEGLIST6;
+		listend = (char *) GET(segend);
+
+	} else if (size <= LIST7_LIMIT) {
+		segstart = freeList_start + SEGLIST7;
+		segend = freeList_end + SEGLIST7;
+		listend = (char *) GET(segend);
+
+	} else if (size <= LIST8_LIMIT) {
+		segstart = freeList_start + SEGLIST8;
+		segend = freeList_end + SEGLIST8;
+		listend = (char *) GET(segend);
+
+	} else if (size <= LIST9_LIMIT) {
+		segstart = freeList_start + SEGLIST9;
+		segend = freeList_end + SEGLIST9;
+		listend = (char *) GET(segend);
+
+	} else if (size <= LIST10_LIMIT) {
+		segstart = freeList_start + SEGLIST10;
+		segend = freeList_end + SEGLIST10;
+		listend = (char *) GET(segend);
+
+	} else if (size <= LIST11_LIMIT) {
+		segstart = freeList_start + SEGLIST11;
+		segend = freeList_end + SEGLIST11;
+		listend = (char *) GET(segend);
+
+	} else if (size <= LIST12_LIMIT) {
+		segstart = freeList_start + SEGLIST12;
+		segend = freeList_end + SEGLIST12;
+		listend = (char *) GET(segend);
+
+	} else if (size <= LIST13_LIMIT) {
+		segstart = freeList_start + SEGLIST13;
+		segend = freeList_end + SEGLIST13;
+		listend = (char *) GET(segend);
+
+	} else {
+		segstart = freeList_start + SEGLIST14;
+		segend = freeList_end + SEGLIST14;
+		listend = (char *) GET(segend);
+	}
+	
+	if(listhead==NULL)
+    	{
+        	//printf("If of freeList_fifo_insert \n");
+        	//set current block as head
+        	PUT(segstart,(size_t)(block));
+		PUT(segend,(size_t)(block));
+        	//printf("segstart %p size %zu \n", segstart, (size_t)block);
+        	block->prev_free=NULL;
+        	block->next_free=NULL;
+    	}
+	else
+	{
+       		block_f * listend_blockf=(block_f *)listend;
+		block->prev_free=listend_blockf
+		block->next_free=NULL;
+		listend_blockf->next_free=block;
+		PUT(segend,(size_t)block);
+	}
+}
+
 static void freeList_del(block_f *block,size_t size)
 {
 	//printf("freeList_del called for block %p and size %zu \n",block,size);
@@ -726,40 +843,124 @@ static void freeList_del(block_f *block,size_t size)
 	{
 		//printf("block at start of freelist\n");
 		
-        if (size <= LIST1_LIMIT)
+        	if (size <= LIST1_LIMIT)
+		{
+			if( (*(freeList_start + SEGLIST1)) == (*(freeList_end + SEGLIST1)) )
+				PUT(freeList_end + SEGLIST1, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST1, (size_t) (block->next_free));
+		}
 		else if (size <= LIST2_LIMIT)
+		{
+			if( (*(freeList_start + SEGLIST2)) == (*(freeList_end + SEGLIST2)) )
+				PUT(freeList_end + SEGLIST2, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST2, (size_t) (block->next_free));
+		}
 		else if (size <= LIST3_LIMIT)
+		{
+			if( (*(freeList_start + SEGLIST3)) == (*(freeList_end + SEGLIST3)) )
+				PUT(freeList_end + SEGLIST3, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST3, (size_t) (block->next_free));
+		}
 		else if (size <= LIST4_LIMIT)
+		{
+			if( (*(freeList_start + SEGLIST4)) == (*(freeList_end + SEGLIST4)) )
+				PUT(freeList_end + SEGLIST4, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST4, (size_t) (block->next_free));
+		}
 		else if (size <= LIST5_LIMIT)
+		{
+			if( (*(freeList_start + SEGLIST5)) == (*(freeList_end + SEGLIST5)) )
+				PUT(freeList_end + SEGLIST5, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST5, (size_t) (block->next_free));
+		}
 		else if (size <= LIST6_LIMIT)
+		{
+			if( (*(freeList_start + SEGLIST6)) == (*(freeList_end + SEGLIST6)) )
+				PUT(freeList_end + SEGLIST6, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST6, (size_t) (block->next_free));
+		}
 		else if (size <= LIST7_LIMIT)
+		{
+			if( (*(freeList_start + SEGLIST7)) == (*(freeList_end + SEGLIST7)) )
+				PUT(freeList_end + SEGLIST7, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST7, (size_t) (block->next_free));
+		}
 		else if (size <= LIST8_LIMIT)
+		{
+			if( (*(freeList_start + SEGLIST8)) == (*(freeList_end + SEGLIST8)) )
+				PUT(freeList_end + SEGLIST8, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST8, (size_t) (block->next_free));
+		}
 		else if (size <= LIST9_LIMIT)
+		{
+			if( (*(freeList_start + SEGLIST9)) == (*(freeList_end + SEGLIST9)) )
+				PUT(freeList_end + SEGLIST9, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST9, (size_t) (block->next_free));
+		}
 		else if (size <= LIST10_LIMIT)
+		{
+			if( (*(freeList_start + SEGLIST10)) == (*(freeList_end + SEGLIST10)) )
+				PUT(freeList_end + SEGLIST10, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST10, (size_t) (block->next_free));
+		}
 		else if (size <= LIST11_LIMIT)
+		{
+			if( (*(freeList_start + SEGLIST11)) == (*(freeList_end + SEGLIST11)) )
+				PUT(freeList_end + SEGLIST11, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST11, (size_t) (block->next_free));
+		}
 		else if (size <= LIST12_LIMIT)
+		{
+			if( (*(freeList_start + SEGLIST12)) == (*(freeList_end + SEGLIST12)) )
+				PUT(freeList_end + SEGLIST12, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST12, (size_t) (block->next_free));
+		}
 		else if (size <= LIST13_LIMIT)
+		{
+			if( (*(freeList_start + SEGLIST13)) == (*(freeList_end + SEGLIST13)) )
+				PUT(freeList_end + SEGLIST13, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST13, (size_t) (block->next_free));
+		}
 		else
+		{
+			if( (*(freeList_start + SEGLIST14)) == (*(freeList_end + SEGLIST14)) )
+				PUT(freeList_end + SEGLIST14, (size_t) (block->next_free));
 			PUT(freeList_start + SEGLIST14, (size_t) (block->next_free));
-        
-        if((block->next_free) != NULL)
+		}
+        	
+        	if((block->next_free) != NULL)
 			block->next_free->prev_free=NULL;
 	}
 	else if(block->next_free==NULL) //Last block of freeList
 	{
+		if (size <= LIST1_LIMIT)
+			PUT(freeList_end + SEGLIST1, (size_t) (block->prev_free));
+		else if (size <= LIST2_LIMIT)
+			PUT(freeList_end + SEGLIST2, (size_t) (block->prev_free));
+		else if (size <= LIST3_LIMIT)
+			PUT(freeList_end + SEGLIST3, (size_t) (block->prev_free));
+		else if (size <= LIST4_LIMIT)
+			PUT(freeList_end + SEGLIST4, (size_t) (block->prev_free));
+		else if (size <= LIST5_LIMIT)
+			PUT(freeList_end + SEGLIST5, (size_t) (block->prev_free));
+		else if (size <= LIST6_LIMIT)
+			PUT(freeList_end + SEGLIST6, (size_t) (block->prev_free));
+		else if (size <= LIST7_LIMIT)
+			PUT(freeList_end + SEGLIST7, (size_t) (block->prev_free));
+		else if (size <= LIST8_LIMIT)
+			PUT(freeList_end + SEGLIST8, (size_t) (block->prev_free));
+		else if (size <= LIST9_LIMIT)
+			PUT(freeList_end + SEGLIST9, (size_t) (block->prev_free));
+		else if (size <= LIST10_LIMIT)
+			PUT(freeList_end + SEGLIST10, (size_t) (block->prev_free));
+		else if (size <= LIST11_LIMIT)
+			PUT(freeList_end + SEGLIST11, (size_t) (block->prev_free));
+		else if (size <= LIST12_LIMIT)
+			PUT(freeList_end + SEGLIST12, (size_t) (block->prev_free));
+		else if (size <= LIST13_LIMIT)
+			PUT(freeList_end + SEGLIST13, (size_t) (block->prev_free));
+		else
+			PUT(freeList_end + SEGLIST14, (size_t) (block->prev_free));
         //printf("it is last block in its list \n");
 		block->prev_free->next_free=NULL;
 	}
@@ -938,7 +1139,8 @@ static void *find(size_t sizeatstart, size_t actual_size)
 		 write_header(block_next, csize-asize, false);
          write_footer(block_next, csize-asize, false);
          
-         freeList_LIFO_insert((block_f *)block_next,csize-asize);
+         //freeList_LIFO_insert((block_f *)block_next,csize-asize);
+	 freeList_FIFO_insert((block_f *)block_next,csize-asize);
      }
      else
      {
