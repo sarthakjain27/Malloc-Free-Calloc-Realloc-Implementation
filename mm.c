@@ -1145,7 +1145,7 @@ static void *find_best(size_t sizeatstart, size_t actual_size)
     	block_t *current_f=NULL;
 	block_t *min_current_f=NULL;
 	block_f *current_free=NULL;
-	size_t min_current_size;
+	size_t min_current_size,current_f_size;
 	/* Finding which list to look into */
 	if (sizeatstart == 0)
 		current = (char *) GET(freeList_start + SEGLIST1);
@@ -1185,11 +1185,12 @@ static void *find_best(size_t sizeatstart, size_t actual_size)
 	while (current_f != NULL)
 	{
 		current_free=(block_f *)current_f;
+		current_f_size=get_size(current_f);
 		//dbg_printf("current_f %p current_free %p free's next %p its size %zu\n",current_f,current_free,current_free->next_free,get_size(current_f));
-		if (actual_size <= get_size(current_f) && actual_size < min_current_size)
+		if (actual_size <= current_f_size && current_f_size < min_current_size)
 		{
 			min_current_f=current_f;
-			min_current_size=get_size(min_current_f);
+			min_current_size=current_f_size;
 		}
 		current_f = (block_t *)(current_free->next_free);
 	}
