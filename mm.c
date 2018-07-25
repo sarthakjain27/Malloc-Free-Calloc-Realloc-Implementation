@@ -26,7 +26,7 @@
  * If you want debugging output, uncomment the following. Be sure not
  * to have debugging enabled in your final submission
  */
- //#define DEBUG
+ #define DEBUG
 
 #ifdef DEBUG
 /* When debugging is enabled, the underlying functions get called */
@@ -834,7 +834,7 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
         	//set current block as head
         	PUT(segstart,(size_t)(block));
 		PUT(segend,(size_t)(block));
-        	dbg_printf("segstart %p segend size %zu \n", segstart, segend,(size_t)block);
+        	dbg_printf("segstart %p segend %p size %zu \n", segstart, segend,(size_t)block);
         	block->prev_free=NULL;
         	block->next_free=NULL;
     	}
