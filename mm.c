@@ -64,7 +64,7 @@ static const size_t dsize = 2*wsize;          // double word size (bytes)
 static const size_t min_block_size = 24; // Minimum block size
 static const size_t CHUNKSIZE = 224;    // requires (chunksize % 16 == 0)
 
-static const word_t alloc_mask = 0x1;
+//static const word_t alloc_mask = 0x1;
 static const word_t size_mask = ~(word_t)0xF;
 
 /* What is the correct alignment? */
@@ -162,8 +162,8 @@ static word_t pack(size_t size, size_t alloc);
 static void place(void *bp, size_t asize);
 static size_t MAX(size_t x, size_t y);
 static block_t *payload_to_header(void *bp);
-static void write_footer(block_t *block, size_t size, bool alloc);
-static void write_header(block_t *block, size_t size, bool alloc);
+static void write_footer(block_t *block, size_t size, size_t alloc);
+static void write_header(block_t *block, size_t size, size_t alloc);
 static size_t extract_size(word_t word);
 
 /* Read and write 8 bytes at address p */
@@ -174,7 +174,7 @@ static size_t GET(char *p)
 
 static size_t GET_PREV_ALLOC(block_t *block)
 {
-	return ((*(block)) & 0x2);	
+	return ((block->header) & 0x2);	
 }
 
 /*
@@ -624,7 +624,7 @@ static block_t *coalesce(block_t * block)
         size += get_size(block_prev);
 	write_header(block_prev, size, GET_PREV_ALLOC(block_prev));
         write_footer(block_prev, size, GET_PREV_ALLOC(block_prev));
-	write_header(block_next,get_size(block_next),1)
+	write_header(block_next,get_size(block_next),1);
       	//dbg_printf("block %p size %zu\n",block_prev,block_prev->header);    
 	    
 	    //freeList_LIFO_insert(block_prev_free,get_size(block_prev));
@@ -1278,7 +1278,7 @@ static size_t get_size(block_t *block)
  */
 static size_t get_alloc(block_t *block)
 {
-    return ((*(block)) & 0x1);
+    return ((block->header) & 0x1);
 }
 
 /*
