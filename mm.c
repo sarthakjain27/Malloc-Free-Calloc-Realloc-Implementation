@@ -150,6 +150,7 @@ static bool get_alloc(block_t *block);
 static size_t get_size(block_t *block);
 static size_t GET(char *p);
 static void *find_fit(size_t asize);
+static void *find_best(size_t sizeatstart, size_t actual_size);
 static void *find(size_t sizeatstart, size_t actual_size);
 static size_t get_payload_size(block_t *block);
 
@@ -986,72 +987,86 @@ static void *find_fit(size_t asize)
 	/* Segregated lists- Size breakdown */
 	if (asize <= LIST1_LIMIT) {
 		for (sizeatstart = 0; sizeatstart < TOTALLIST; sizeatstart++) {
-			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find(sizeatstart, asize)) != NULL)
+			if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST2_LIMIT) {
 		for (sizeatstart = 1; sizeatstart < TOTALLIST; sizeatstart++) {
-			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find(sizeatstart, asize)) != NULL)
+			if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST3_LIMIT) {
 		for (sizeatstart = 2; sizeatstart < TOTALLIST; sizeatstart++) {
-			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find(sizeatstart, asize)) != NULL)
+			if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST4_LIMIT) {
 		for (sizeatstart = 3; sizeatstart < TOTALLIST; sizeatstart++) {
-			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find(sizeatstart, asize)) != NULL)
+			if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST5_LIMIT) {
 		for (sizeatstart = 4; sizeatstart < TOTALLIST; sizeatstart++) {
-			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find(sizeatstart, asize)) != NULL)
+			if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST6_LIMIT) {
 		for (sizeatstart = 5; sizeatstart < TOTALLIST; sizeatstart++) {
-			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find(sizeatstart, asize)) != NULL)
+			if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST7_LIMIT) {
 		for (sizeatstart = 6; sizeatstart < TOTALLIST; sizeatstart++) {
-			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find(sizeatstart, asize)) != NULL)
+			if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST8_LIMIT) {
 		for (sizeatstart = 7; sizeatstart < TOTALLIST; sizeatstart++) {
-			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find(sizeatstart, asize)) != NULL)
+			if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST9_LIMIT) {
 		for (sizeatstart = 8; sizeatstart < TOTALLIST; sizeatstart++) {
-			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find(sizeatstart, asize)) != NULL)
+			if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST10_LIMIT) {
 		for (sizeatstart = 9; sizeatstart < TOTALLIST; sizeatstart++) {
-			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find(sizeatstart, asize)) != NULL)
+			if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST11_LIMIT) {
 		for (sizeatstart = 10; sizeatstart < TOTALLIST; sizeatstart++) {
-			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find(sizeatstart, asize)) != NULL)
+			if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST12_LIMIT) {
 		for (sizeatstart = 11; sizeatstart < TOTALLIST; sizeatstart++) {
-			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find(sizeatstart, asize)) != NULL)
+			if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST13_LIMIT) {
 		for (sizeatstart = 12; sizeatstart < TOTALLIST; sizeatstart++) {
-			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find(sizeatstart, asize)) != NULL)
+			if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else {
 		sizeatstart = 13;
-		if ((bp = find(sizeatstart, asize)) != NULL) {
+		//if ((bp = find(sizeatstart, asize)) != NULL) {
+		if ((bp = find_best(sizeatstart, asize)) != NULL){
 			return bp;
 		}
 	}
@@ -1121,6 +1136,68 @@ static void *find(size_t sizeatstart, size_t actual_size)
 	else 
             dbg_printf("Current is null \n");
 	return current_f;
+}
+
+static void *find_best(size_t sizeatstart, size_t actual_size)
+{
+	dbg_printf("Find best called with sizeatstart %zu actual size %zu and freeList_start %p\n",sizeatstart,actual_size,freeList_start);
+	char *current = NULL;
+    	block_t *current_f=NULL;
+	block_t *min_current_f=NULL;
+	block_f *current_free=NULL;
+	size_t min_current_size;
+	/* Finding which list to look into */
+	if (sizeatstart == 0)
+		current = (char *) GET(freeList_start + SEGLIST1);
+	else if (sizeatstart == 1)
+		current = (char *) GET(freeList_start + SEGLIST2);
+	else if (sizeatstart == 2)
+		current = (char *) GET(freeList_start + SEGLIST3);
+	else if (sizeatstart == 3)
+		current = (char *) GET(freeList_start + SEGLIST4);
+	else if (sizeatstart == 4)
+		current = (char *) GET(freeList_start + SEGLIST5);
+	else if (sizeatstart == 5)
+		current = (char *) GET(freeList_start + SEGLIST6);
+	else if (sizeatstart == 6)
+		current = (char *) GET(freeList_start + SEGLIST7);
+	else if (sizeatstart == 7)
+		current = (char *) GET(freeList_start + SEGLIST8);
+	else if (sizeatstart == 8)
+		current = (char *) GET(freeList_start + SEGLIST9);
+	else if (sizeatstart == 9)
+		current = (char *) GET(freeList_start + SEGLIST10);
+	else if (sizeatstart == 10)
+		current = (char *) GET(freeList_start + SEGLIST11);
+	else if (sizeatstart == 11)
+		current = (char *) GET(freeList_start + SEGLIST12);
+	else if (sizeatstart == 12)
+		current = (char *) GET(freeList_start + SEGLIST13);
+	else if (sizeatstart == 13)
+		current = (char *) GET(freeList_start + SEGLIST14);
+
+    	current_f=(block_t *)current;
+	dbg_printf("Current value current %p current_f %p \n",current,current_f);
+	min_current_f=current_f;
+	if(current_f != NULL)
+		min_current_size=get_size(min_current_f);
+	/* Finding available free block in list */
+	while (current_f != NULL)
+	{
+		current_free=(block_f *)current_f;
+		//dbg_printf("current_f %p current_free %p free's next %p its size %zu\n",current_f,current_free,current_free->next_free,get_size(current_f));
+		if (actual_size <= get_size(current_f) && actual_size < min_current_size)
+		{
+			min_current_f=current_f;
+			min_current_size=get_size(min_current_f);
+		}
+		current_f = (block_t *)(current_free->next_free);
+	}
+	if(min_current_f!=NULL)
+            dbg_printf("Current where block will fit %p size %zu \n",min_current_f,get_size(min_current_f));
+	else 
+            dbg_printf("Current is null \n");
+	return min_current_f;
 }
 
  static void place(void *bp, size_t asize)
