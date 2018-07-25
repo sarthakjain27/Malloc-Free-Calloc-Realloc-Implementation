@@ -130,7 +130,7 @@ typedef struct free_block
 } block_f;
 
 block_t *heap_start = NULL;
-char *freeList_start=NULL
+char *freeList_start=NULL;
 char *freeList_end=NULL;
 
 static void PUT(char *p,size_t val);
@@ -140,7 +140,7 @@ static block_t *find_next(block_t *block);
 static word_t *find_prev_footer(block_t *block);
 static block_t *find_prev(block_t *block);
 static void freeList_LIFO_insert(block_f *block,size_t size);
-static void freeList_FIFO_insert(block_f *block,sze_t size);
+static void freeList_FIFO_insert(block_f *block,size_t size);
 static void freeList_del(block_f *block,size_t size);
 static bool extract_alloc(word_t header);
 static bool get_alloc(block_t *block);
@@ -816,7 +816,7 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
 		listend = (char *) GET(segend);
 	}
 	
-	if(listhead==NULL)
+	if(listend==NULL)
     	{
         	//printf("If of freeList_fifo_insert \n");
         	//set current block as head
@@ -829,7 +829,7 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
 	else
 	{
        		block_f * listend_blockf=(block_f *)listend;
-		block->prev_free=listend_blockf
+		block->prev_free=listend_blockf;
 		block->next_free=NULL;
 		listend_blockf->next_free=block;
 		PUT(segend,(size_t)block);
@@ -1112,9 +1112,9 @@ static void *find(size_t sizeatstart, size_t actual_size)
 		}
 		current_f = (block_t *)(current_free->next_free);
 	}
-	if(current_f!=NULL)
+	//if(current_f!=NULL)
             //printf("Current where block will fit %p size %zu \n",current_f,get_size(current_f));
-	else 
+	//else 
             //printf("Current is null \n");
 	return current_f;
 }
