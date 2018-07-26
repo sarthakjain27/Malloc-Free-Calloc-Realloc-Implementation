@@ -26,7 +26,7 @@
  * If you want debugging output, uncomment the following. Be sure not
  * to have debugging enabled in your final submission
  */
- //#define DEBUG
+ #define DEBUG
 
 #ifdef DEBUG
 /* When debugging is enabled, the underlying functions get called */
@@ -264,7 +264,7 @@ bool mm_init(void) {
 	PUT(freeList_end + SEGLIST13, (size_t) NULL);
 	PUT(freeList_end + SEGLIST14, (size_t) NULL);
 	
-    dbg_printf("FreeList_start initialised %p FreeList_end\n",freeList_start,freeList_end);
+    dbg_printf("FreeList_start initialised %p FreeList_end %p\n",freeList_start,freeList_end);
     
     word_t *start = (word_t *)(mem_sbrk(2*wsize));
     if (start == (void *)-1) 
@@ -651,7 +651,7 @@ static block_t *coalesce(block_t * block)
     size_t next_alloc = get_alloc(block_next);
     size_t size = get_size(block);
     
-    dbg_printf("block_free %p size %zu block_f_next %p size %zu next_alloc %zu block_p_next %p size %zu prev alloc %zu\n",block_free,get_size(block),block_next,get_size(block_next),next_alloc,block_prev_free,get_size(blok_prev),prev_alloc);
+    dbg_printf("block_free %p size %zu block_f_next %p size %zu next_alloc %zu block_p_next %p size %zu prev alloc %zu\n",block_free,get_size(block),block_next,get_size(block_next),next_alloc,block_prev_free,get_size(block_prev),prev_alloc);
 	
     if (prev_alloc && next_alloc)              // Case 1
     {
