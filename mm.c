@@ -26,7 +26,7 @@
  * If you want debugging output, uncomment the following. Be sure not
  * to have debugging enabled in your final submission
  */
- #define DEBUG
+ //#define DEBUG
 
 #ifdef DEBUG
 /* When debugging is enabled, the underlying functions get called */
@@ -65,7 +65,7 @@ static const size_t min_block_size = 24; // Minimum block size
 static const size_t CHUNKSIZE = 224;    // requires (chunksize % 16 == 0)
 
 //static const word_t alloc_mask = 0x1;
-static const word_t size_mask = ~(word_t)0xF;
+static const word_t size_mask = ~(word_t)0x7;
 
 /* What is the correct alignment? */
 #define ALIGNMENT dsize
@@ -292,7 +292,7 @@ void *malloc (size_t size) {
         return bp;
     }
     // Adjust block size to include overhead and to meet alignment requirements
-    asize = round_up(size + wsize, dsize);
+    asize = round_up(size + dsize, dsize);
     dbg_printf("Size %zu Asize %zu\n",size,asize);
     
     //dbg_printf("Calling find_fit\n");
@@ -326,11 +326,12 @@ void free (void *ptr) {
 
     write_header(block, size, GET_PREV_ALLOC(block));
     write_footer(block, size, GET_PREV_ALLOC(block));
-    
-    //dbg_printf("calling freeList_FIFO_insert in seglist \n");
+	write_header(find_next(block),get_size(find_next(block)),get_alloc(find_next(block)));
+    dbg_printf("calling freeList_FIFO_insert in seglist from free block_next %p and size %zu\n",find_next(block),get_size(find_next(block)));
 	/* Add free block to appropriate segregated list */
 	//freeList_LIFO_insert((block_f *)block, size);
 	freeList_FIFO_insert((block_f *)block, size);
+	dbg_printf("after call of FIFO insert in free block next %p and its size %zu\n",find_next(block),get_size(find_next(block)));
 	//dbg_printf("Calling coalesce from free\n");
 	coalesce((block_t *)block);
 	//dbg_printf("Returned from coalesce in free \n");
@@ -579,15 +580,15 @@ static block_t *extend_heap(size_t size)
  */
 static block_t *coalesce(block_t * block) 
 {
-	dbg_printf("Coalesce called \n");
-    block_t *block_next = find_next(block);
+	dbg_printf("Coalesce called\n",);
+	block_t *block_next = find_next(block);
     block_t *block_prev = find_prev(block);
 
     block_f *block_free=(block_f *)block;
     block_f *block_next_free=(block_f *)block_next;
     block_f *block_prev_free=(block_f *)block_prev;
    	
-    dbg_printf("block_free %p block_f_next %p block_p_next %p\n",block_free,block_next_free,block_prev_free);
+    dbg_printf("block_free %p size %zu block_f_next %p size %lu block_p_next %p\n",block_free,get_size(block),block_next,block_next->header,block_prev_free);
  
     size_t prev_alloc = GET_PREV_ALLOC(block);
     size_t next_alloc = get_alloc(block_next);
@@ -1263,7 +1264,7 @@ static word_t get_payload_size(block_t *block)
  */
 static size_t extract_size(word_t word)
 {
-    return (word & size_mask);
+    return (size_t)(word & size_mask);
 }
 /*
  * get_size: returns the size of a given block by clearing the lowest 4 bits
@@ -1271,6 +1272,7 @@ static size_t extract_size(word_t word)
  */
 static size_t get_size(block_t *block)
 {
+	//dbg_printf("block %p its size %zu\n",block,block->header);
     return extract_size(block->header);
 }
 
