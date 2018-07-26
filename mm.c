@@ -26,7 +26,7 @@
  * If you want debugging output, uncomment the following. Be sure not
  * to have debugging enabled in your final submission
  */
- #define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
 /* When debugging is enabled, the underlying functions get called */
@@ -511,10 +511,13 @@ bool mm_checkheap(int lineno) {
 			dbg_printf("Block pointer %p isn't in heap \n",i);
 			return false;
 		}
-		if(!(GET_PREV_ALLOC(i)==2 && get_alloc(find_prev(i))==1))
+		if(get_size(i)!=0)
 		{
-			dbg_printf("Bit inconsistency ! block ponter %p previous bit %zu and previous block current alloc %zu \n",GET_PREV_ALLOC(i),get_alloc(find_prev(i)));
-			return false;
+			if(!(GET_PREV_ALLOC(i)==2 && get_alloc(find_prev(i))==1))
+			{
+				dbg_printf("Bit inconsistency ! block ponter %p previous bit %zu and previous block %p current alloc %zu \n",i,GET_PREV_ALLOC(i),find_prev(i),get_alloc(find_prev(i)));
+				return false;
+			}
 		}
 	}
 	dbg_printf("All blocks printed now checking for each free block's range \n");	
