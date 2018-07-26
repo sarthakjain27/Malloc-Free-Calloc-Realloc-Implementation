@@ -26,7 +26,7 @@
  * If you want debugging output, uncomment the following. Be sure not
  * to have debugging enabled in your final submission
  */
- //#define DEBUG
+ #define DEBUG
 
 #ifdef DEBUG
 /* When debugging is enabled, the underlying functions get called */
@@ -61,11 +61,11 @@
 typedef uint64_t word_t;
 static const size_t wsize = sizeof(word_t);   // word and header size (bytes)
 static const size_t dsize = 2*wsize;          // double word size (bytes)
-static const size_t min_block_size = 24; // Minimum block size
-static const size_t CHUNKSIZE = 240;    // requires (chunksize % 16 == 0)
+static const size_t min_block_size =2*dsize ; // Minimum block size
+static const size_t CHUNKSIZE = 4096;    // requires (chunksize % 16 == 0)
 
 //static const word_t alloc_mask = 0x1;
-static const word_t size_mask = ~(word_t)0x7;
+static const word_t size_mask = ~(word_t)0xF;
 
 /* What is the correct alignment? */
 #define ALIGNMENT dsize
@@ -88,19 +88,19 @@ static const word_t size_mask = ~(word_t)0x7;
 #define SEGLIST14    13*dsize
 
 /* Maximum size limit of each list */
-#define LIST1_LIMIT      24
-#define LIST2_LIMIT      48
-#define LIST3_LIMIT      72
-#define LIST4_LIMIT      96
-#define LIST5_LIMIT      120
-#define LIST6_LIMIT      480
-#define LIST7_LIMIT      960
-#define LIST8_LIMIT      1920
-#define LIST9_LIMIT      3840
-#define LIST10_LIMIT     7680
-#define LIST11_LIMIT     15360
-#define LIST12_LIMIT     30720
-#define LIST13_LIMIT     61440
+#define LIST1_LIMIT      32
+#define LIST2_LIMIT      64
+#define LIST3_LIMIT      128
+#define LIST4_LIMIT      256
+#define LIST5_LIMIT      512
+#define LIST6_LIMIT      1024
+#define LIST7_LIMIT      2048
+#define LIST8_LIMIT      4096
+#define LIST9_LIMIT      8192
+#define LIST10_LIMIT     16384
+#define LIST11_LIMIT     32768
+#define LIST12_LIMIT     65536
+#define LIST13_LIMIT     131072
 
 #define TOTALLIST   14
 #define CURRENTALLOCATED   1
@@ -640,7 +640,7 @@ static block_t *extend_heap(size_t size)
  */
 static block_t *coalesce(block_t * block) 
 {
-	dbg_printf("Coalesce called\n",);
+	dbg_printf("Coalesce called\n");
 	block_t *block_next = find_next(block);
     block_t *block_prev = find_prev(block);
 
