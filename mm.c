@@ -511,6 +511,11 @@ bool mm_checkheap(int lineno) {
 			dbg_printf("Block pointer %p isn't in heap \n",i);
 			return false;
 		}
+		if(!(GET_PREV_ALLOC(i)==2 && get_alloc(find_prev(i))==1))
+		{
+			dbg_printf("Bit inconsistency ! block ponter %p previous bit %zu and previous block current alloc %zu \n",GET_PREV_ALLOC(i),get_alloc(find_prev(i)));
+			return false;
+		}
 	}
 	dbg_printf("All blocks printed now checking for each free block's range \n");	
 	/* Checking if all blocks in each freelist fall within
