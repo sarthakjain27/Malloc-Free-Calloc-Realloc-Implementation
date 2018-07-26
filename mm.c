@@ -26,7 +26,7 @@
  * If you want debugging output, uncomment the following. Be sure not
  * to have debugging enabled in your final submission
  */
- #define DEBUG
+ //#define DEBUG
 
 #ifdef DEBUG
 /* When debugging is enabled, the underlying functions get called */
@@ -62,7 +62,7 @@ typedef uint64_t word_t;
 static const size_t wsize = sizeof(word_t);   // word and header size (bytes)
 static const size_t dsize = 2*wsize;          // double word size (bytes)
 static const size_t min_block_size =2*dsize ; // Minimum block size
-static const size_t CHUNKSIZE = 240;    // requires (chunksize % 16 == 0)
+static const size_t CHUNKSIZE = 512;    // requires (chunksize % 16 == 0)
 
 //static const word_t alloc_mask = 0x1;
 static const word_t size_mask = ~(word_t)0xF;
@@ -303,11 +303,8 @@ void *malloc (size_t size) {
         dbg_ensures(mm_checkheap(__LINE__));
         return bp;
     }
-    if(size<=wsize)
-		asize=min_block_size;
-	else
 		// Adjust block size to include overhead and to meet alignment requirements
-    	asize = round_up(size + wsize, dsize);
+    	asize = round_up(size + dsize, dsize);
     dbg_printf("Size %zu Asize %zu\n",size,asize);
     
     //dbg_printf("Calling find_fit\n");
