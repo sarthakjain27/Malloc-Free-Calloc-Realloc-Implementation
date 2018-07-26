@@ -226,7 +226,6 @@ bool mm_init(void) {
     // Create the initial empty heap 
     dbg_printf("mm_init called \n");
     
-    dbg_printf("Initialising memory location for storing start pointers of seg list on heap \n");
     freeList_start=(char *)(mem_sbrk(14*dsize));
     freeList_end = freeList_start + wsize;
     if (freeList_start == (void *)-1) 
@@ -265,7 +264,7 @@ bool mm_init(void) {
 	PUT(freeList_end + SEGLIST13, (size_t) NULL);
 	PUT(freeList_end + SEGLIST14, (size_t) NULL);
 	
-    dbg_printf("FreeList_start initialised %p FreeList_end %p mem_heap_lo %p mem_heap_hi %p \n",freeList_start,freeList_end,mem_heap_lo(),mem_heap_hi());
+    dbg_printf("FreeList_start initialised %p FreeList_end\n",freeList_start,freeList_end);
     
     word_t *start = (word_t *)(mem_sbrk(2*wsize));
     if (start == (void *)-1) 
@@ -653,11 +652,12 @@ static block_t *coalesce(block_t * block)
     size_t prev_alloc = GET_PREV_ALLOC(block);
     size_t next_alloc = get_alloc(block_next);
     size_t size = get_size(block);
-
+    
     if (prev_alloc && next_alloc)              // Case 1
     {
 	    dbg_printf("Case 1 entered \n");
-		return block;
+	    write_header(block_next,get_size(block_next),1);
+	    return block;
     }
 
     else if (prev_alloc && !next_alloc)        // Case 2
@@ -713,102 +713,6 @@ static block_t *coalesce(block_t * block)
     }
 	dbg_printf("Returning from coalesce \n");
     return block;
-}
-
-static void freeList_LIFO_insert(block_f *block,size_t size)
-{
-    //printf("FreeList_LIFO_insert called with block %p and size %zu \n",block,size);
-    
-	/* Address of head of a particular list */
-	char *listhead;
-    
-	/* Address pointing to the address of head of a particular list */
-	char *segstart;
-	
-    if (size <= LIST1_LIMIT) {
-		segstart = freeList_start + SEGLIST1;
-		listhead = (char *) GET(segstart);
-
-	} else if (size <= LIST2_LIMIT) {
-		segstart = freeList_start + SEGLIST2;
-		listhead = (char *) GET(segstart);
-
-	} else if (size <= LIST3_LIMIT) {
-		segstart = freeList_start + SEGLIST3;
-		listhead = (char *) GET(segstart);
-
-	} else if (size <= LIST4_LIMIT) {
-		segstart = freeList_start + SEGLIST4;
-		listhead = (char *) GET(segstart);
-
-	} else if (size <= LIST5_LIMIT) {
-		segstart = freeList_start + SEGLIST5;
-		listhead = (char *) GET(segstart);
-
-	} else if (size <= LIST6_LIMIT) {
-		segstart = freeList_start + SEGLIST6;
-		listhead = (char *) GET(segstart);
-
-	} else if (size <= LIST7_LIMIT) {
-		segstart = freeList_start + SEGLIST7;
-		listhead = (char *) GET(segstart);
-
-	} else if (size <= LIST8_LIMIT) {
-		segstart = freeList_start + SEGLIST8;
-		listhead = (char *) GET(segstart);
-
-	} else if (size <= LIST9_LIMIT) {
-		segstart = freeList_start + SEGLIST9;
-		listhead = (char *) GET(segstart);
-
-	} else if (size <= LIST10_LIMIT) {
-		segstart = freeList_start + SEGLIST10;
-		listhead = (char *) GET(segstart);
-
-	} else if (size <= LIST11_LIMIT) {
-		segstart = freeList_start + SEGLIST11;
-		listhead = (char *) GET(segstart);
-
-	} else if (size <= LIST12_LIMIT) {
-		segstart = freeList_start + SEGLIST12;
-		listhead = (char *) GET(segstart);
-
-	} else if (size <= LIST13_LIMIT) {
-		segstart = freeList_start + SEGLIST13;
-		listhead = (char *) GET(segstart);
-
-	} else {
-		segstart = freeList_start + SEGLIST14;
-		listhead = (char *) GET(segstart);
-	}
-	
-	//printf("Seg start %p listhead %p \n",segstart,listhead);
-    
-    // if there are no blocks in the list
-    if(listhead==NULL)
-    {
-        //printf("If of freeList_lifo_insert \n");
-        //set current block as head
-        PUT(segstart,(size_t)(block));
-        //printf("segstart %p size %zu \n", segstart, (size_t)block);
-        block->prev_free=NULL;
-        block->next_free=NULL;
-    }
-    //there are blocks in the list
-    else
-    {
-        //printf("Else of freeList_lifo_insert \n");
-        block_f * listhead_blockf=(block_f *)listhead;
-        
-        block->next_free=listhead_blockf;
-        listhead_blockf->prev_free=block;
-        
-        //set current block as head
-        PUT(segstart, (size_t) block);
-		//printf("segstart %p size %zu \n", segstart, (size_t)block);
-        
-        block->prev_free=NULL;
-    }
 }
 
 static void freeList_FIFO_insert(block_f *block,size_t size)
@@ -903,7 +807,7 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
 	{
 		dbg_printf("Else of fifo insert \n");
        		block_f * listend_blockf=(block_f *)listend;
-		dbg_printf("listend_blockf %p \n",listend_blockf);
+		
 		block->prev_free=listend_blockf;
 		block->next_free=NULL;
 		listend_blockf->next_free=block;
