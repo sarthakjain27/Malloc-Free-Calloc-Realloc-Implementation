@@ -657,7 +657,6 @@ static block_t *coalesce(block_t * block)
     {
 	    dbg_printf("Case 1 entered \n");
 	    write_header(block_next,get_size(block_next),1);
-	    return block;
     }
 
     else if (prev_alloc && !next_alloc)        // Case 2
@@ -671,7 +670,6 @@ static block_t *coalesce(block_t * block)
         write_header(block, size, prev_alloc);
         write_footer(block, size, prev_alloc);
 	    //dbg_printf("block %p size %zu\n",block,block->header);
-        //freeList_LIFO_insert(block_free,size);
 	    freeList_FIFO_insert(block_free,size);
     }
 
@@ -687,9 +685,7 @@ static block_t *coalesce(block_t * block)
         write_footer(block_prev, size, GET_PREV_ALLOC(block_prev));
 	write_header(block_next,get_size(block_next),1);
       	//dbg_printf("block %p size %zu\n",block_prev,block_prev->header);    
-	    
-	    //freeList_LIFO_insert(block_prev_free,get_size(block_prev));
-	    freeList_FIFO_insert(block_prev_free,get_size(block_prev));
+	freeList_FIFO_insert(block_prev_free,get_size(block_prev));
 	        
         block=block_prev;
     }
@@ -707,8 +703,7 @@ static block_t *coalesce(block_t * block)
         write_footer(block_prev, size, GET_PREV_ALLOC(block_prev));
 		//dbg_printf("block %p sze %zu \n",block_prev,block_prev->header);
 	    
-	    //freeList_LIFO_insert(block_prev_free,get_size(block_prev));
-	    freeList_FIFO_insert(block_prev_free,get_size(block_prev));
+	freeList_FIFO_insert(block_prev_free,get_size(block_prev));
         block=block_prev;
     }
 	dbg_printf("Returning from coalesce \n");
@@ -825,86 +820,142 @@ static void freeList_del(block_f *block,size_t size)
         	if (size <= LIST1_LIMIT)
 		{
 			if( block->next_free==NULL  )
-				PUT(freeList_end + SEGLIST1, (size_t) (block->next_free));
-			PUT(freeList_start + SEGLIST1, (size_t) (block->next_free));
+			{
+				PUT(freeList_end + SEGLIST1, NULL);
+				PUT(freeList_start + SEGLIST1,NULL);
+			}
+			else
+				PUT(freeList_start + SEGLIST1, (size_t) (block->next_free));
 		}
 		else if (size <= LIST2_LIMIT)
 		{
-			if( block->next_free==NULL )
-				PUT(freeList_end + SEGLIST2, (size_t) (block->next_free));
-			PUT(freeList_start + SEGLIST2, (size_t) (block->next_free));
+			if( block->next_free==NULL  )
+			{
+				PUT(freeList_end + SEGLIST2, NULL);
+				PUT(freeList_start + SEGLIST2, NULL);
+			}
+			else
+				PUT(freeList_start + SEGLIST2, (size_t) (block->next_free));
 		}
 		else if (size <= LIST3_LIMIT)
 		{
 			if( block->next_free==NULL )
-				PUT(freeList_end + SEGLIST3, (size_t) (block->next_free));
-			PUT(freeList_start + SEGLIST3, (size_t) (block->next_free));
+			{
+				PUT(freeList_end + SEGLIST3, NULL);
+				PUT(freeList_start + SEGLIST3,NULL);
+			}
+			else
+				PUT(freeList_start + SEGLIST3, (size_t) (block->next_free));
 		}
 		else if (size <= LIST4_LIMIT)
 		{
-			if( block->next_free==NULL )
-				PUT(freeList_end + SEGLIST4, (size_t) (block->next_free));
-			PUT(freeList_start + SEGLIST4, (size_t) (block->next_free));
+			if( block->next_free==NULL  )
+			{
+				PUT(freeList_end + SEGLIST4, NULL);
+				PUT(freeList_start + SEGLIST4, NULL);
+			}
+			else
+				PUT(freeList_start + SEGLIST4, (size_t) (block->next_free));
 		}
 		else if (size <= LIST5_LIMIT)
 		{
-			if( block->next_free==NULL )
-				PUT(freeList_end + SEGLIST5, (size_t) (block->next_free));
-			PUT(freeList_start + SEGLIST5, (size_t) (block->next_free));
+			if( block->next_free==NULL  )
+			{
+				PUT(freeList_end + SEGLIST5, NULL);
+				PUT(freeList_start + SEGLIST5,NULL);
+			}
+			else
+				PUT(freeList_start + SEGLIST5, (size_t) (block->next_free));
 		}
 		else if (size <= LIST6_LIMIT)
 		{
-			if(block->next_free==NULL )
-				PUT(freeList_end + SEGLIST6, (size_t) (block->next_free));
-			PUT(freeList_start + SEGLIST6, (size_t) (block->next_free));
+			if( block->next_free==NULL  )
+			{
+				PUT(freeList_end + SEGLIST6, NULL);
+				PUT(freeList_start + SEGLIST6,NULL);
+			}
+			else
+				PUT(freeList_start + SEGLIST6, (size_t) (block->next_free));
 		}
 		else if (size <= LIST7_LIMIT)
 		{
-			if( block->next_free==NULL )
-				PUT(freeList_end + SEGLIST7, (size_t) (block->next_free));
-			PUT(freeList_start + SEGLIST7, (size_t) (block->next_free));
+			if( block->next_free==NULL  )
+			{
+				PUT(freeList_end + SEGLIST7, NULL);
+				PUT(freeList_start + SEGLIST7,NULL);
+			}
+			else
+				PUT(freeList_start + SEGLIST7, (size_t) (block->next_free));
 		}
 		else if (size <= LIST8_LIMIT)
 		{
-			if( block->next_free==NULL )
-				PUT(freeList_end + SEGLIST8, (size_t) (block->next_free));
-			PUT(freeList_start + SEGLIST8, (size_t) (block->next_free));
+			if( block->next_free==NULL  )
+			{
+				PUT(freeList_end + SEGLIST8, NULL);
+				PUT(freeList_start + SEGLIST8,NULL);
+			}
+			else
+				PUT(freeList_start + SEGLIST8, (size_t) (block->next_free));
 		}
 		else if (size <= LIST9_LIMIT)
 		{
-			if(block->next_free==NULL  )
-				PUT(freeList_end + SEGLIST9, (size_t) (block->next_free));
-			PUT(freeList_start + SEGLIST9, (size_t) (block->next_free));
+			if( block->next_free==NULL  )
+			{
+				PUT(freeList_end + SEGLIST9, NULL);
+				PUT(freeList_start + SEGLIST9,NULL);
+			}
+			else
+				PUT(freeList_start + SEGLIST9, (size_t) (block->next_free));
 		}
 		else if (size <= LIST10_LIMIT)
 		{
-			if( block->next_free==NULL )
-				PUT(freeList_end + SEGLIST10, (size_t) (block->next_free));
-			PUT(freeList_start + SEGLIST10, (size_t) (block->next_free));
+			if( block->next_free==NULL  )
+			{
+				PUT(freeList_end + SEGLIST10, NULL);
+				PUT(freeList_start + SEGLIST10,NULL);
+			}
+			else
+				PUT(freeList_start + SEGLIST10, (size_t) (block->next_free));
 		}
 		else if (size <= LIST11_LIMIT)
 		{
-			if( block->next_free==NULL )
-				PUT(freeList_end + SEGLIST11, (size_t) (block->next_free));
-			PUT(freeList_start + SEGLIST11, (size_t) (block->next_free));
+			if( block->next_free==NULL  )
+			{
+				PUT(freeList_end + SEGLIST11, NULL);
+				PUT(freeList_start + SEGLIST11,NULL);
+			}
+			else
+				PUT(freeList_start + SEGLIST11, (size_t) (block->next_free));
 		}
 		else if (size <= LIST12_LIMIT)
 		{
-			if( block->next_free==NULL )
-				PUT(freeList_end + SEGLIST12, (size_t) (block->next_free));
-			PUT(freeList_start + SEGLIST12, (size_t) (block->next_free));
+			if( block->next_free==NULL  )
+			{
+				PUT(freeList_end + SEGLIST12, NULL);
+				PUT(freeList_start + SEGLIST12,NULL);
+			}
+			else
+				PUT(freeList_start + SEGLIST12, (size_t) (block->next_free));
 		}
 		else if (size <= LIST13_LIMIT)
 		{
-			if( block->next_free==NULL )
-				PUT(freeList_end + SEGLIST13, (size_t) (block->next_free));
-			PUT(freeList_start + SEGLIST13, (size_t) (block->next_free));
+			if( block->next_free==NULL  )
+			{
+				PUT(freeList_end + SEGLIST13, NULL);
+				PUT(freeList_start + SEGLIST13,NULL);
+			}
+			else
+				PUT(freeList_start + SEGLIST13, (size_t) (block->next_free));
 		}
 		else
 		{
-			if( block->next_free==NULL )
-				PUT(freeList_end + SEGLIST14, (size_t) (block->next_free));
-			PUT(freeList_start + SEGLIST14, (size_t) (block->next_free));
+			if( block->next_free==NULL  )
+			{
+				PUT(freeList_end + SEGLIST14, NULL);
+				PUT(freeList_start + SEGLIST14,NULL);
+			}
+			else
+				PUT(freeList_start + SEGLIST14, (size_t) (block->next_free));
 		}
         	
         	if((block->next_free) != NULL)
@@ -957,98 +1008,85 @@ static void freeList_del(block_f *block,size_t size)
 	}
 }
 
-
+/*
+* find fit determines the appropriate seglist to start searching for a block which can fit asize sized block
+*/
 static void *find_fit(size_t asize)
 {
 	dbg_printf("Find_fit called with asize %zu\n",asize);
 	size_t sizeatstart;
 	char *bp = NULL;
 
-	/* Segregated lists- Size breakdown */
+	/* Segregated lists*/
 	if (asize <= LIST1_LIMIT) {
 		for (sizeatstart = 0; sizeatstart < TOTALLIST; sizeatstart++) {
 			if ((bp = find(sizeatstart, asize)) != NULL)
-			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST2_LIMIT) {
 		for (sizeatstart = 1; sizeatstart < TOTALLIST; sizeatstart++) {
 			if ((bp = find(sizeatstart, asize)) != NULL)
-			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST3_LIMIT) {
 		for (sizeatstart = 2; sizeatstart < TOTALLIST; sizeatstart++) {
 			if ((bp = find(sizeatstart, asize)) != NULL)
-			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST4_LIMIT) {
 		for (sizeatstart = 3; sizeatstart < TOTALLIST; sizeatstart++) {
-			//if ((bp = find(sizeatstart, asize)) != NULL)
-			if ((bp = find_best(sizeatstart, asize)) != NULL)
+			if ((bp = find(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST5_LIMIT) {
 		for (sizeatstart = 4; sizeatstart < TOTALLIST; sizeatstart++) {
 			if ((bp = find(sizeatstart, asize)) != NULL)
-			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST6_LIMIT) {
 		for (sizeatstart = 5; sizeatstart < TOTALLIST; sizeatstart++) {
 			if ((bp = find(sizeatstart, asize)) != NULL)
-			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST7_LIMIT) {
 		for (sizeatstart = 6; sizeatstart < TOTALLIST; sizeatstart++) {
 			if ((bp = find(sizeatstart, asize)) != NULL)
-			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST8_LIMIT) {
 		for (sizeatstart = 7; sizeatstart < TOTALLIST; sizeatstart++) {
 			if ((bp = find(sizeatstart, asize)) != NULL)
-			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST9_LIMIT) {
 		for (sizeatstart = 8; sizeatstart < TOTALLIST; sizeatstart++) {
 			if ((bp = find(sizeatstart, asize)) != NULL)
-			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST10_LIMIT) {
 		for (sizeatstart = 9; sizeatstart < TOTALLIST; sizeatstart++) {
 			if ((bp = find(sizeatstart, asize)) != NULL)
-			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST11_LIMIT) {
 		for (sizeatstart = 10; sizeatstart < TOTALLIST; sizeatstart++) {
 			if ((bp = find(sizeatstart, asize)) != NULL)
-			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST12_LIMIT) {
 		for (sizeatstart = 11; sizeatstart < TOTALLIST; sizeatstart++) {
 			if ((bp = find(sizeatstart, asize)) != NULL)
-			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST13_LIMIT) {
 		for (sizeatstart = 12; sizeatstart < TOTALLIST; sizeatstart++) {
 			if ((bp = find(sizeatstart, asize)) != NULL)
-			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else {
 		sizeatstart = 13;
-		if ((bp = find(sizeatstart, asize)) != NULL) {
-		//if ((bp = find_best(sizeatstart, asize)) != NULL){
+		if ((bp = find(sizeatstart, asize)) != NULL) 
 			return bp;
-		}
 	}
 	dbg_printf("All if else failed in find_fit \n");
 	return bp;
@@ -1097,18 +1135,14 @@ static void *find(size_t sizeatstart, size_t actual_size)
 	else if (sizeatstart == 13)
 		current = (char *) GET(freeList_start + SEGLIST14);
 
-    current_f=(block_t *)current;
-	dbg_printf("Current value current %p current_f %p \n",current,current_f);
-
+    	current_f=(block_t *)current;
+	
 	/* Finding available free block in list */
 	while (current_f != NULL)
 	{
 		current_free=(block_f *)current_f;
-		//dbg_printf("current_f %p current_free %p free's next %p its size %zu\n",current_f,current_free,current_free->next_free,get_size(current_f));
 		if (actual_size <= get_size(current_f))
-		    {
-			break;
-		}
+			break;	
 		current_f = (block_t *)(current_free->next_free);
 	}
 	if(current_f!=NULL)
@@ -1118,79 +1152,11 @@ static void *find(size_t sizeatstart, size_t actual_size)
 	return current_f;
 }
 
-static void *find_best(size_t sizeatstart, size_t actual_size)
-{
-	dbg_printf("Find best called with sizeatstart %zu actual size %zu and freeList_start %p\n",sizeatstart,actual_size,freeList_start);
-	char *current = NULL;
-    	block_t *current_f=NULL;
-	block_t *min_current_f=NULL;
-	block_f *current_free=NULL;
-	size_t min_current_size,current_f_size;
-	/* Finding which list to look into */
-	if (sizeatstart == 0)
-		current = (char *) GET(freeList_start + SEGLIST1);
-	else if (sizeatstart == 1)
-		current = (char *) GET(freeList_start + SEGLIST2);
-	else if (sizeatstart == 2)
-		current = (char *) GET(freeList_start + SEGLIST3);
-	else if (sizeatstart == 3)
-		current = (char *) GET(freeList_start + SEGLIST4);
-	else if (sizeatstart == 4)
-		current = (char *) GET(freeList_start + SEGLIST5);
-	else if (sizeatstart == 5)
-		current = (char *) GET(freeList_start + SEGLIST6);
-	else if (sizeatstart == 6)
-		current = (char *) GET(freeList_start + SEGLIST7);
-	else if (sizeatstart == 7)
-		current = (char *) GET(freeList_start + SEGLIST8);
-	else if (sizeatstart == 8)
-		current = (char *) GET(freeList_start + SEGLIST9);
-	else if (sizeatstart == 9)
-		current = (char *) GET(freeList_start + SEGLIST10);
-	else if (sizeatstart == 10)
-		current = (char *) GET(freeList_start + SEGLIST11);
-	else if (sizeatstart == 11)
-		current = (char *) GET(freeList_start + SEGLIST12);
-	else if (sizeatstart == 12)
-		current = (char *) GET(freeList_start + SEGLIST13);
-	else if (sizeatstart == 13)
-		current = (char *) GET(freeList_start + SEGLIST14);
-
-    	current_f=(block_t *)current;
-	dbg_printf("Current value current %p current_f %p \n",current,current_f);
-	min_current_f=current_f;
-	if(current_f != NULL)
-		min_current_size=get_size(min_current_f);
-	/* Finding available free block in list */
-	while (current_f != NULL)
-	{
-		current_free=(block_f *)current_f;
-		current_f_size=get_size(current_f);
-		//dbg_printf("current_f %p current_free %p free's next %p its size %zu\n",current_f,current_free,current_free->next_free,get_size(current_f));
-		if (actual_size <= current_f_size && current_f_size < min_current_size)
-		{
-			min_current_f=current_f;
-			min_current_size=current_f_size;
-		}
-		current_f = (block_t *)(current_free->next_free);
-	}
-	if(actual_size <= min_current_size && min_current_f!=NULL)
-	{
-		dbg_printf("Current where block will fit %p size %zu \n",min_current_f,get_size(min_current_f));
-		return min_current_f;
-	}
-	else 
-	{
-		dbg_printf("Current is null \n");
-		return NULL;
-	}
-}
-
  static void place(void *bp, size_t asize)
  {
      block_t * block=(block_t *)bp;
      size_t csize = get_size(block);
-     dbg_printf("place called with bp %p requesting size %zu with block size %zu\n",bp,asize,csize);
+     dbg_printf("place called with bp %p requesting size %zu with passed block size %zu\n",bp,asize,csize);
     
      freeList_del((block_f *)block,csize);
      
