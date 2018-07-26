@@ -165,6 +165,18 @@ static block_t *payload_to_header(void *bp);
 static void write_footer(block_t *block, size_t size, size_t alloc);
 static void write_header(block_t *block, size_t size, size_t alloc);
 static size_t extract_size(word_t word);
+static char *HDRP(block_t *block);
+static char *FTRP(block_t *block);
+
+static char *HDRP(block_t *block)
+{
+	return (char *)block;
+}
+
+static char *FTRP(block_t *block)
+{
+	return (char *)((char *)block + get_size(block) - wsize);
+}
 
 /* Read and write 8 bytes at address p */
 static size_t GET(char *p)
@@ -450,15 +462,61 @@ bool mm_checkheap(int lineno) {
 	unsigned sizeatstart = 0;
 	unsigned minimumblocksize = 0;
 	unsigned maximumblocksize = 0;
+	unsigned int total_free_block=0;
+	unsigned int total_free_block_list=0;
 	for(i=heap_start;get_size(i) > 0; i = find_next(i))
 	{
 		if(get_alloc(i))
 			printf("Heap Block %p size %zu\n",i,get_size(i));
-	}
-	for(i=heap_start;get_size(i) > 0; i = find_next(i))
-	{
+		
 		if(!get_alloc(i))
+		{
+			total_free_block++;
+			block_f *free_block=(block_f *)i;
 			printf("FreeList Block %p size %zu\n",i,get_size(i));
+			//check for free block header and footer mismatch
+			if(GET(HDRP(i)) != GET(FTRP(i))
+			{
+				printf("Free block %p header and footer mismatch \n",i);
+				return false;
+			}
+			//check for free block prev and next pointer consistency
+			if(free_block->next_free!=NULL && free_block->next_free->prev_free!=free_block)
+			   {
+				   printf("Free block %p next pointer is incosistent \n",i);
+				   return false;
+			   }
+			if(free_block->prev_free!=NULL && free_block->prev_free->next_free!=free_block)
+			   {
+				   printf("Free block %p prev pointer is inconsistent \n",i);
+				   return false;
+			   }
+			   //check for two consecutive free blocks presence
+			if(find_next(i)!=NULL && get_alloc(find_next(i))!=1)
+			   {
+				   printf("Two consecutive free block %p and %p present \n",i,find_next(i));
+				   return false;
+			   }
+			
+		}
+		//alignment check
+		if(!aligned((char *)i+wsize))
+		   {
+			   printf("Block pointer %p isn't aligned \n",i);
+			   return false;
+		   }
+		// presence inside heap check
+		if(!in_heap((char *)i+wsize))
+		{
+			printf("Block pointer %p isn't in heap \n",i);
+			return false;
+		}
+		// multiple of min_block_size check
+		if((min_block_size % (get_size(i)))!=0)
+		{
+			printf("Block pointer %p size %zu isn't a multiple of min block size \n",i,get_size(i));
+			return false;
+		}	   
 	}
 	printf("All blocks printed now checking for each free block's range \n");	
 	/* Checking if all blocks in each freelist fall within
@@ -528,7 +586,9 @@ bool mm_checkheap(int lineno) {
         	{
 			if(!(get_alloc((block_t *)f)))
 			{
+				total_free_block_list++;
 				printf("f %p is free \n",f);
+				//checking for each free block to be in correct seglist
 				if (!(minimumblocksize < get_size((block_t *)f) && get_size((block_t *)f) <= maximumblocksize)) 
             			{
 					printf("Free block pointer %p is not in the appropriate list", f);
@@ -537,6 +597,12 @@ bool mm_checkheap(int lineno) {
 			}
 			f=f->next_free;
 		}
+	}
+	//checking for total count of free block via heap traversal and seglist traversal
+	if(total_free_block != total_free_block_list)
+	{
+		printf("total free block inconsistency block traversal count %u list traversal count %u \n",total_free_block,total_free_block_list);
+		return false;
 	}
 	return true;
 }
