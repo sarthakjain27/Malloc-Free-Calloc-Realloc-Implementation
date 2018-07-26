@@ -304,7 +304,7 @@ void *malloc (size_t size) {
     }
 		// Adjust block size to include overhead and to meet alignment requirements
     	asize = round_up(size + dsize, dsize);
-    dbg_printf("Size %zu Asize %zu\n",size,asize);
+    dbg_printf("Requested Size %zu allocating size %zu\n",size,asize);
     
     //dbg_printf("Calling find_fit\n");
 	/* Search through heap for possible fit */
@@ -326,19 +326,19 @@ void *malloc (size_t size) {
  * free
  */
 void free (void *ptr) {
-    dbg_printf("Free called %p\n",ptr);
+    //dbg_printf("Free called %p\n",ptr);
     if (ptr == NULL)
     {
         return;
     }
     block_t *block = payload_to_header(ptr);
-    //dbg_printf("Free block pointer %p\n",block);
+    dbg_printf("Free called for block pointer %p\n",block);
 	size_t size = get_size(block);
 
     write_header(block, size, GET_PREV_ALLOC(block));
     write_footer(block, size, GET_PREV_ALLOC(block));
-	write_header(find_next(block),get_size(find_next(block)),get_alloc(find_next(block)));
-    dbg_printf("calling freeList_FIFO_insert in seglist from free block_next %p and size %zu\n",find_next(block),get_size(find_next(block)));
+    write_header(find_next(block),get_size(find_next(block)),get_alloc(find_next(block)));
+    
 	/* Add free block to appropriate segregated list */
 	//freeList_LIFO_insert((block_f *)block, size);
 	freeList_FIFO_insert((block_f *)block, size);
@@ -647,12 +647,12 @@ static block_t *coalesce(block_t * block)
     block_f *block_next_free=(block_f *)block_next;
     block_f *block_prev_free=(block_f *)block_prev;
    	
-    dbg_printf("block_free %p size %zu block_f_next %p size %lu block_p_next %p\n",block_free,get_size(block),block_next,block_next->header,block_prev_free);
- 
     size_t prev_alloc = GET_PREV_ALLOC(block);
     size_t next_alloc = get_alloc(block_next);
     size_t size = get_size(block);
     
+    dbg_printf("block_free %p size %zu block_f_next %p size %zu next_alloc %zu block_p_next %p size %zu prev alloc %zu\n",block_free,get_size(block),block_next,get_size(block_next),next_alloc,block_prev_free,get_size(blok_prev),prev_alloc);
+	
     if (prev_alloc && next_alloc)              // Case 1
     {
 	    dbg_printf("Case 1 entered \n");
@@ -908,7 +908,10 @@ static void freeList_del(block_f *block,size_t size)
 		}
         	
         	if((block->next_free) != NULL)
-				block->next_free->prev_free=NULL;
+		{
+			block->next_free->prev_free=NULL;
+			block->next_free=NULL;
+		}
 	}
 	else if(block->next_free==NULL) //Last block of freeList
 	{
@@ -942,12 +945,15 @@ static void freeList_del(block_f *block,size_t size)
 			PUT(freeList_end + SEGLIST14, (size_t) (block->prev_free));
         dbg_printf("it is last block in its list \n");
 		block->prev_free->next_free=NULL;
+		block->prev_free=NULL;
 	}
 	else //in middle of freeList
 	{
 	    dbg_printf("in Middle of its list\n");
 		block->prev_free->next_free=block->next_free;
 		block->next_free->prev_free=block->prev_free;
+		block->prev_free=NULL;
+		block->next_free=NULL;
 	}
 }
 
@@ -1184,7 +1190,7 @@ static void *find_best(size_t sizeatstart, size_t actual_size)
  {
      block_t * block=(block_t *)bp;
      size_t csize = get_size(block);
-     dbg_printf("place called with bp %p Asize %zu Csize %zu\n",bp,asize,csize);
+     dbg_printf("place called with bp %p requesting size %zu with block size %zu\n",bp,asize,csize);
     
      freeList_del((block_f *)block,csize);
      
@@ -1192,14 +1198,12 @@ static void *find_best(size_t sizeatstart, size_t actual_size)
      {
          dbg_printf("If entered of place \n");	
          write_header(block, asize, (GET_PREV_ALLOC(block) | CURRENTALLOCATED));
-         //write_footer(block, asize, true);
          
          block_t *block_next=find_next(block);
          dbg_printf("Block_next %p\n",block_next);
 	 write_header(block_next, csize-asize, PREVIOUSALLOCATED);
          write_footer(block_next, csize-asize, PREVIOUSALLOCATED);
          
-         //freeList_LIFO_insert((block_f *)block_next,csize-asize);
 	 freeList_FIFO_insert((block_f *)block_next,csize-asize);
      }
      else
