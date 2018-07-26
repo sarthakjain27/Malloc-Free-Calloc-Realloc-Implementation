@@ -26,7 +26,7 @@
  * If you want debugging output, uncomment the following. Be sure not
  * to have debugging enabled in your final submission
  */
- #define DEBUG
+ //#define DEBUG
 
 #ifdef DEBUG
 /* When debugging is enabled, the underlying functions get called */
