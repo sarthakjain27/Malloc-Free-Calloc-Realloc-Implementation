@@ -62,7 +62,7 @@ typedef uint64_t word_t;
 static const size_t wsize = sizeof(word_t);   // word and header size (bytes)
 static const size_t dsize = 2*wsize;          // double word size (bytes)
 static const size_t min_block_size = 24; // Minimum block size
-static const size_t CHUNKSIZE = 224;    // requires (chunksize % 16 == 0)
+static const size_t CHUNKSIZE = 240;    // requires (chunksize % 16 == 0)
 
 //static const word_t alloc_mask = 0x1;
 static const word_t size_mask = ~(word_t)0x7;
@@ -511,14 +511,8 @@ bool mm_checkheap(int lineno) {
 			dbg_printf("Block pointer %p isn't in heap \n",i);
 			return false;
 		}
-		// multiple of min_block_size check
-		if((min_block_size % (get_size(i)))!=0)
-		{
-			dbg_printf("Block pointer %p size %zu isn't a multiple of min block size \n",i,get_size(i));
-			return false;
-		}	   
 	}
-	printf("All blocks printed now checking for each free block's range \n");	
+	dbg_printf("All blocks printed now checking for each free block's range \n");	
 	/* Checking if all blocks in each freelist fall within
 	   the appropriate ranges (Different segregated lists) */
 	for (sizeatstart = 0; sizeatstart < TOTALLIST; sizeatstart++) 
@@ -591,7 +585,7 @@ bool mm_checkheap(int lineno) {
 				//checking for each free block to be in correct seglist
 				if (!(minimumblocksize < get_size((block_t *)f) && get_size((block_t *)f) <= maximumblocksize)) 
             			{
-					printf("Free block pointer %p is not in the appropriate list", f);
+					dbg_printf("Free block pointer %p is not in the appropriate list", f);
                 			return false;
 				}
 			}
