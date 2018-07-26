@@ -475,7 +475,7 @@ bool mm_checkheap(int lineno) {
 			block_f *free_block=(block_f *)i;
 			dbg_printf("FreeList Block %p size %zu\n",i,get_size(i));
 			//check for free block header and footer mismatch
-			if(GET(HDRP(i)) != GET(FTRP(i))
+			if(GET(HDRP(i)) != GET(FTRP(i)))
 			{
 				dbg_printf("Free block %p header and footer mismatch \n",i);
 				return false;
