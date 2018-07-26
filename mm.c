@@ -516,7 +516,6 @@ bool mm_checkheap(int lineno) {
 	   the appropriate ranges (Different segregated lists) */
 	for (sizeatstart = 0; sizeatstart < TOTALLIST; sizeatstart++) 
     	{
-			dbg_printf("sizeatstart %d \n",sizeatstart);
 		if (sizeatstart == 0) {
 			listpointer = (char *) GET(freeList_start + SEGLIST1);
 			minimumblocksize = 0;
@@ -580,7 +579,6 @@ bool mm_checkheap(int lineno) {
 			if(!(get_alloc((block_t *)f)))
 			{
 				total_free_block_list++;
-				dbg_printf("f %p is free \n",f);
 				//checking for each free block to be in correct seglist
 				if (!(minimumblocksize < get_size((block_t *)f) && get_size((block_t *)f) <= maximumblocksize)) 
             			{
