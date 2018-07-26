@@ -26,7 +26,7 @@
  * If you want debugging output, uncomment the following. Be sure not
  * to have debugging enabled in your final submission
  */
- //#define DEBUG
+ #define DEBUG
 
 #ifdef DEBUG
 /* When debugging is enabled, the underlying functions get called */
@@ -455,6 +455,7 @@ static bool aligned(const void *p) {
  */
 bool mm_checkheap(int lineno) {
 	dbg_printf("Printing Heap blocks \n");
+	dbg_printf("Heap size %zu \n",mem_heapsize());
 	block_t *i;
 	block_f *f=NULL;
 	char *listpointer = NULL;
