@@ -1033,8 +1033,8 @@ static void *find_fit(size_t asize)
 		}
 	} else if (asize <= LIST7_LIMIT) {
 		for (sizeatstart = 6; sizeatstart < TOTALLIST; sizeatstart++) {
-			//if ((bp = find(sizeatstart, asize)) != NULL)
-			if ((bp = find_best(sizeatstart, asize)) != NULL)
+			if ((bp = find(sizeatstart, asize)) != NULL)
+			//if ((bp = find_best(sizeatstart, asize)) != NULL)
 				return bp;
 		}
 	} else if (asize <= LIST8_LIMIT) {
