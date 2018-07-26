@@ -821,8 +821,8 @@ static void freeList_del(block_f *block,size_t size)
 		{
 			if( block->next_free==NULL  )
 			{
-				PUT(freeList_end + SEGLIST1, NULL);
-				PUT(freeList_start + SEGLIST1,NULL);
+				PUT(freeList_end + SEGLIST1, (size_t)NULL);
+				PUT(freeList_start + SEGLIST1,(size_t)NULL);
 			}
 			else
 				PUT(freeList_start + SEGLIST1, (size_t) (block->next_free));
@@ -831,8 +831,8 @@ static void freeList_del(block_f *block,size_t size)
 		{
 			if( block->next_free==NULL  )
 			{
-				PUT(freeList_end + SEGLIST2, NULL);
-				PUT(freeList_start + SEGLIST2, NULL);
+				PUT(freeList_end + SEGLIST2, (size_t)NULL);
+				PUT(freeList_start + SEGLIST2, (size_t)NULL);
 			}
 			else
 				PUT(freeList_start + SEGLIST2, (size_t) (block->next_free));
@@ -841,8 +841,8 @@ static void freeList_del(block_f *block,size_t size)
 		{
 			if( block->next_free==NULL )
 			{
-				PUT(freeList_end + SEGLIST3, NULL);
-				PUT(freeList_start + SEGLIST3,NULL);
+				PUT(freeList_end + SEGLIST3, (size_t)NULL);
+				PUT(freeList_start + SEGLIST3,(size_t)NULL);
 			}
 			else
 				PUT(freeList_start + SEGLIST3, (size_t) (block->next_free));
@@ -851,8 +851,8 @@ static void freeList_del(block_f *block,size_t size)
 		{
 			if( block->next_free==NULL  )
 			{
-				PUT(freeList_end + SEGLIST4, NULL);
-				PUT(freeList_start + SEGLIST4, NULL);
+				PUT(freeList_end + SEGLIST4, (size_t)NULL);
+				PUT(freeList_start + SEGLIST4, (size_t)NULL);
 			}
 			else
 				PUT(freeList_start + SEGLIST4, (size_t) (block->next_free));
@@ -861,8 +861,8 @@ static void freeList_del(block_f *block,size_t size)
 		{
 			if( block->next_free==NULL  )
 			{
-				PUT(freeList_end + SEGLIST5, NULL);
-				PUT(freeList_start + SEGLIST5,NULL);
+				PUT(freeList_end + SEGLIST5, (size_t)NULL);
+				PUT(freeList_start + SEGLIST5,(size_t)NULL);
 			}
 			else
 				PUT(freeList_start + SEGLIST5, (size_t) (block->next_free));
@@ -871,8 +871,8 @@ static void freeList_del(block_f *block,size_t size)
 		{
 			if( block->next_free==NULL  )
 			{
-				PUT(freeList_end + SEGLIST6, NULL);
-				PUT(freeList_start + SEGLIST6,NULL);
+				PUT(freeList_end + SEGLIST6, (size_t)NULL);
+				PUT(freeList_start + SEGLIST6,(size_t)NULL);
 			}
 			else
 				PUT(freeList_start + SEGLIST6, (size_t) (block->next_free));
@@ -881,8 +881,8 @@ static void freeList_del(block_f *block,size_t size)
 		{
 			if( block->next_free==NULL  )
 			{
-				PUT(freeList_end + SEGLIST7, NULL);
-				PUT(freeList_start + SEGLIST7,NULL);
+				PUT(freeList_end + SEGLIST7, (size_t)NULL);
+				PUT(freeList_start + SEGLIST7,(size_t)NULL);
 			}
 			else
 				PUT(freeList_start + SEGLIST7, (size_t) (block->next_free));
@@ -891,8 +891,8 @@ static void freeList_del(block_f *block,size_t size)
 		{
 			if( block->next_free==NULL  )
 			{
-				PUT(freeList_end + SEGLIST8, NULL);
-				PUT(freeList_start + SEGLIST8,NULL);
+				PUT(freeList_end + SEGLIST8, (size_t)NULL);
+				PUT(freeList_start + SEGLIST8,(size_t)NULL);
 			}
 			else
 				PUT(freeList_start + SEGLIST8, (size_t) (block->next_free));
@@ -901,8 +901,8 @@ static void freeList_del(block_f *block,size_t size)
 		{
 			if( block->next_free==NULL  )
 			{
-				PUT(freeList_end + SEGLIST9, NULL);
-				PUT(freeList_start + SEGLIST9,NULL);
+				PUT(freeList_end + SEGLIST9, (size_t)NULL);
+				PUT(freeList_start + SEGLIST9,(size_t)NULL);
 			}
 			else
 				PUT(freeList_start + SEGLIST9, (size_t) (block->next_free));
@@ -911,8 +911,8 @@ static void freeList_del(block_f *block,size_t size)
 		{
 			if( block->next_free==NULL  )
 			{
-				PUT(freeList_end + SEGLIST10, NULL);
-				PUT(freeList_start + SEGLIST10,NULL);
+				PUT(freeList_end + SEGLIST10, (size_t)NULL);
+				PUT(freeList_start + SEGLIST10,(size_t)NULL);
 			}
 			else
 				PUT(freeList_start + SEGLIST10, (size_t) (block->next_free));
@@ -921,8 +921,8 @@ static void freeList_del(block_f *block,size_t size)
 		{
 			if( block->next_free==NULL  )
 			{
-				PUT(freeList_end + SEGLIST11, NULL);
-				PUT(freeList_start + SEGLIST11,NULL);
+				PUT(freeList_end + SEGLIST11, (size_t)NULL);
+				PUT(freeList_start + SEGLIST11,(size_t)NULL);
 			}
 			else
 				PUT(freeList_start + SEGLIST11, (size_t) (block->next_free));
@@ -931,8 +931,8 @@ static void freeList_del(block_f *block,size_t size)
 		{
 			if( block->next_free==NULL  )
 			{
-				PUT(freeList_end + SEGLIST12, NULL);
-				PUT(freeList_start + SEGLIST12,NULL);
+				PUT(freeList_end + SEGLIST12, (size_t)NULL);
+				PUT(freeList_start + SEGLIST12,(size_t)NULL);
 			}
 			else
 				PUT(freeList_start + SEGLIST12, (size_t) (block->next_free));
@@ -941,8 +941,8 @@ static void freeList_del(block_f *block,size_t size)
 		{
 			if( block->next_free==NULL  )
 			{
-				PUT(freeList_end + SEGLIST13, NULL);
-				PUT(freeList_start + SEGLIST13,NULL);
+				PUT(freeList_end + SEGLIST13, (size_t)NULL);
+				PUT(freeList_start + SEGLIST13,(size_t)NULL);
 			}
 			else
 				PUT(freeList_start + SEGLIST13, (size_t) (block->next_free));
@@ -951,8 +951,8 @@ static void freeList_del(block_f *block,size_t size)
 		{
 			if( block->next_free==NULL  )
 			{
-				PUT(freeList_end + SEGLIST14, NULL);
-				PUT(freeList_start + SEGLIST14,NULL);
+				PUT(freeList_end + SEGLIST14, (size_t)NULL);
+				PUT(freeList_start + SEGLIST14,(size_t)NULL);
 			}
 			else
 				PUT(freeList_start + SEGLIST14, (size_t) (block->next_free));
