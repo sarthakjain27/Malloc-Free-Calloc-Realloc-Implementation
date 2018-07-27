@@ -3,11 +3,31 @@
  * Andrew ID: sarthak3
  * mm.c
  *
- * NOTE TO STUDENTS: Replace this header comment with your own header
- * comment that gives a high level description of your solution.
+ * The below code is for a general purpose dynamic memory allocator. 
+ * I have used Segregated free list with 14 different sized classes.
+ * Whenever a request for malloc occurs, it is first rounded up to included header and meet alignment requirements.
+ * Thereafter, according to the new size, classes are searched to get a first free block that can accommodate this request.
+ * If a block is found, then it is removed from free list, spliced up if (free block size - requested size) >= minimum block size.
+ * And then the newly freed block is added in the appropriate list.
  *
- * You may use mm-baseline.c as a starting point instead of building
- * your own solution from scratch (which may be a good idea).
+ * I have used a FIFO strategy to find a block and for insertion of a free block in the list. 
+ * 
+ * Free block structure
+ * | block size | (PREVIOUSALLOCATION)|(CURRENTALLOCATION)|
+ * | pointer to next free block				  |
+ * | pointer to previous free block			  |
+ * | Optional padding					  |
+ * | block size | (PREVIOUSALLOCATION)|(CURRENTALLOCATION)|
+ *
+ *
+ * Allocated block
+ * | block size | (PREVIOUSALLOCATION)|(CURRENTALLOCATION)|
+ * | Application requested size				  |
+ * | Optional Padding					  |
+ *
+ *
+ * I have stored each free list's starting and ending pointer on the heap itself at the very start when the heap is initialised
+ * For each free list the header and pointer are present consecutively.
  *
  */
 #include <assert.h>
@@ -168,11 +188,13 @@ static size_t extract_size(word_t word);
 static char *HDRP(block_t *block);
 static char *FTRP(block_t *block);
 
+//returns pointer to header of the block
 static char *HDRP(block_t *block)
 {
 	return (char *)block;
 }
 
+//returns pointer to footer of the block
 static char *FTRP(block_t *block)
 {
 	return (char *)((char *)block + get_size(block) - wsize);
@@ -184,6 +206,7 @@ static size_t GET(char *p)
     return (*((size_t*) (p)));   
 }
 
+//returns allocation status of previous block
 static size_t GET_PREV_ALLOC(block_t *block)
 {
 	return ((block->header) & 0x2);	
@@ -303,7 +326,7 @@ void *malloc (size_t size) {
         return bp;
     }
 		// Adjust block size to include overhead and to meet alignment requirements
-    	asize = round_up(size + dsize, dsize);
+    asize = round_up(size + dsize, dsize);
     dbg_printf("Requested Size %zu allocating size %zu\n",size,asize);
     
     //dbg_printf("Calling find_fit\n");
@@ -513,6 +536,7 @@ bool mm_checkheap(int lineno) {
 			dbg_printf("Block pointer %p isn't in heap \n",i);
 			return false;
 		}
+		//previous/next allocation/free bit consistency check
 		if(get_alloc(i)==0) 
 		{
 			if(GET_PREV_ALLOC(find_next(i))!=0)
@@ -610,6 +634,7 @@ bool mm_checkheap(int lineno) {
 			}
 			f=f->next_free;
 		}
+		//checking for presence of loop in a free list
 		while(slow_ptr && fast_ptr && fast_ptr->next_free)
 		{
 			slow_ptr=slow_ptr->next_free;
@@ -650,7 +675,6 @@ static block_t *extend_heap(size_t size)
 	
     //dbg_printf("Calling freeList_FIFO_insert in extend heap \n");
     /* Add to segregated list */
-	//freeList_LIFO_insert((block_f *)block, size);
 	freeList_FIFO_insert((block_f *)block, size);
 	dbg_printf("Returned from freeList_FIFO_insert in extend heap \n");
     
@@ -680,13 +704,14 @@ static block_t *coalesce(block_t * block)
     size_t prev_alloc = GET_PREV_ALLOC(block);
     size_t next_alloc = get_alloc(block_next);
     size_t size = get_size(block);
-    
+    size_t block_next_size=get_size(block_next);
+    size_t block_prev_size=get_size(block_prev);
     dbg_printf("block_free %p size %zu block_f_next %p size %zu next_alloc %zu block_p_next %p size %zu prev alloc %zu\n",block_free,get_size(block),block_next,get_size(block_next),next_alloc,block_prev_free,get_size(block_prev),prev_alloc);
 	
     if (prev_alloc && next_alloc)              // Case 1
     {
 	    dbg_printf("Case 1 entered \n");
-	    write_header(block_next,get_size(block_next),1);
+	    write_header(block_next,block_next_size,1);
     }
 
     else if (prev_alloc && !next_alloc)        // Case 2
@@ -694,9 +719,9 @@ static block_t *coalesce(block_t * block)
 	    dbg_printf("Case 2 entered \n");
         
         freeList_del(block_free,size);
-	    freeList_del(block_next_free,get_size(block_next));
+	    freeList_del(block_next_free,block_next_size);
 	    
-        size += get_size(block_next);
+        size += block_next_size;
         write_header(block, size, prev_alloc);
         write_footer(block, size, prev_alloc);
 	    //dbg_printf("block %p size %zu\n",block,block->header);
@@ -708,14 +733,14 @@ static block_t *coalesce(block_t * block)
 	    dbg_printf("Case 3 entered \n");
         
         freeList_del(block_free,size);
-	    freeList_del(block_prev_free,get_size(block_prev));
+	    freeList_del(block_prev_free,block_prev_size);
         
-        size += get_size(block_prev);
+        size += block_prev_size;
 	write_header(block_prev, size, GET_PREV_ALLOC(block_prev));
         write_footer(block_prev, size, GET_PREV_ALLOC(block_prev));
-	write_header(block_next,get_size(block_next),1);
+	write_header(block_next,block_next_size,1);
       	//dbg_printf("block %p size %zu\n",block_prev,block_prev->header);    
-	freeList_FIFO_insert(block_prev_free,get_size(block_prev));
+	freeList_FIFO_insert(block_prev_free,size);
 	        
         block=block_prev;
     }
@@ -725,15 +750,15 @@ static block_t *coalesce(block_t * block)
 	    dbg_printf("Case 4 entered \n");
         
         freeList_del(block_free,size);
-        freeList_del(block_next_free,get_size(block_next));
-	    freeList_del(block_prev_free,get_size(block_prev));
+        freeList_del(block_next_free,block_next_size);
+	    freeList_del(block_prev_free,block_prev_size);
         
-        size += get_size(block_next) + get_size(block_prev);
+        size += block_next_size + block_prev_size;
         write_header(block_prev, size, GET_PREV_ALLOC(block_prev));
         write_footer(block_prev, size, GET_PREV_ALLOC(block_prev));
 		//dbg_printf("block %p sze %zu \n",block_prev,block_prev->header);
 	    
-	freeList_FIFO_insert(block_prev_free,get_size(block_prev));
+	freeList_FIFO_insert(block_prev_free,size);
         block=block_prev;
     }
 	dbg_printf("Returning from coalesce \n");
