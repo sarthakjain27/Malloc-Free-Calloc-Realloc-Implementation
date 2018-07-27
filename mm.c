@@ -326,7 +326,10 @@ void *malloc (size_t size) {
         return bp;
     }
 		// Adjust block size to include overhead and to meet alignment requirements
-    asize = round_up(size + dsize, dsize);
+	if(size<=dsize)
+		asize=min_block_size;
+	else
+		asize = round_up(size + wsize, dsize);
     dbg_printf("Requested Size %zu allocating size %zu\n",size,asize);
     
     //dbg_printf("Calling find_fit\n");
@@ -1243,7 +1246,7 @@ static void *find(size_t sizeatstart, size_t actual_size)
 static word_t get_payload_size(block_t *block)
 {
     size_t asize = get_size(block);
-    return asize - dsize;
+    return asize - wsize;
 }
 
 /*
