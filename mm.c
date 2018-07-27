@@ -458,6 +458,8 @@ bool mm_checkheap(int lineno) {
 	dbg_printf("Heap size %zu \n",mem_heapsize());
 	block_t *i;
 	block_f *f=NULL;
+	block_f *slow_ptr=NULL;
+	block_f *fast_ptr=NULL;
 	char *listpointer = NULL;
 	unsigned sizeatstart = 0;
 	unsigned minimumblocksize = 0;
@@ -511,22 +513,22 @@ bool mm_checkheap(int lineno) {
 			dbg_printf("Block pointer %p isn't in heap \n",i);
 			return false;
 		}
-			if(get_alloc(i)==0) 
+		if(get_alloc(i)==0) 
+		{
+			if(GET_PREV_ALLOC(find_next(i))!=0)
 			{
-				if(GET_PREV_ALLOC(find_next(i))!=0)
-				{
-					dbg_printf("Bit inconsistency ! block ponter %p current alloc bit %zu and next block %p prev alloc %zu \n",i,get_alloc(i),find_next(i),GET_PREV_ALLOC(find_next(i)));
-					return false;
-				}
+				dbg_printf("Bit inconsistency ! block ponter %p current alloc bit %zu and next block %p prev alloc %zu \n",i,get_alloc(i),find_next(i),GET_PREV_ALLOC(find_next(i)));
+				return false;
 			}
-			if(get_alloc(i)==1)
+		}
+		if(get_alloc(i)==1)
+		{
+			if(GET_PREV_ALLOC(find_next(i))!=2)
 			{
-				if(GET_PREV_ALLOC(find_next(i))!=2)
-				{
-					dbg_printf("Bit inconsistency ! block ponter %p current alloc bit %zu and next block %p prev alloc %zu \n",i,get_alloc(i),find_next(i),GET_PREV_ALLOC(find_next(i)));
-					return false;
-				}
+				dbg_printf("Bit inconsistency ! block ponter %p current alloc bit %zu and next block %p prev alloc %zu \n",i,get_alloc(i),find_next(i),GET_PREV_ALLOC(find_next(i)));
+				return false;
 			}
+		}
 	}
 	dbg_printf("All blocks printed now checking for each free block's range \n");	
 	/* Checking if all blocks in each freelist fall within
@@ -591,6 +593,9 @@ bool mm_checkheap(int lineno) {
 			maximumblocksize = ~0;
 		}
 		f=(block_f *)listpointer;
+		slow_ptr=f;
+		if(slow_ptr)
+			fast_ptr=slow_ptr->next_free;
 		while (f != NULL) 
         	{
 			if(!(get_alloc((block_t *)f)))
@@ -604,6 +609,16 @@ bool mm_checkheap(int lineno) {
 				}
 			}
 			f=f->next_free;
+		}
+		while(slow_ptr && fast_ptr && fast_ptr->next_free)
+		{
+			slow_ptr=slow_ptr->next_free;
+			fast_ptr=fast_ptr->next_free->next_free;
+			if(slow_ptr==fast_ptr)
+			{
+				dbg_printf("Found loop in list %d \n",sizeatstart);
+				return false;
+			}
 		}
 	}
 	//checking for total count of free block via heap traversal and seglist traversal
