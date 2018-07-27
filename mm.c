@@ -696,28 +696,24 @@ static block_t *coalesce(block_t * block)
 	dbg_printf("Coalesce called\n");
 	block_t *block_next = find_next(block);
     block_t *block_prev = find_prev(block);
-
     block_f *block_free=(block_f *)block;
     block_f *block_next_free=(block_f *)block_next;
     block_f *block_prev_free=(block_f *)block_prev;
-   	
     size_t prev_alloc = GET_PREV_ALLOC(block);
-    size_t next_alloc = get_alloc(block_next);
+	size_t next_alloc = get_alloc(block_next);
     size_t size = get_size(block);
-    size_t block_next_size=get_size(block_next);
-    size_t block_prev_size=get_size(block_prev);
-    dbg_printf("block_free %p size %zu block_f_next %p size %zu next_alloc %zu block_p_next %p size %zu prev alloc %zu\n",block_free,get_size(block),block_next,get_size(block_next),next_alloc,block_prev_free,get_size(block_prev),prev_alloc);
 	
     if (prev_alloc && next_alloc)              // Case 1
     {
 	    dbg_printf("Case 1 entered \n");
-	    write_header(block_next,block_next_size,1);
+    	size_t block_next_size=get_size(block_next);
+		write_header(block_next,block_next_size,1);
     }
 
     else if (prev_alloc && !next_alloc)        // Case 2
     {
 	    dbg_printf("Case 2 entered \n");
-        
+    	size_t block_next_size=get_size(block_next);
         freeList_del(block_free,size);
 	    freeList_del(block_next_free,block_next_size);
 	    
@@ -731,8 +727,10 @@ static block_t *coalesce(block_t * block)
     else if (!prev_alloc && next_alloc)        // Case 3
     {
 	    dbg_printf("Case 3 entered \n");
+  	  	size_t block_prev_size=get_size(block_prev);
+    	size_t block_next_size=get_size(block_next);
         
-        freeList_del(block_free,size);
+		freeList_del(block_free,size);
 	    freeList_del(block_prev_free,block_prev_size);
         
         size += block_prev_size;
@@ -748,7 +746,8 @@ static block_t *coalesce(block_t * block)
     else                                        // Case 4
     {
 	    dbg_printf("Case 4 entered \n");
-        
+  	  	size_t block_prev_size=get_size(block_prev);
+    	size_t block_next_size=get_size(block_next);
         freeList_del(block_free,size);
         freeList_del(block_next_free,block_next_size);
 	    freeList_del(block_prev_free,block_prev_size);
