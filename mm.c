@@ -585,6 +585,7 @@ bool mm_checkheap(int lineno) {
 	   the appropriate ranges (Different segregated lists) */
 	for (sizeatstart = 0; sizeatstart < TOTALLIST; sizeatstart++) 
     	{
+		dbg_printf("sizeattart %d \n",sizeatstart);
 		if (sizeatstart == 0) {
 			listpointer = (char *) GET(freeList_start + SEGLIST0);
 			minimumblocksize = 0;
