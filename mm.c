@@ -519,13 +519,13 @@ bool mm_checkheap(int lineno) {
 	for(i=heap_start;get_size(i) > 0; i = find_next(i))
 	{
 		if(get_alloc(i))
-			dbg_printf("Heap Block %p size %zu\n",i,get_size(i));
+			dbg_printf("Heap Block %p size %zu prev allocation %zu current allocation %zu\n",i,get_size(i),GET_PREV_ALLOC(i),get_alloc(i));
 		
 		if(!get_alloc(i))
 		{
 			total_free_block++;
 			block_f *free_block=(block_f *)i;
-			dbg_printf("FreeList Block %p size %zu\n",i,get_size(i));
+			dbg_printf("FreeList Block %p size %zu prev allocation %zu current allocation %zu \n",i,get_size(i),GET_PREV_ALLOC(i),get_alloc(i));
 			//check for free block header and footer mismatch
 			if(get_size(i) >dsize && GET(HDRP(i)) != GET(FTRP(i)))
 			{
@@ -982,6 +982,7 @@ static void freeList_del(block_f *block,size_t size)
 				prevp->next_free=small_block->next_free;
 				small_block->next_free=NULL;
 			}
+			small_block->header=0;
 		}
 	else
 	{

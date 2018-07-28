@@ -21,7 +21,7 @@ Case 1 entered
 Returning from coalesce 
 Printing Heap blocks 
 Heap size 784 
-FreeList Block 0x800000108 size 512
+FreeList Block 0x800000108 size 512 prev allocation 2 current allocation 0 
 All blocks printed now checking for each free block's range 
 sizeattart 0 
 sizeattart 1 
@@ -91,8 +91,8 @@ If of freeList_fifo_insert
 segstart 0x800000050 segend 0x800000058 size 34359739208 
 Printing Heap blocks 
 Heap size 1360 
-Heap Block 0x800000108 size 576
-FreeList Block 0x800000348 size 512
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+FreeList Block 0x800000348 size 512 prev allocation 2 current allocation 0 
 All blocks printed now checking for each free block's range 
 sizeattart 0 
 sizeattart 1 
@@ -134,9 +134,9 @@ If of freeList_fifo_insert
 segstart 0x800000050 segend 0x800000058 size 34359739224 
 Printing Heap blocks 
 Heap size 1360 
-Heap Block 0x800000108 size 576
-Heap Block 0x800000348 size 16
-FreeList Block 0x800000358 size 496
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x800000358 size 496 prev allocation 2 current allocation 0 
 All blocks printed now checking for each free block's range 
 sizeattart 0 
 sizeattart 1 
@@ -177,10 +177,10 @@ If of freeList_fifo_insert
 segstart 0x800000050 segend 0x800000058 size 34359739256 
 Printing Heap blocks 
 Heap size 1360 
-Heap Block 0x800000108 size 576
-Heap Block 0x800000348 size 16
-Heap Block 0x800000358 size 32
-FreeList Block 0x800000378 size 464
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x800000378 size 464 prev allocation 2 current allocation 0 
 All blocks printed now checking for each free block's range 
 sizeattart 0 
 sizeattart 1 
@@ -222,11 +222,11 @@ If of freeList_fifo_insert
 segstart 0x800000050 segend 0x800000058 size 34359739272 
 Printing Heap blocks 
 Heap size 1360 
-Heap Block 0x800000108 size 576
-Heap Block 0x800000348 size 16
-Heap Block 0x800000358 size 32
-Heap Block 0x800000378 size 16
-FreeList Block 0x800000388 size 448
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 32 prev allocation 2 current allocation 1
+Heap Block 0x800000378 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x800000388 size 448 prev allocation 2 current allocation 0 
 All blocks printed now checking for each free block's range 
 sizeattart 0 
 sizeattart 1 
@@ -265,10 +265,10 @@ Returning from coalesce
 Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 1360 
-Heap Block 0x800000108 size 576
-Heap Block 0x800000348 size 16
-Heap Block 0x800000358 size 32
-FreeList Block 0x800000378 size 464
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x800000378 size 464 prev allocation 2 current allocation 0 
 All blocks printed now checking for each free block's range 
 sizeattart 0 
 sizeattart 1 
@@ -309,11 +309,11 @@ If of freeList_fifo_insert
 segstart 0x800000050 segend 0x800000058 size 34359739288 
 Printing Heap blocks 
 Heap size 1360 
-Heap Block 0x800000108 size 576
-Heap Block 0x800000348 size 16
-Heap Block 0x800000358 size 32
-Heap Block 0x800000378 size 32
-FreeList Block 0x800000398 size 432
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 32 prev allocation 2 current allocation 1
+Heap Block 0x800000378 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x800000398 size 432 prev allocation 2 current allocation 0 
 All blocks printed now checking for each free block's range 
 sizeattart 0 
 sizeattart 1 
@@ -355,12 +355,12 @@ If of freeList_fifo_insert
 segstart 0x800000050 segend 0x800000058 size 34359739304 
 Printing Heap blocks 
 Heap size 1360 
-Heap Block 0x800000108 size 576
-Heap Block 0x800000348 size 16
-Heap Block 0x800000358 size 32
-Heap Block 0x800000378 size 32
-Heap Block 0x800000398 size 16
-FreeList Block 0x8000003a8 size 416
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 32 prev allocation 2 current allocation 1
+Heap Block 0x800000378 size 32 prev allocation 2 current allocation 1
+Heap Block 0x800000398 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x8000003a8 size 416 prev allocation 2 current allocation 0 
 All blocks printed now checking for each free block's range 
 sizeattart 0 
 sizeattart 1 
@@ -390,12 +390,12 @@ Returning from coalesce
 Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 1360 
-Heap Block 0x800000108 size 576
-FreeList Block 0x800000348 size 16
-Heap Block 0x800000358 size 32
-Heap Block 0x800000378 size 32
-Heap Block 0x800000398 size 16
-FreeList Block 0x8000003a8 size 416
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+FreeList Block 0x800000348 size 16 prev allocation 2 current allocation 0 
+Heap Block 0x800000358 size 32 prev allocation 0 current allocation 1
+Heap Block 0x800000378 size 32 prev allocation 2 current allocation 1
+Heap Block 0x800000398 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x8000003a8 size 416 prev allocation 2 current allocation 0 
 All blocks printed now checking for each free block's range 
 sizeattart 0 
 sizeattart 1 
@@ -436,13 +436,13 @@ If of freeList_fifo_insert
 segstart 0x800000050 segend 0x800000058 size 34359739336 
 Printing Heap blocks 
 Heap size 1360 
-Heap Block 0x800000108 size 576
-FreeList Block 0x800000348 size 16
-Heap Block 0x800000358 size 32
-Heap Block 0x800000378 size 32
-Heap Block 0x800000398 size 16
-Heap Block 0x8000003a8 size 32
-FreeList Block 0x8000003c8 size 384
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+FreeList Block 0x800000348 size 16 prev allocation 2 current allocation 0 
+Heap Block 0x800000358 size 32 prev allocation 0 current allocation 1
+Heap Block 0x800000378 size 32 prev allocation 2 current allocation 1
+Heap Block 0x800000398 size 16 prev allocation 2 current allocation 1
+Heap Block 0x8000003a8 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x8000003c8 size 384 prev allocation 2 current allocation 0 
 All blocks printed now checking for each free block's range 
 sizeattart 0 
 sizeattart 1 
@@ -469,7 +469,7 @@ small block at start of freelist
 only small block in 16B seg list 
 Printing Heap blocks 
 Heap size 1360 
-Heap Block 0x800000108 size 576
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
 Bit inconsistency ! block ponter 0x800000108 current alloc bit 1 and next block 0x800000348 prev alloc 0 
 ERROR [trace ./traces/ngram-fox1.rep, line 15]: mm_checkheap returned false
 
