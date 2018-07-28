@@ -1193,7 +1193,7 @@ static void *find_fit(size_t asize)
 			if ((bp = find(sizeatstart, asize)) != NULL)
 				return bp;
 		}
-	} lse if (asize <= LIST1_LIMIT) {
+	} else if (asize <= LIST1_LIMIT) {
 		for (sizeatstart = 1; sizeatstart < TOTALLIST; sizeatstart++) {
 			if ((bp = find(sizeatstart, asize)) != NULL)
 				return bp;
