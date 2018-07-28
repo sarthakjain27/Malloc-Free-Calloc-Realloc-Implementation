@@ -587,64 +587,64 @@ bool mm_checkheap(int lineno) {
 		if (sizeatstart == 0) {
 			listpointer = (char *) GET(freeList_start + SEGLIST0);
 			minimumblocksize = 0;
-			maximumblocksize = LIST1_LIMIT;
+			maximumblocksize = LIST0_LIMIT;
 		} else if (sizeatstart == 1) {
 			listpointer = (char *) GET(freeList_start + SEGLIST1);
-			minimumblocksize = LIST1_LIMIT;
-			maximumblocksize = LIST2_LIMIT;
+			minimumblocksize = LIST0_LIMIT;
+			maximumblocksize = LIST1_LIMIT;
 		} else if (sizeatstart == 2) {
 			listpointer = (char *) GET(freeList_start + SEGLIST2);
-			minimumblocksize = LIST2_LIMIT;
-			maximumblocksize = LIST3_LIMIT;
+			minimumblocksize = LIST1_LIMIT;
+			maximumblocksize = LIST2_LIMIT;
 		} else if (sizeatstart == 3) {
 			listpointer = (char *) GET(freeList_start + SEGLIST3);
-			minimumblocksize = LIST3_LIMIT;
-			maximumblocksize = LIST4_LIMIT;
+			minimumblocksize = LIST2_LIMIT;
+			maximumblocksize = LIST3_LIMIT;
 		} else if (sizeatstart == 4) {
 			listpointer = (char *) GET(freeList_start + SEGLIST4);
-			minimumblocksize = LIST4_LIMIT;
-			maximumblocksize = LIST5_LIMIT;
+			minimumblocksize = LIST3_LIMIT;
+			maximumblocksize = LIST4_LIMIT;
 		} else if (sizeatstart == 5) {
 			listpointer = (char *) GET(freeList_start + SEGLIST5);
-			minimumblocksize = LIST5_LIMIT;
-			maximumblocksize = LIST6_LIMIT;
+			minimumblocksize = LIST4_LIMIT;
+			maximumblocksize = LIST5_LIMIT;
 		} else if (sizeatstart == 6) {
 			listpointer = (char *) GET(freeList_start + SEGLIST6);
-			minimumblocksize = LIST6_LIMIT;
-			maximumblocksize = LIST7_LIMIT;
+			minimumblocksize = LIST5_LIMIT;
+			maximumblocksize = LIST6_LIMIT;
 		} else if (sizeatstart == 7) {
 			listpointer = (char *) GET(freeList_start + SEGLIST7);
-			minimumblocksize = LIST7_LIMIT;
-			maximumblocksize = LIST8_LIMIT;
+			minimumblocksize = LIST6_LIMIT;
+			maximumblocksize = LIST7_LIMIT;
 		} else if (sizeatstart == 8) {
 			listpointer = (char *) GET(freeList_start + SEGLIST8);
-			minimumblocksize = LIST8_LIMIT;
-			maximumblocksize = LIST9_LIMIT;
+			minimumblocksize = LIST7_LIMIT;
+			maximumblocksize = LIST8_LIMIT;
 		} else if (sizeatstart == 9) {
 			listpointer = (char *) GET(freeList_start + SEGLIST9);
-			minimumblocksize = LIST9_LIMIT;
-			maximumblocksize = LIST10_LIMIT;
+			minimumblocksize = LIST8_LIMIT;
+			maximumblocksize = LIST9_LIMIT;
 		} else if (sizeatstart == 10) {
 			listpointer = (char *) GET(freeList_start + SEGLIST10);
-			minimumblocksize = LIST10_LIMIT;
-			maximumblocksize = LIST11_LIMIT;
+			minimumblocksize = LIST9_LIMIT;
+			maximumblocksize = LIST10_LIMIT;
 		} else if (sizeatstart == 11) {
 			listpointer = (char *) GET(freeList_start + SEGLIST11);
-			minimumblocksize = LIST11_LIMIT;
-			maximumblocksize = LIST12_LIMIT;
+			minimumblocksize = LIST10_LIMIT;
+			maximumblocksize = LIST11_LIMIT;
 		} else if (sizeatstart == 12) {
 			listpointer = (char *) GET(freeList_start + SEGLIST12);
-			minimumblocksize = LIST12_LIMIT;
-			maximumblocksize = LIST13_LIMIT;
+			minimumblocksize = LIST11_LIMIT;
+			maximumblocksize = LIST12_LIMIT;
 		} else if (sizeatstart == 13){
 			listpointer = (char *) GET(freeList_start + SEGLIST13);
-			minimumblocksize = LIST13_LIMIT;
-			maximumblocksize = LIST14_LIMIT;
+			minimumblocksize = LIST12_LIMIT;
+			maximumblocksize = LIST13_LIMIT;
 		}
 		else{
 			listpointer = (char *) GET(freeList_start + SEGLIST14);
-			minimumblocksize = LIST14_LIMIT;
-			maximumblocksize = ~(word_t)0;
+			minimumblocksize = LIST13_LIMIT;
+			maximumblocksize = ~0;
 		}
 		f=(block_f *)listpointer;
 		slow_ptr=f;
@@ -728,9 +728,9 @@ static block_t *coalesce(block_t * block)
 	// since free block of 16B doesn't have footer. And we know that 16B block is of dsize. So we manually check for size of block
 	// whose address starts at current block's header address - 2 word before the header;
 	word_t *footerp= (&(block->header)) - 2;
-	size_t size=extract_size(*footerp);
-	if(size==dsize)
-		block_prev=(block_t *)((char *)block - size);
+	size_t size_prev=extract_size(*footerp);
+	if(size_prev==dsize)
+		block_prev=(block_t *)((char *)block - size_prev);
 	else
 		block_prev=find_prev(block);
 	
@@ -887,7 +887,7 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
 	dbg_printf("segstart %p segend %p listend %p\n",segstart,segend,listend);
 	if(size <= LIST0_LIMIT)
 	{
-		block_f_sixteen *small_block=(block_f_sixteen)block;
+		block_f_sixteen *small_block=(block_f_sixteen *)block;
 		if(listend==NULL)
     		{
         		dbg_printf("If of freeList_fifo_insert for small block\n");
@@ -936,8 +936,8 @@ static void freeList_del(block_f *block,size_t size)
 	dbg_printf("freeList_del called for block %p and size %zu \n",block,size);
 	if (size <= LIST0_LIMIT)
 		{
-			block_f_sixteen *small_block=(block_f_sixteen)block;
-			if(small_block == ((block_f_sixteen *)(GET(freeList_start + SEGLIST0)))
+			block_f_sixteen *small_block=(block_f_sixteen *)block;
+			if(small_block == ( (block_f_sixteen *)(GET(freeList_start + SEGLIST0)) ))
 			{
 				dbg_printf("small block at start of freelist \n");
 				if(small_block->next_free==NULL)
