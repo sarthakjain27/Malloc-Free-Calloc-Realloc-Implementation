@@ -25,7 +25,16 @@
  * | Application requested size				  |
  * | Optional Padding					  |
  *
+ * 
+ * The segregated free list for 16B blocks would be singly linked list. So need for prev pointer for this.
+ * Free 16B block
+ * | block size | (PREVIOUSALLOCATION)|(CURRENTALLOCATION)|
+ * | pointer to next free block				  |
  *
+ * Allocated 16B block
+ * | block size | (PREVIOUSALLOCATION)|(CURRENTALLOCATION)|
+ * | Application requested size				  |
+ * 
  * I have stored each free list's starting and ending pointer on the heap itself at the very start when the heap is initialised
  * For each free list the header and pointer are present consecutively.
  *
@@ -81,7 +90,7 @@
 typedef uint64_t word_t;
 static const size_t wsize = sizeof(word_t);   // word and header size (bytes)
 static const size_t dsize = 2*wsize;          // double word size (bytes)
-static const size_t min_block_size =2*dsize ; // Minimum block size
+static const size_t min_block_size =dsize ; // Minimum block size
 static const size_t CHUNKSIZE = 512;    // requires (chunksize % 16 == 0)
 
 //static const word_t alloc_mask = 0x1;
@@ -157,8 +166,8 @@ typedef struct free_block
 
 typedef struct free_sixteen_block
 {
+	word_t header;
 	struct free_sixteen_block *next_free;
-	struct free_sixteen_block *prev_free;
 } block_f_sixteen;
 
 block_t *heap_start = NULL;
@@ -337,8 +346,6 @@ void *malloc (size_t size) {
     }
 		// Adjust block size to include overhead and to meet alignment requirements
 	if(size<=wsize)
-		asize=dsize;
-	else if(size<=dsize)
 		asize=min_block_size;
 	else
 		asize = round_up(size + wsize, dsize);
@@ -374,8 +381,10 @@ void free (void *ptr) {
 	size_t size = get_size(block);
 
     write_header(block, size, GET_PREV_ALLOC(block));
-    write_footer(block, size, GET_PREV_ALLOC(block));
-    write_header(find_next(block),get_size(find_next(block)),get_alloc(find_next(block)));
+	if(size > dsize)
+    	write_footer(block, size, GET_PREV_ALLOC(block));
+    
+	write_header(find_next(block),get_size(find_next(block)),get_alloc(find_next(block)));
     
 	/* Add free block to appropriate segregated list */
 	//freeList_LIFO_insert((block_f *)block, size);
@@ -515,18 +524,18 @@ bool mm_checkheap(int lineno) {
 			block_f *free_block=(block_f *)i;
 			dbg_printf("FreeList Block %p size %zu\n",i,get_size(i));
 			//check for free block header and footer mismatch
-			if(GET(HDRP(i)) != GET(FTRP(i)))
+			if(get_size(i) >dsize && GET(HDRP(i)) != GET(FTRP(i)))
 			{
 				dbg_printf("Free block %p header and footer mismatch \n",i);
 				return false;
 			}
 			//check for free block prev and next pointer consistency
-			if(free_block->next_free!=NULL && free_block->next_free->prev_free!=free_block)
+			if( free_block->next_free!=NULL && get_size( (block_t *)(free_block->next_free) ) > dsize && free_block->next_free->prev_free!=free_block)
 			   {
 				   dbg_printf("Free block %p next pointer is incosistent \n",i);
 				   return false;
 			   }
-			if(free_block->prev_free!=NULL && free_block->prev_free->next_free!=free_block)
+			if(get_size(i) > dsize && free_block->prev_free!=NULL && free_block->prev_free->next_free!=free_block)
 			   {
 				   dbg_printf("Free block %p prev pointer is inconsistent \n",i);
 				   return false;
@@ -642,18 +651,15 @@ bool mm_checkheap(int lineno) {
 			fast_ptr=slow_ptr->next_free;
 		while (f != NULL) 
         	{
-			if(!(get_alloc((block_t *)f)))
-			{
 				total_free_block_list++;
 				//checking for each free block to be in correct seglist
 				if (!(minimumblocksize < get_size((block_t *)f) && get_size((block_t *)f) <= maximumblocksize)) 
-            			{
-					dbg_printf("Free block pointer %p is not in the appropriate list", f);
+            	{
+							dbg_printf("Free block pointer %p is not in the appropriate list", f);
                 			return false;
 				}
-			}
 			f=f->next_free;
-		}
+			}
 		//checking for presence of loop in a free list
 		while(slow_ptr && fast_ptr && fast_ptr->next_free)
 		{
@@ -715,7 +721,18 @@ static block_t *coalesce(block_t * block)
 {
 	dbg_printf("Coalesce called\n");
 	block_t *block_next = find_next(block);
-    block_t *block_prev = find_prev(block);
+    block_t *block_prev = NULL;
+	
+	
+	// since free block of 16B doesn't have footer. And we know that 16B block is of dsize. So we manually check for size of block
+	// whose address starts at current block's header address - 2 word before the header;
+	word_t *footerp= (&(block->header)) - 2;
+	size_t size=extract_size(*footerp);
+	if(size==dsize)
+		block_prev=(block_t *)((char *)block - size);
+	else
+		block_prev=find_prev(block);
+	
     block_f *block_free=(block_f *)block;
     block_f *block_next_free=(block_f *)block_next;
     block_f *block_prev_free=(block_f *)block_prev;
@@ -754,11 +771,11 @@ static block_t *coalesce(block_t * block)
 	    freeList_del(block_prev_free,block_prev_size);
         
         size += block_prev_size;
-	write_header(block_prev, size, GET_PREV_ALLOC(block_prev));
+		write_header(block_prev, size, GET_PREV_ALLOC(block_prev));
         write_footer(block_prev, size, GET_PREV_ALLOC(block_prev));
-	write_header(block_next,block_next_size,1);
+		write_header(block_next,block_next_size,1);
       	//dbg_printf("block %p size %zu\n",block_prev,block_prev->header);    
-	freeList_FIFO_insert(block_prev_free,size);
+		freeList_FIFO_insert(block_prev_free,size);
 	        
         block=block_prev;
     }
@@ -777,7 +794,7 @@ static block_t *coalesce(block_t * block)
         write_footer(block_prev, size, GET_PREV_ALLOC(block_prev));
 		//dbg_printf("block %p sze %zu \n",block_prev,block_prev->header);
 	    
-	freeList_FIFO_insert(block_prev_free,size);
+		freeList_FIFO_insert(block_prev_free,size);
         block=block_prev;
     }
 	dbg_printf("Returning from coalesce \n");
@@ -875,22 +892,18 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
         		dbg_printf("If of freeList_fifo_insert for small block\n");
         		//set current block as head
         		PUT(segstart,(size_t)(small_block));
-			PUT(segend,(size_t)(small_block));
+				PUT(segend,(size_t)(small_block));
         		dbg_printf("segstart %p segend %p size %zu \n", segstart, segend,(size_t)small_block);
-        		small_block->prev_free=NULL;
         		small_block->next_free=NULL;
     		}
 		else
 		{
 			dbg_printf("Else of fifo insert for small block\n");
-       			block_f * listend_blockf=(block_f *)listend;
-	
-			small_block->prev_free=listend_blockf;
+       		block_f_sixteen *listend_blockf=(block_f_sixteen *)listend;
 			small_block->next_free=NULL;
 			listend_blockf->next_free=small_block;
 			PUT(segend,(size_t)small_block);
 		}
-		
 	}
 	else
 	{
@@ -899,7 +912,7 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
         		dbg_printf("If of freeList_fifo_insert \n");
         		//set current block as head
         		PUT(segstart,(size_t)(block));
-			PUT(segend,(size_t)(block));
+				PUT(segend,(size_t)(block));
         		dbg_printf("segstart %p segend %p size %zu \n", segstart, segend,(size_t)block);
         		block->prev_free=NULL;
         		block->next_free=NULL;
@@ -907,7 +920,7 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
 		else
 		{
 			dbg_printf("Else of fifo insert \n");
-       			block_f * listend_blockf=(block_f *)listend;
+       		block_f * listend_blockf=(block_f *)listend;
 	
 			block->prev_free=listend_blockf;
 			block->next_free=NULL;
@@ -923,36 +936,46 @@ static void freeList_del(block_f *block,size_t size)
 	if (size <= LIST0_LIMIT)
 		{
 			block_f_sixteen *small_block=(block_f_sixteen)block;
-			if(small_block->prev_free==NULL)
+			if(small_block == ((block_f_sixteen *)(GET(freeList_start + SEGLIST0)))
 			{
 				dbg_printf("small block at start of freelist \n");
-				if( small_block->next_free==NULL  )
+				if(small_block->next_free==NULL)
 				{
-					PUT(freeList_end + SEGLIST0, (size_t)NULL);
-					PUT(freeList_start + SEGLIST0,(size_t)NULL);
+					dbg_printf("only small block in 16B seg list \n");
+					PUT(freeList_end + SEGLIST1, (size_t)NULL);
+					PUT(freeList_start + SEGLIST1,(size_t)NULL);
 				}
 				else
-					PUT(freeList_start + SEGLIST0, (size_t) (small_block->next_free));
+					PUT(freeList_start + SEGLIST1, (size_t) (block->next_free));
 				
-				if((small_block->next_free) != NULL)
-				{
-					small_block->next_free->prev_free=NULL;
+				if(small_block->next_free!=NULL)
 					small_block->next_free=NULL;
-				}
 			}
 			else if(small_block->next_free==NULL)
 			{
 				dbg_printf("small block at end of freelist \n");
-				PUT(freeList_end + SEGLIST0, (size_t) (small_block->prev_free));
-				small_block->prev_free->next_free=NULL;
-				small_block->prev_free=NULL;
+				block_f_sixteen *startp=(block_f_sixteen *)(GET(freeList_start + SEGLIST0));
+				block_f_sixteen *endp=(block_f_sixteen *)(GET(freeList_end + SEGLIST0));
+				block_f_sixteen *prevp=NULL;
+				while(startp!=endp)
+				{
+					prevp=startp;
+					startp=startp->next_free;
+				}
+				prevp->next_free=NULL;
+				PUT(freeList_end + SEGLIST1, (size_t)prevp);
 			}
 			else
 			{
 				dbg_printf("small block in middle of freelist \n");
-				small_block->prev_free->next_free=small_block->next_free;
-				small_block->next_free->prev_free=small_block->prev_free;
-				small_block->prev_free=NULL;
+				block_f_sixteen *startp=(block_f_sixteen *)(GET(freeList_start + SEGLIST0));
+				block_f_sixteen *prevp=NULL;
+				while(startp != small_block)
+				{
+					prevp=startp;
+					startp=startp->next_free;
+				}
+				prevp->next_free=small_block->next_free;
 				small_block->next_free=NULL;
 			}
 		}
@@ -1254,7 +1277,7 @@ static void *find(size_t sizeatstart, size_t actual_size)
 {
 	dbg_printf("Find called with sizeatstart %zu actual size %zu and freeList_start %p\n",sizeatstart,actual_size,freeList_start);
 	char *current = NULL;
-    	block_t *current_f=NULL;
+    block_t *current_f=NULL;
 	block_f *current_free=NULL;
 	/* Finding which list to look into */
 	if (sizeatstart == 0)
@@ -1321,24 +1344,34 @@ static void *find(size_t sizeatstart, size_t actual_size)
     
      freeList_del((block_f *)block,csize);
      
-     if ((csize - asize) >= min_block_size)
+	 if ( (csize - asize) == min_block_size)
+	 {
+		 dbg_printf("Place will create 16B free block on splicing of currently passed block \n");
+		 write_header(block, asize, (GET_PREV_ALLOC(block) | CURRENTALLOCATED));
+		 block_t *block_next=find_next(block);
+         dbg_printf("Block_next %p\n",block_next);
+	 	 write_header(block_next, min_block_size, PREVIOUSALLOCATED);
+		 freeList_FIFO_insert((block_f *)block_next,min_block_size);
+	 }
+     else if ((csize - asize) >= min_block_size)
      {
          dbg_printf("If entered of place \n");	
          write_header(block, asize, (GET_PREV_ALLOC(block) | CURRENTALLOCATED));
          
          block_t *block_next=find_next(block);
          dbg_printf("Block_next %p\n",block_next);
-	 write_header(block_next, csize-asize, PREVIOUSALLOCATED);
+	 	 write_header(block_next, csize-asize, PREVIOUSALLOCATED);
          write_footer(block_next, csize-asize, PREVIOUSALLOCATED);
          
-	 freeList_FIFO_insert((block_f *)block_next,csize-asize);
+	 	freeList_FIFO_insert((block_f *)block_next,csize-asize);
      }
      else
      {
          write_header(block, csize, (GET_PREV_ALLOC(block) | CURRENTALLOCATED));
 		 block_t *block_next=find_next(block);
 		 write_header(block_next,get_size(block_next),(PREVIOUSALLOCATED | get_alloc(block_next)));
-		 if(!get_alloc(block_next))
+		 //update the footer of next block only if next block is a free block of size more than dsize
+		 if( (!get_alloc(block_next)) && get_size(block_next) > dsize )
 			write_footer(block_next,get_size(block_next), (PREVIOUSALLOCATED | get_alloc(block_next)));
      }
  }
