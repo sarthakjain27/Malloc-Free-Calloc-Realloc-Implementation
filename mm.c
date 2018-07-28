@@ -945,11 +945,11 @@ static void freeList_del(block_f *block,size_t size)
 				if(small_block->next_free==NULL)
 				{
 					dbg_printf("only small block in 16B seg list \n");
-					PUT(freeList_end + SEGLIST1, (size_t)NULL);
-					PUT(freeList_start + SEGLIST1,(size_t)NULL);
+					PUT(freeList_end + SEGLIST0, (size_t)NULL);
+					PUT(freeList_start + SEGLIST0,(size_t)NULL);
 				}
 				else
-					PUT(freeList_start + SEGLIST1, (size_t) (block->next_free));
+					PUT(freeList_start + SEGLIST0, (size_t) (block->next_free));
 				
 				if(small_block->next_free!=NULL)
 					small_block->next_free=NULL;
