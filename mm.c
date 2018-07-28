@@ -392,16 +392,17 @@ void free (void *ptr) {
 	//freeList_LIFO_insert((block_f *)block, size);
 	freeList_FIFO_insert((block_f *)block, size);
 	dbg_printf("after call of FIFO insert in free block next %p and its size %zu\n",find_next(block),get_size(find_next(block)));
-	//dbg_printf("Calling coalesce from free\n");
+	dbg_printf("Calling coalesce from free\n");
 	coalesce((block_t *)block);
-	//dbg_printf("Returned from coalesce in free \n");
+	dbg_printf("Returned from coalesce in free \n");
 }
 
 /*
  * realloc
  */
 void *realloc(void *ptr, size_t size) {
-    block_t *block = payload_to_header(ptr);
+    dbg_printf("Realloc called for ptr %p \n",ptr);
+	block_t *block = payload_to_header(ptr);
     size_t copysize;
     void *newptr;
 

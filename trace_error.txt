@@ -198,6 +198,7 @@ segstart 0x800000040 segend 0x800000048 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000040 segend 0x800000048 size 34359738984 
 after call of FIFO insert in free block next 0x8000002f8 and its size 16
+Calling coalesce from free
 Coalesce called
 Case 2 entered 
 freeList_del called for block 0x800000268 and size 144 
@@ -210,6 +211,7 @@ segstart 0x800000040 segend 0x800000048 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000040 segend 0x800000048 size 34359738984 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 784 
 Heap Block 0x800000108 size 128
@@ -310,9 +312,11 @@ segstart 0x800000030 segend 0x800000038 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000030 segend 0x800000038 size 34359738632 
 after call of FIFO insert in free block next 0x800000188 and its size 192
+Calling coalesce from free
 Coalesce called
 Case 1 entered 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 784 
 FreeList Block 0x800000108 size 128
@@ -380,9 +384,11 @@ segstart 0x800000010 segend 0x800000018 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000010 segend 0x800000018 size 34359738952 
 after call of FIFO insert in free block next 0x800000268 and its size 64
+Calling coalesce from free
 Coalesce called
 Case 1 entered 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 784 
 Heap Block 0x800000108 size 80
@@ -486,6 +492,7 @@ segstart 0x800000040 segend 0x800000048 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000040 segend 0x800000048 size 34359738760 
 after call of FIFO insert in free block next 0x800000248 and its size 32
+Calling coalesce from free
 Coalesce called
 Case 4 entered 
 freeList_del called for block 0x800000188 and size 192 
@@ -498,6 +505,7 @@ freelist_fifo entered with blck pointer 0x800000158 and size 272
 segstart 0x800000050 segend 0x800000058 listend 0x8000003b8
 Else of fifo insert 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 1296 
 Heap Block 0x800000108 size 80
@@ -572,9 +580,11 @@ segstart 0x800000040 segend 0x800000048 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000040 segend 0x800000048 size 34359739144 
 after call of FIFO insert in free block next 0x8000003b8 and its size 48
+Calling coalesce from free
 Coalesce called
 Case 1 entered 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 1296 
 Heap Block 0x800000108 size 80
@@ -606,6 +616,7 @@ segstart 0x800000030 segend 0x800000038 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000030 segend 0x800000038 size 34359738632 
 after call of FIFO insert in free block next 0x800000158 and its size 272
+Calling coalesce from free
 Coalesce called
 Case 2 entered 
 freeList_del called for block 0x800000108 and size 80 
@@ -616,6 +627,7 @@ freelist_fifo entered with blck pointer 0x800000108 and size 352
 segstart 0x800000050 segend 0x800000058 listend 0x8000003e8
 Else of fifo insert 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 1296 
 FreeList Block 0x800000108 size 352
@@ -691,6 +703,7 @@ segstart 0x800000020 segend 0x800000028 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000020 segend 0x800000028 size 34359738984 
 after call of FIFO insert in free block next 0x8000002a8 and its size 96
+Calling coalesce from free
 Coalesce called
 Case 3 entered 
 freeList_del called for block 0x800000268 and size 64 
@@ -701,6 +714,7 @@ freelist_fifo entered with blck pointer 0x800000108 and size 416
 segstart 0x800000050 segend 0x800000058 listend 0x8000003e8
 Else of fifo insert 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 1296 
 FreeList Block 0x800000108 size 416
@@ -731,6 +745,7 @@ segstart 0x800000020 segend 0x800000028 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000020 segend 0x800000028 size 34359739320 
 after call of FIFO insert in free block next 0x8000003e8 and its size 288
+Calling coalesce from free
 Coalesce called
 Case 4 entered 
 freeList_del called for block 0x8000003b8 and size 48 
@@ -743,6 +758,7 @@ freelist_fifo entered with blck pointer 0x800000328 and size 480
 segstart 0x800000050 segend 0x800000058 listend 0x800000108
 Else of fifo insert 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 1296 
 FreeList Block 0x800000108 size 416
@@ -771,6 +787,7 @@ segstart 0x800000030 segend 0x800000038 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000030 segend 0x800000038 size 34359739048 
 after call of FIFO insert in free block next 0x800000308 and its size 32
+Calling coalesce from free
 Coalesce called
 Case 3 entered 
 freeList_del called for block 0x8000002a8 and size 96 
@@ -781,6 +798,7 @@ freelist_fifo entered with blck pointer 0x800000108 and size 512
 segstart 0x800000050 segend 0x800000058 listend 0x800000328
 Else of fifo insert 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 1296 
 FreeList Block 0x800000108 size 512
@@ -808,6 +826,7 @@ segstart 0x800000010 segend 0x800000018 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000010 segend 0x800000018 size 34359739144 
 after call of FIFO insert in free block next 0x800000328 and its size 480
+Calling coalesce from free
 Coalesce called
 Case 4 entered 
 freeList_del called for block 0x800000308 and size 32 
@@ -821,6 +840,7 @@ segstart 0x800000060 segend 0x800000068 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000060 segend 0x800000068 size 34359738632 
 Returning from coalesce 
+Returned from coalesce in free 
 mm_init called 
 FreeList_start initialised 0x800000000 FreeList_end 0x800000008
 Heap_start initialised0x800000108
@@ -1015,6 +1035,7 @@ segstart 0x800000040 segend 0x800000048 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000040 segend 0x800000048 size 34359738984 
 after call of FIFO insert in free block next 0x8000002f8 and its size 16
+Calling coalesce from free
 Coalesce called
 Case 2 entered 
 freeList_del called for block 0x800000268 and size 144 
@@ -1027,6 +1048,7 @@ segstart 0x800000040 segend 0x800000048 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000040 segend 0x800000048 size 34359738984 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 784 
 Heap Block 0x800000108 size 128
@@ -1127,9 +1149,11 @@ segstart 0x800000030 segend 0x800000038 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000030 segend 0x800000038 size 34359738632 
 after call of FIFO insert in free block next 0x800000188 and its size 192
+Calling coalesce from free
 Coalesce called
 Case 1 entered 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 784 
 FreeList Block 0x800000108 size 128
@@ -1197,9 +1221,11 @@ segstart 0x800000010 segend 0x800000018 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000010 segend 0x800000018 size 34359738952 
 after call of FIFO insert in free block next 0x800000268 and its size 64
+Calling coalesce from free
 Coalesce called
 Case 1 entered 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 784 
 Heap Block 0x800000108 size 80
@@ -1303,6 +1329,7 @@ segstart 0x800000040 segend 0x800000048 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000040 segend 0x800000048 size 34359738760 
 after call of FIFO insert in free block next 0x800000248 and its size 32
+Calling coalesce from free
 Coalesce called
 Case 4 entered 
 freeList_del called for block 0x800000188 and size 192 
@@ -1315,6 +1342,7 @@ freelist_fifo entered with blck pointer 0x800000158 and size 272
 segstart 0x800000050 segend 0x800000058 listend 0x8000003b8
 Else of fifo insert 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 1296 
 Heap Block 0x800000108 size 80
@@ -1389,9 +1417,11 @@ segstart 0x800000040 segend 0x800000048 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000040 segend 0x800000048 size 34359739144 
 after call of FIFO insert in free block next 0x8000003b8 and its size 48
+Calling coalesce from free
 Coalesce called
 Case 1 entered 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 1296 
 Heap Block 0x800000108 size 80
@@ -1423,6 +1453,7 @@ segstart 0x800000030 segend 0x800000038 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000030 segend 0x800000038 size 34359738632 
 after call of FIFO insert in free block next 0x800000158 and its size 272
+Calling coalesce from free
 Coalesce called
 Case 2 entered 
 freeList_del called for block 0x800000108 and size 80 
@@ -1433,6 +1464,7 @@ freelist_fifo entered with blck pointer 0x800000108 and size 352
 segstart 0x800000050 segend 0x800000058 listend 0x8000003e8
 Else of fifo insert 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 1296 
 FreeList Block 0x800000108 size 352
@@ -1508,6 +1540,7 @@ segstart 0x800000020 segend 0x800000028 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000020 segend 0x800000028 size 34359738984 
 after call of FIFO insert in free block next 0x8000002a8 and its size 96
+Calling coalesce from free
 Coalesce called
 Case 3 entered 
 freeList_del called for block 0x800000268 and size 64 
@@ -1518,6 +1551,7 @@ freelist_fifo entered with blck pointer 0x800000108 and size 416
 segstart 0x800000050 segend 0x800000058 listend 0x8000003e8
 Else of fifo insert 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 1296 
 FreeList Block 0x800000108 size 416
@@ -1548,6 +1582,7 @@ segstart 0x800000020 segend 0x800000028 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000020 segend 0x800000028 size 34359739320 
 after call of FIFO insert in free block next 0x8000003e8 and its size 288
+Calling coalesce from free
 Coalesce called
 Case 4 entered 
 freeList_del called for block 0x8000003b8 and size 48 
@@ -1560,6 +1595,7 @@ freelist_fifo entered with blck pointer 0x800000328 and size 480
 segstart 0x800000050 segend 0x800000058 listend 0x800000108
 Else of fifo insert 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 1296 
 FreeList Block 0x800000108 size 416
@@ -1588,6 +1624,7 @@ segstart 0x800000030 segend 0x800000038 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000030 segend 0x800000038 size 34359739048 
 after call of FIFO insert in free block next 0x800000308 and its size 32
+Calling coalesce from free
 Coalesce called
 Case 3 entered 
 freeList_del called for block 0x8000002a8 and size 96 
@@ -1598,6 +1635,7 @@ freelist_fifo entered with blck pointer 0x800000108 and size 512
 segstart 0x800000050 segend 0x800000058 listend 0x800000328
 Else of fifo insert 
 Returning from coalesce 
+Returned from coalesce in free 
 Printing Heap blocks 
 Heap size 1296 
 FreeList Block 0x800000108 size 512
@@ -1625,6 +1663,7 @@ segstart 0x800000010 segend 0x800000018 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000010 segend 0x800000018 size 34359739144 
 after call of FIFO insert in free block next 0x800000328 and its size 480
+Calling coalesce from free
 Coalesce called
 Case 4 entered 
 freeList_del called for block 0x800000308 and size 32 
@@ -1638,6 +1677,7 @@ segstart 0x800000060 segend 0x800000068 listend (nil)
 If of freeList_fifo_insert 
 segstart 0x800000060 segend 0x800000068 size 34359738632 
 Returning from coalesce 
+Returned from coalesce in free 
 
 
 correctness check finished, by running tracefile "traces/syn-struct-short.rep".
