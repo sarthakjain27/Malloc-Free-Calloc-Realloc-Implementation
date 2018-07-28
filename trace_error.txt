@@ -470,8 +470,852 @@ only small block in 16B seg list
 Printing Heap blocks 
 Heap size 1360 
 Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
-Bit inconsistency ! block ponter 0x800000108 current alloc bit 1 and next block 0x800000348 prev alloc 0 
-ERROR [trace ./traces/ngram-fox1.rep, line 15]: mm_checkheap returned false
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 32 prev allocation 2 current allocation 1
+Heap Block 0x800000378 size 32 prev allocation 2 current allocation 1
+Heap Block 0x800000398 size 16 prev allocation 2 current allocation 1
+Heap Block 0x8000003a8 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x8000003c8 size 384 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Free called for block pointer 0x8000003a8
+freelist_fifo entered with blck pointer 0x8000003a8 and size 32 
+segstart 0x800000010 segend 0x800000018 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000010 segend 0x800000018 size 34359739304 
+after call of FIFO insert in free block next 0x8000003c8 and its size 384
+Calling coalesce from free
+Coalesce called
+Case 2 entered 
+freeList_del called for block 0x8000003a8 and size 32 
+block at start of freelist
+freeList_del called for block 0x8000003c8 and size 384 
+block at start of freelist
+freelist_fifo entered with blck pointer 0x8000003a8 and size 416 
+segstart 0x800000050 segend 0x800000058 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000050 segend 0x800000058 size 34359739304 
+Returning from coalesce 
+Returned from coalesce in free 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 32 prev allocation 2 current allocation 1
+Heap Block 0x800000378 size 32 prev allocation 2 current allocation 1
+Heap Block 0x800000398 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x8000003a8 size 416 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Malloc called with size 24
+Requested Size 24 allocating size 32
+Find_fit called with asize 32
+Find called with sizeatstart 1 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 2 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 3 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 4 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 5 actual size 32 and freeList_start 0x800000000
+Current where block will fit 0x8000003a8 size 416 
+place called with bp 0x8000003a8 requesting size 32 with passed block size 416
+freeList_del called for block 0x8000003a8 and size 416 
+block at start of freelist
+If entered of place 
+Block_next 0x8000003c8
+freelist_fifo entered with blck pointer 0x8000003c8 and size 384 
+segstart 0x800000050 segend 0x800000058 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000050 segend 0x800000058 size 34359739336 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 32 prev allocation 2 current allocation 1
+Heap Block 0x800000378 size 32 prev allocation 2 current allocation 1
+Heap Block 0x800000398 size 16 prev allocation 2 current allocation 1
+Heap Block 0x8000003a8 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x8000003c8 size 384 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Free called for block pointer 0x800000358
+freelist_fifo entered with blck pointer 0x800000358 and size 32 
+segstart 0x800000010 segend 0x800000018 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000010 segend 0x800000018 size 34359739224 
+after call of FIFO insert in free block next 0x800000378 and its size 32
+Calling coalesce from free
+Coalesce called
+Case 1 entered 
+Returning from coalesce 
+Returned from coalesce in free 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x800000358 size 32 prev allocation 2 current allocation 0 
+Heap Block 0x800000378 size 32 prev allocation 0 current allocation 1
+Heap Block 0x800000398 size 16 prev allocation 2 current allocation 1
+Heap Block 0x8000003a8 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x8000003c8 size 384 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Malloc called with size 6
+Requested Size 6 allocating size 16
+Find_fit called with asize 16
+Find called with sizeatstart 0 actual size 16 and freeList_start 0x800000000
+Find called with sizeatstart 1 actual size 16 and freeList_start 0x800000000
+Current where block will fit 0x800000358 size 32 
+place called with bp 0x800000358 requesting size 16 with passed block size 32
+freeList_del called for block 0x800000358 and size 32 
+block at start of freelist
+Place will create 16B free block on splicing of currently passed block 
+Block_next 0x800000368
+freelist_fifo entered with blck pointer 0x800000368 and size 16 
+segstart 0x800000000 segend 0x800000008 listend (nil)
+If of freeList_fifo_insert for small block
+segstart 0x800000000 segend 0x800000008 size 34359739240 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x800000368 size 16 prev allocation 2 current allocation 0 
+Heap Block 0x800000378 size 32 prev allocation 0 current allocation 1
+Heap Block 0x800000398 size 16 prev allocation 2 current allocation 1
+Heap Block 0x8000003a8 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x8000003c8 size 384 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Free called for block pointer 0x800000348
+freelist_fifo entered with blck pointer 0x800000348 and size 16 
+segstart 0x800000000 segend 0x800000008 listend 0x800000368
+Else of fifo insert for small block
+after call of FIFO insert in free block next 0x800000358 and its size 16
+Calling coalesce from free
+Coalesce called
+Case 1 entered 
+Returning from coalesce 
+Returned from coalesce in free 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+FreeList Block 0x800000348 size 16 prev allocation 2 current allocation 0 
+Heap Block 0x800000358 size 16 prev allocation 0 current allocation 1
+FreeList Block 0x800000368 size 16 prev allocation 2 current allocation 0 
+Heap Block 0x800000378 size 32 prev allocation 0 current allocation 1
+Heap Block 0x800000398 size 16 prev allocation 2 current allocation 1
+Heap Block 0x8000003a8 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x8000003c8 size 384 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Malloc called with size 24
+Requested Size 24 allocating size 32
+Find_fit called with asize 32
+Find called with sizeatstart 1 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 2 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 3 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 4 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 5 actual size 32 and freeList_start 0x800000000
+Current where block will fit 0x8000003c8 size 384 
+place called with bp 0x8000003c8 requesting size 32 with passed block size 384
+freeList_del called for block 0x8000003c8 and size 384 
+block at start of freelist
+If entered of place 
+Block_next 0x8000003e8
+freelist_fifo entered with blck pointer 0x8000003e8 and size 352 
+segstart 0x800000050 segend 0x800000058 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000050 segend 0x800000058 size 34359739368 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+FreeList Block 0x800000348 size 16 prev allocation 2 current allocation 0 
+Heap Block 0x800000358 size 16 prev allocation 0 current allocation 1
+FreeList Block 0x800000368 size 16 prev allocation 2 current allocation 0 
+Heap Block 0x800000378 size 32 prev allocation 0 current allocation 1
+Heap Block 0x800000398 size 16 prev allocation 2 current allocation 1
+Heap Block 0x8000003a8 size 32 prev allocation 2 current allocation 1
+Heap Block 0x8000003c8 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x8000003e8 size 352 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Free called for block pointer 0x800000378
+freelist_fifo entered with blck pointer 0x800000378 and size 32 
+segstart 0x800000010 segend 0x800000018 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000010 segend 0x800000018 size 34359739256 
+after call of FIFO insert in free block next 0x800000398 and its size 16
+Calling coalesce from free
+Coalesce called
+Case 3 entered 
+freeList_del called for block 0x800000378 and size 32 
+block at start of freelist
+freeList_del called for block 0x800000368 and size 16 
+small block at start of freelist 
+freelist_fifo entered with blck pointer 0x800000368 and size 48 
+segstart 0x800000020 segend 0x800000028 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000020 segend 0x800000028 size 34359739240 
+Returning from coalesce 
+Returned from coalesce in free 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+FreeList Block 0x800000348 size 16 prev allocation 2 current allocation 0 
+Heap Block 0x800000358 size 16 prev allocation 0 current allocation 1
+FreeList Block 0x800000368 size 48 prev allocation 2 current allocation 0 
+Heap Block 0x800000398 size 16 prev allocation 0 current allocation 1
+Heap Block 0x8000003a8 size 32 prev allocation 2 current allocation 1
+Heap Block 0x8000003c8 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x8000003e8 size 352 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Malloc called with size 5
+Requested Size 5 allocating size 16
+Find_fit called with asize 16
+Find called with sizeatstart 0 actual size 16 and freeList_start 0x800000000
+place called with bp 0x800000348 requesting size 16 with passed block size 16
+freeList_del called for block 0x800000348 and size 16 
+small block at start of freelist 
+only small block in 16B seg list 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x800000368 size 48 prev allocation 2 current allocation 0 
+Heap Block 0x800000398 size 16 prev allocation 0 current allocation 1
+Heap Block 0x8000003a8 size 32 prev allocation 2 current allocation 1
+Heap Block 0x8000003c8 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x8000003e8 size 352 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Free called for block pointer 0x8000003c8
+freelist_fifo entered with blck pointer 0x8000003c8 and size 32 
+segstart 0x800000010 segend 0x800000018 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000010 segend 0x800000018 size 34359739336 
+after call of FIFO insert in free block next 0x8000003e8 and its size 352
+Calling coalesce from free
+Coalesce called
+Case 2 entered 
+freeList_del called for block 0x8000003c8 and size 32 
+block at start of freelist
+freeList_del called for block 0x8000003e8 and size 352 
+block at start of freelist
+freelist_fifo entered with blck pointer 0x8000003c8 and size 384 
+segstart 0x800000050 segend 0x800000058 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000050 segend 0x800000058 size 34359739336 
+Returning from coalesce 
+Returned from coalesce in free 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x800000368 size 48 prev allocation 2 current allocation 0 
+Heap Block 0x800000398 size 16 prev allocation 0 current allocation 1
+Heap Block 0x8000003a8 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x8000003c8 size 384 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Malloc called with size 24
+Requested Size 24 allocating size 32
+Find_fit called with asize 32
+Find called with sizeatstart 1 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 2 actual size 32 and freeList_start 0x800000000
+Current where block will fit 0x800000368 size 48 
+place called with bp 0x800000368 requesting size 32 with passed block size 48
+freeList_del called for block 0x800000368 and size 48 
+block at start of freelist
+Place will create 16B free block on splicing of currently passed block 
+Block_next 0x800000388
+freelist_fifo entered with blck pointer 0x800000388 and size 16 
+segstart 0x800000000 segend 0x800000008 listend (nil)
+If of freeList_fifo_insert for small block
+segstart 0x800000000 segend 0x800000008 size 34359739272 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000368 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x800000388 size 16 prev allocation 2 current allocation 0 
+Heap Block 0x800000398 size 16 prev allocation 0 current allocation 1
+Heap Block 0x8000003a8 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x8000003c8 size 384 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Free called for block pointer 0x800000368
+freelist_fifo entered with blck pointer 0x800000368 and size 32 
+segstart 0x800000010 segend 0x800000018 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000010 segend 0x800000018 size 34359739240 
+after call of FIFO insert in free block next 0x800000388 and its size 16
+Calling coalesce from free
+Coalesce called
+Case 2 entered 
+freeList_del called for block 0x800000368 and size 32 
+block at start of freelist
+freeList_del called for block 0x800000388 and size 16 
+small block at start of freelist 
+only small block in 16B seg list 
+freelist_fifo entered with blck pointer 0x800000368 and size 48 
+segstart 0x800000020 segend 0x800000028 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000020 segend 0x800000028 size 34359739240 
+Returning from coalesce 
+Returned from coalesce in free 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x800000368 size 48 prev allocation 2 current allocation 0 
+Heap Block 0x800000398 size 16 prev allocation 0 current allocation 1
+Heap Block 0x8000003a8 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x8000003c8 size 384 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Free called for block pointer 0x8000003a8
+freelist_fifo entered with blck pointer 0x8000003a8 and size 32 
+segstart 0x800000010 segend 0x800000018 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000010 segend 0x800000018 size 34359739304 
+after call of FIFO insert in free block next 0x8000003c8 and its size 384
+Calling coalesce from free
+Coalesce called
+Case 2 entered 
+freeList_del called for block 0x8000003a8 and size 32 
+block at start of freelist
+freeList_del called for block 0x8000003c8 and size 384 
+block at start of freelist
+freelist_fifo entered with blck pointer 0x8000003a8 and size 416 
+segstart 0x800000050 segend 0x800000058 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000050 segend 0x800000058 size 34359739304 
+Returning from coalesce 
+Returned from coalesce in free 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x800000368 size 48 prev allocation 2 current allocation 0 
+Heap Block 0x800000398 size 16 prev allocation 0 current allocation 1
+FreeList Block 0x8000003a8 size 416 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Malloc called with size 5
+Requested Size 5 allocating size 16
+Find_fit called with asize 16
+Find called with sizeatstart 0 actual size 16 and freeList_start 0x800000000
+Find called with sizeatstart 1 actual size 16 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 2 actual size 16 and freeList_start 0x800000000
+Current where block will fit 0x800000368 size 48 
+place called with bp 0x800000368 requesting size 16 with passed block size 48
+freeList_del called for block 0x800000368 and size 48 
+block at start of freelist
+If entered of place 
+Block_next 0x800000378
+freelist_fifo entered with blck pointer 0x800000378 and size 32 
+segstart 0x800000010 segend 0x800000018 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000010 segend 0x800000018 size 34359739256 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000368 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x800000378 size 32 prev allocation 2 current allocation 0 
+Heap Block 0x800000398 size 16 prev allocation 0 current allocation 1
+FreeList Block 0x8000003a8 size 416 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Free called for block pointer 0x800000398
+freelist_fifo entered with blck pointer 0x800000398 and size 16 
+segstart 0x800000000 segend 0x800000008 listend (nil)
+If of freeList_fifo_insert for small block
+segstart 0x800000000 segend 0x800000008 size 34359739288 
+after call of FIFO insert in free block next 0x8000003a8 and its size 416
+Calling coalesce from free
+Coalesce called
+Case 4 entered 
+freeList_del called for block 0x800000398 and size 16 
+small block at start of freelist 
+only small block in 16B seg list 
+freeList_del called for block 0x8000003a8 and size 416 
+block at start of freelist
+freeList_del called for block 0x800000378 and size 32 
+block at start of freelist
+freelist_fifo entered with blck pointer 0x800000378 and size 464 
+segstart 0x800000050 segend 0x800000058 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000050 segend 0x800000058 size 34359739256 
+Returning from coalesce 
+Returned from coalesce in free 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000368 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x800000378 size 464 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Free called for block pointer 0x800000368
+freelist_fifo entered with blck pointer 0x800000368 and size 16 
+segstart 0x800000000 segend 0x800000008 listend (nil)
+If of freeList_fifo_insert for small block
+segstart 0x800000000 segend 0x800000008 size 34359739240 
+after call of FIFO insert in free block next 0x800000378 and its size 464
+Calling coalesce from free
+Coalesce called
+Case 2 entered 
+freeList_del called for block 0x800000368 and size 16 
+small block at start of freelist 
+only small block in 16B seg list 
+freeList_del called for block 0x800000378 and size 464 
+block at start of freelist
+freelist_fifo entered with blck pointer 0x800000368 and size 480 
+segstart 0x800000050 segend 0x800000058 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000050 segend 0x800000058 size 34359739240 
+Returning from coalesce 
+Returned from coalesce in free 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x800000368 size 480 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Malloc called with size 24
+Requested Size 24 allocating size 32
+Find_fit called with asize 32
+Find called with sizeatstart 1 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 2 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 3 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 4 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 5 actual size 32 and freeList_start 0x800000000
+Current where block will fit 0x800000368 size 480 
+place called with bp 0x800000368 requesting size 32 with passed block size 480
+freeList_del called for block 0x800000368 and size 480 
+block at start of freelist
+If entered of place 
+Block_next 0x800000388
+freelist_fifo entered with blck pointer 0x800000388 and size 448 
+segstart 0x800000050 segend 0x800000058 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000050 segend 0x800000058 size 34359739272 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000368 size 32 prev allocation 2 current allocation 1
+FreeList Block 0x800000388 size 448 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Free called for block pointer 0x800000368
+freelist_fifo entered with blck pointer 0x800000368 and size 32 
+segstart 0x800000010 segend 0x800000018 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000010 segend 0x800000018 size 34359739240 
+after call of FIFO insert in free block next 0x800000388 and its size 448
+Calling coalesce from free
+Coalesce called
+Case 2 entered 
+freeList_del called for block 0x800000368 and size 32 
+block at start of freelist
+freeList_del called for block 0x800000388 and size 448 
+block at start of freelist
+freelist_fifo entered with blck pointer 0x800000368 and size 480 
+segstart 0x800000050 segend 0x800000058 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000050 segend 0x800000058 size 34359739240 
+Returning from coalesce 
+Returned from coalesce in free 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x800000368 size 480 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Malloc called with size 4
+Requested Size 4 allocating size 16
+Find_fit called with asize 16
+Find called with sizeatstart 0 actual size 16 and freeList_start 0x800000000
+Find called with sizeatstart 1 actual size 16 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 2 actual size 16 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 3 actual size 16 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 4 actual size 16 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 5 actual size 16 and freeList_start 0x800000000
+Current where block will fit 0x800000368 size 480 
+place called with bp 0x800000368 requesting size 16 with passed block size 480
+freeList_del called for block 0x800000368 and size 480 
+block at start of freelist
+If entered of place 
+Block_next 0x800000378
+freelist_fifo entered with blck pointer 0x800000378 and size 464 
+segstart 0x800000050 segend 0x800000058 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000050 segend 0x800000058 size 34359739256 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000358 size 16 prev allocation 2 current allocation 1
+Heap Block 0x800000368 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x800000378 size 464 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Free called for block pointer 0x800000358
+freelist_fifo entered with blck pointer 0x800000358 and size 16 
+segstart 0x800000000 segend 0x800000008 listend (nil)
+If of freeList_fifo_insert for small block
+segstart 0x800000000 segend 0x800000008 size 34359739224 
+after call of FIFO insert in free block next 0x800000368 and its size 16
+Calling coalesce from free
+Coalesce called
+Case 1 entered 
+Returning from coalesce 
+Returned from coalesce in free 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+Heap Block 0x800000348 size 16 prev allocation 2 current allocation 1
+FreeList Block 0x800000358 size 16 prev allocation 2 current allocation 0 
+Heap Block 0x800000368 size 16 prev allocation 0 current allocation 1
+FreeList Block 0x800000378 size 464 prev allocation 2 current allocation 0 
+All blocks printed now checking for each free block's range 
+sizeattart 0 
+sizeattart 1 
+sizeattart 2 
+sizeattart 3 
+sizeattart 4 
+sizeattart 5 
+sizeattart 6 
+sizeattart 7 
+sizeattart 8 
+sizeattart 9 
+sizeattart 10 
+sizeattart 11 
+sizeattart 12 
+sizeattart 13 
+sizeattart 14 
+Free called for block pointer 0x800000348
+freelist_fifo entered with blck pointer 0x800000348 and size 16 
+segstart 0x800000000 segend 0x800000008 listend 0x800000358
+Else of fifo insert for small block
+after call of FIFO insert in free block next 0x800000358 and its size 16
+Calling coalesce from free
+Coalesce called
+Case 2 entered 
+freeList_del called for block 0x800000348 and size 16 
+small block at end of freelist 
+freeList_del called for block 0x800000358 and size 16 
+small block at start of freelist 
+only small block in 16B seg list 
+freelist_fifo entered with blck pointer 0x800000348 and size 32 
+segstart 0x800000010 segend 0x800000018 listend 0x800000358
+Else of fifo insert 
+Returning from coalesce 
+Returned from coalesce in free 
+Printing Heap blocks 
+Heap size 1360 
+Heap Block 0x800000108 size 576 prev allocation 2 current allocation 1
+FreeList Block 0x800000348 size 32 prev allocation 2 current allocation 0 
+Free block 0x800000348 header and footer mismatch 
+ERROR [trace ./traces/ngram-fox1.rep, line 35]: mm_checkheap returned false
 
 
 Results for mm malloc:
