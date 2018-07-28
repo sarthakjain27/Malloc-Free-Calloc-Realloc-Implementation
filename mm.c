@@ -308,15 +308,16 @@ bool mm_init(void) {
 	
     dbg_printf("FreeList_start initialised %p FreeList_end %p\n",freeList_start,freeList_end);
     
-    word_t *start = (word_t *)(mem_sbrk(2*wsize));
+    word_t *start = (word_t *)(mem_sbrk(3*wsize));
     if (start == (void *)-1) 
     {
         return false;
     }
-    start[0] = pack(0, 1); // Prologue footer
-    start[1] = pack(0, PREVIOUSALLOCATED | CURRENTALLOCATED); // Epilogue header
+    start[0] = pack(0, 1); // Prologue header
+    start[1] = pack(0, 1); // Prologue footer
+    start[2] = pack(0, PREVIOUSALLOCATED | CURRENTALLOCATED); // Epilogue header
     // Heap starts with first "block header", currently the epilogue footer
-    heap_start=(block_t *) &(start[1]);
+    heap_start=(block_t *) &(start[2]);
     dbg_printf("Heap_start initialised%p\n",heap_start);
     
     dbg_printf("Calling extend heap from mm_init \n");
