@@ -529,7 +529,7 @@ bool mm_checkheap(int lineno) {
 			//check for free block header and footer mismatch
 			if(get_size(i) >dsize && GET(HDRP(i)) != GET(FTRP(i)))
 			{
-				dbg_printf("Free block %p header and footer mismatch \n",i);
+				dbg_printf("Free block %p header %p size %zu and footer %p size %zu mismatch \n",i,HDRP(i),GET(HDRP(i)),FTRP(i),GET(FTRP(i)));
 				return false;
 			}
 			//check for free block prev and next pointer consistency
@@ -982,7 +982,7 @@ static void freeList_del(block_f *block,size_t size)
 				prevp->next_free=small_block->next_free;
 				small_block->next_free=NULL;
 			}
-			small_block->header=0;
+			small_block->header=(small_block->header) & 0x3;
 		}
 	else
 	{
