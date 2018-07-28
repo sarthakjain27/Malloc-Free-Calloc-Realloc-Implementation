@@ -1678,10 +1678,374 @@ If of freeList_fifo_insert
 segstart 0x800000060 segend 0x800000068 size 34359738632 
 Returning from coalesce 
 Returned from coalesce in free 
-
-
-correctness check finished, by running tracefile "traces/syn-struct-short.rep".
- => incorrect.
-
-Average utilization = 0.0%. Average throughput = 0 Kops/sec
-Perf index = 0.0 (util) + 0.0 (thru) = 0.0/100
+efficiency, mm_init called 
+FreeList_start initialised 0x800000000 FreeList_end 0x800000008
+Heap_start initialised0x800000108
+Calling extend heap from mm_init 
+Extend heap called with size 512
+new extend heap block address 0x800000108 size 512 and original bp 0x800000110
+freelist_fifo entered with blck pointer 0x800000108 and size 512 
+segstart 0x800000050 segend 0x800000058 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000050 segend 0x800000058 size 34359738632 
+Returned from freeList_FIFO_insert in extend heap 
+new epilogue 0x800000308
+Coalesce called
+Case 1 entered 
+Returning from coalesce 
+Malloc called with size 112
+Requested Size 112 allocating size 128
+Find_fit called with asize 128
+Find called with sizeatstart 3 actual size 128 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 4 actual size 128 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 5 actual size 128 and freeList_start 0x800000000
+Current where block will fit 0x800000108 size 512 
+place called with bp 0x800000108 requesting size 128 with passed block size 512
+freeList_del called for block 0x800000108 and size 512 
+block at start of freelist
+If entered of place 
+Block_next 0x800000188
+freelist_fifo entered with blck pointer 0x800000188 and size 384 
+segstart 0x800000050 segend 0x800000058 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000050 segend 0x800000058 size 34359738760 
+Malloc called with size 176
+Requested Size 176 allocating size 192
+Find_fit called with asize 192
+Find called with sizeatstart 4 actual size 192 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 5 actual size 192 and freeList_start 0x800000000
+Current where block will fit 0x800000188 size 384 
+place called with bp 0x800000188 requesting size 192 with passed block size 384
+freeList_del called for block 0x800000188 and size 384 
+block at start of freelist
+If entered of place 
+Block_next 0x800000248
+freelist_fifo entered with blck pointer 0x800000248 and size 192 
+segstart 0x800000040 segend 0x800000048 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000040 segend 0x800000048 size 34359738952 
+Malloc called with size 16
+Requested Size 16 allocating size 32
+Find_fit called with asize 32
+Find called with sizeatstart 1 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 2 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 3 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 4 actual size 32 and freeList_start 0x800000000
+Current where block will fit 0x800000248 size 192 
+place called with bp 0x800000248 requesting size 32 with passed block size 192
+freeList_del called for block 0x800000248 and size 192 
+block at start of freelist
+If entered of place 
+Block_next 0x800000268
+freelist_fifo entered with blck pointer 0x800000268 and size 160 
+segstart 0x800000040 segend 0x800000048 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000040 segend 0x800000048 size 34359738984 
+Malloc called with size 136
+Requested Size 136 allocating size 144
+Find_fit called with asize 144
+Find called with sizeatstart 4 actual size 144 and freeList_start 0x800000000
+Current where block will fit 0x800000268 size 160 
+place called with bp 0x800000268 requesting size 144 with passed block size 160
+freeList_del called for block 0x800000268 and size 160 
+block at start of freelist
+Place will create 16B free block on splicing of currently passed block 
+Block_next 0x8000002f8
+freelist_fifo entered with blck pointer 0x8000002f8 and size 16 
+segstart 0x800000000 segend 0x800000008 listend (nil)
+If of freeList_fifo_insert for small block
+segstart 0x800000000 segend 0x800000008 size 34359739128 
+Free called for block pointer 0x800000268
+freelist_fifo entered with blck pointer 0x800000268 and size 144 
+segstart 0x800000040 segend 0x800000048 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000040 segend 0x800000048 size 34359738984 
+after call of FIFO insert in free block next 0x8000002f8 and its size 16
+Calling coalesce from free
+Coalesce called
+Case 2 entered 
+freeList_del called for block 0x800000268 and size 144 
+block at start of freelist
+freeList_del called for block 0x8000002f8 and size 16 
+small block at start of freelist 
+only small block in 16B seg list 
+freelist_fifo entered with blck pointer 0x800000268 and size 160 
+segstart 0x800000040 segend 0x800000048 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000040 segend 0x800000048 size 34359738984 
+Returning from coalesce 
+Returned from coalesce in free 
+Malloc called with size 56
+Requested Size 56 allocating size 64
+Find_fit called with asize 64
+Find called with sizeatstart 2 actual size 64 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 3 actual size 64 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 4 actual size 64 and freeList_start 0x800000000
+Current where block will fit 0x800000268 size 160 
+place called with bp 0x800000268 requesting size 64 with passed block size 160
+freeList_del called for block 0x800000268 and size 160 
+block at start of freelist
+If entered of place 
+Block_next 0x8000002a8
+freelist_fifo entered with blck pointer 0x8000002a8 and size 96 
+segstart 0x800000030 segend 0x800000038 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000030 segend 0x800000038 size 34359739048 
+Malloc called with size 88
+Requested Size 88 allocating size 96
+Find_fit called with asize 96
+Find called with sizeatstart 3 actual size 96 and freeList_start 0x800000000
+Current where block will fit 0x8000002a8 size 96 
+place called with bp 0x8000002a8 requesting size 96 with passed block size 96
+freeList_del called for block 0x8000002a8 and size 96 
+block at start of freelist
+Free called for block pointer 0x800000108
+freelist_fifo entered with blck pointer 0x800000108 and size 128 
+segstart 0x800000030 segend 0x800000038 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000030 segend 0x800000038 size 34359738632 
+after call of FIFO insert in free block next 0x800000188 and its size 192
+Calling coalesce from free
+Coalesce called
+Case 1 entered 
+Returning from coalesce 
+Returned from coalesce in free 
+Malloc called with size 72
+Requested Size 72 allocating size 80
+Find_fit called with asize 80
+Find called with sizeatstart 3 actual size 80 and freeList_start 0x800000000
+Current where block will fit 0x800000108 size 128 
+place called with bp 0x800000108 requesting size 80 with passed block size 128
+freeList_del called for block 0x800000108 and size 128 
+block at start of freelist
+If entered of place 
+Block_next 0x800000158
+freelist_fifo entered with blck pointer 0x800000158 and size 48 
+segstart 0x800000020 segend 0x800000028 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000020 segend 0x800000028 size 34359738712 
+Free called for block pointer 0x800000248
+freelist_fifo entered with blck pointer 0x800000248 and size 32 
+segstart 0x800000010 segend 0x800000018 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000010 segend 0x800000018 size 34359738952 
+after call of FIFO insert in free block next 0x800000268 and its size 64
+Calling coalesce from free
+Coalesce called
+Case 1 entered 
+Returning from coalesce 
+Returned from coalesce in free 
+Malloc called with size 160
+Requested Size 160 allocating size 176
+Find_fit called with asize 176
+Find called with sizeatstart 4 actual size 176 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 5 actual size 176 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 6 actual size 176 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 7 actual size 176 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 8 actual size 176 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 9 actual size 176 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 10 actual size 176 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 11 actual size 176 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 12 actual size 176 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 13 actual size 176 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 14 actual size 176 and freeList_start 0x800000000
+Current is null 
+All if else failed in find_fit 
+No fit found, calling extend heap 
+Extend heap called with size 512
+new extend heap block address 0x800000308 size 512 and original bp 0x800000310
+freelist_fifo entered with blck pointer 0x800000308 and size 512 
+segstart 0x800000050 segend 0x800000058 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000050 segend 0x800000058 size 34359739144 
+Returned from freeList_FIFO_insert in extend heap 
+new epilogue 0x800000508
+Coalesce called
+Case 1 entered 
+Returning from coalesce 
+place called with bp 0x800000308 requesting size 176 with passed block size 512
+freeList_del called for block 0x800000308 and size 512 
+block at start of freelist
+If entered of place 
+Block_next 0x8000003b8
+freelist_fifo entered with blck pointer 0x8000003b8 and size 336 
+segstart 0x800000050 segend 0x800000058 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000050 segend 0x800000058 size 34359739320 
+Free called for block pointer 0x800000188
+freelist_fifo entered with blck pointer 0x800000188 and size 192 
+segstart 0x800000040 segend 0x800000048 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000040 segend 0x800000048 size 34359738760 
+after call of FIFO insert in free block next 0x800000248 and its size 32
+Calling coalesce from free
+Coalesce called
+Case 4 entered 
+freeList_del called for block 0x800000188 and size 192 
+block at start of freelist
+freeList_del called for block 0x800000248 and size 32 
+block at start of freelist
+freeList_del called for block 0x800000158 and size 48 
+block at start of freelist
+freelist_fifo entered with blck pointer 0x800000158 and size 272 
+segstart 0x800000050 segend 0x800000058 listend 0x8000003b8
+Else of fifo insert 
+Returning from coalesce 
+Returned from coalesce in free 
+Malloc called with size 32
+Requested Size 32 allocating size 48
+Find_fit called with asize 48
+Find called with sizeatstart 2 actual size 48 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 3 actual size 48 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 4 actual size 48 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 5 actual size 48 and freeList_start 0x800000000
+Current where block will fit 0x8000003b8 size 336 
+place called with bp 0x8000003b8 requesting size 48 with passed block size 336
+freeList_del called for block 0x8000003b8 and size 336 
+block at start of freelist
+If entered of place 
+Block_next 0x8000003e8
+freelist_fifo entered with blck pointer 0x8000003e8 and size 288 
+segstart 0x800000050 segend 0x800000058 listend 0x800000158
+Else of fifo insert 
+Free called for block pointer 0x800000308
+freelist_fifo entered with blck pointer 0x800000308 and size 176 
+segstart 0x800000040 segend 0x800000048 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000040 segend 0x800000048 size 34359739144 
+after call of FIFO insert in free block next 0x8000003b8 and its size 48
+Calling coalesce from free
+Coalesce called
+Case 1 entered 
+Returning from coalesce 
+Returned from coalesce in free 
+Free called for block pointer 0x800000108
+freelist_fifo entered with blck pointer 0x800000108 and size 80 
+segstart 0x800000030 segend 0x800000038 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000030 segend 0x800000038 size 34359738632 
+after call of FIFO insert in free block next 0x800000158 and its size 272
+Calling coalesce from free
+Coalesce called
+Case 2 entered 
+freeList_del called for block 0x800000108 and size 80 
+block at start of freelist
+freeList_del called for block 0x800000158 and size 272 
+block at start of freelist
+freelist_fifo entered with blck pointer 0x800000108 and size 352 
+segstart 0x800000050 segend 0x800000058 listend 0x8000003e8
+Else of fifo insert 
+Returning from coalesce 
+Returned from coalesce in free 
+Malloc called with size 16
+Requested Size 16 allocating size 32
+Find_fit called with asize 32
+Find called with sizeatstart 1 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 2 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 3 actual size 32 and freeList_start 0x800000000
+Current is null 
+Find called with sizeatstart 4 actual size 32 and freeList_start 0x800000000
+Current where block will fit 0x800000308 size 176 
+place called with bp 0x800000308 requesting size 32 with passed block size 176
+freeList_del called for block 0x800000308 and size 176 
+block at start of freelist
+If entered of place 
+Block_next 0x800000328
+freelist_fifo entered with blck pointer 0x800000328 and size 144 
+segstart 0x800000040 segend 0x800000048 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000040 segend 0x800000048 size 34359739176 
+Free called for block pointer 0x800000268
+freelist_fifo entered with blck pointer 0x800000268 and size 64 
+segstart 0x800000020 segend 0x800000028 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000020 segend 0x800000028 size 34359738984 
+after call of FIFO insert in free block next 0x8000002a8 and its size 96
+Calling coalesce from free
+Coalesce called
+Case 3 entered 
+freeList_del called for block 0x800000268 and size 64 
+block at start of freelist
+freeList_del called for block 0x800000108 and size 352 
+it is last block in its list 
+freelist_fifo entered with blck pointer 0x800000108 and size 416 
+segstart 0x800000050 segend 0x800000058 listend 0x8000003e8
+Else of fifo insert 
+Returning from coalesce 
+Returned from coalesce in free 
+Free called for block pointer 0x8000003b8
+freelist_fifo entered with blck pointer 0x8000003b8 and size 48 
+segstart 0x800000020 segend 0x800000028 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000020 segend 0x800000028 size 34359739320 
+after call of FIFO insert in free block next 0x8000003e8 and its size 288
+Calling coalesce from free
+Coalesce called
+Case 4 entered 
+freeList_del called for block 0x8000003b8 and size 48 
+block at start of freelist
+freeList_del called for block 0x8000003e8 and size 288 
+block at start of freelist
+freeList_del called for block 0x800000328 and size 144 
+block at start of freelist
+freelist_fifo entered with blck pointer 0x800000328 and size 480 
+segstart 0x800000050 segend 0x800000058 listend 0x800000108
+Else of fifo insert 
+Returning from coalesce 
+Returned from coalesce in free 
+Free called for block pointer 0x8000002a8
+freelist_fifo entered with blck pointer 0x8000002a8 and size 96 
+segstart 0x800000030 segend 0x800000038 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000030 segend 0x800000038 size 34359739048 
+after call of FIFO insert in free block next 0x800000308 and its size 32
+Calling coalesce from free
+Coalesce called
+Case 3 entered 
+freeList_del called for block 0x8000002a8 and size 96 
+block at start of freelist
+freeList_del called for block 0x800000108 and size 416 
+block at start of freelist
+freelist_fifo entered with blck pointer 0x800000108 and size 512 
+segstart 0x800000050 segend 0x800000058 listend 0x800000328
+Else of fifo insert 
+Returning from coalesce 
+Returned from coalesce in free 
+Free called for block pointer 0x800000308
+freelist_fifo entered with blck pointer 0x800000308 and size 32 
+segstart 0x800000010 segend 0x800000018 listend (nil)
+If of freeList_fifo_insert 
+segstart 0x800000010 segend 0x800000018 size 34359739144 
+after call of FIFO insert in free block next 0x800000328 and its size 480
+Calling coalesce from free
+Coalesce called
+Case 4 entered 
+freeList_del called for block 0x800000308 and size 32 
+block at start of freelist
+freeList_del called for block 0x800000328 and size 480 
+block at start of freelist
+freeList_del called for block 0x8000002f8 and size 16 
+small block in middle of freelist 
