@@ -55,7 +55,7 @@
  * If you want debugging output, uncomment the following. Be sure not
  * to have debugging enabled in your final submission
  */
-#define DEBUG
+//#define DEBUG
 
 #ifdef DEBUG
 /* When debugging is enabled, the underlying functions get called */
@@ -727,16 +727,20 @@ static block_t *coalesce(block_t * block)
 	dbg_printf("Coalesce called\n");
 	block_t *block_next = find_next(block);
     block_t *block_prev = NULL;
-	
+	block_f_sixteen *startp=(block_f_sixteen *)(GET(freeList_start+SEGLIST0));
+	block_f_sixteen *footerp=(block_f_sixteen *)((&(block->header))-2);
+	word_t *foot=(&(block->header)) -2;
+	size_t prev_size=extract_size(*foot);
+	while(startp!=NULL && prev_size==dsize && startp!=footerp)
+	{
+		startp=startp->next_free;	
+	}
+	if(startp!=footerp)
+		block_prev=find_prev(block);
+	else block_prev=(block_t *)((char *)block-dsize);
 	
 	// since free block of 16B doesn't have footer. And we know that 16B block is of dsize. So we manually check for size of block
 	// whose address starts at current block's header address - 2 word before the header;
-	word_t *footerp= (&(block->header)) - 2;
-	size_t size_prev=extract_size(*footerp);
-	if(size_prev==dsize)
-		block_prev=(block_t *)((char *)block - size_prev);
-	else
-		block_prev=find_prev(block);
 	
     block_f *block_free=(block_f *)block;
     block_f *block_next_free=(block_f *)block_next;
@@ -774,7 +778,7 @@ static block_t *coalesce(block_t * block)
         
 		freeList_del(block_free,size);
 	    freeList_del(block_prev_free,block_prev_size);
-        
+        dbg_printf("Returned from bboth freeList_Del \n"); 
         size += block_prev_size;
 		write_header(block_prev, size, GET_PREV_ALLOC(block_prev));
 		write_header(block_next,block_next_size,1);
@@ -974,12 +978,15 @@ static void freeList_del(block_f *block,size_t size)
 				block_f_sixteen *prevp=NULL;
 				while(startp != small_block)
 				{
+					//dbg_printf("prevp %p startp %p startp next %p \n",prevp,startp,startp->next_free);
 					prevp=startp;
 					startp=startp->next_free;
 				}
+				dbg_printf("prevp %p startp %p and small_block %p\n",prevp,startp,small_block);
 				prevp->next_free=small_block->next_free;
 				small_block->next_free=NULL;
 			}
+			dbg_printf("deleted small block \n");
 			small_block->header=(small_block->header) & 0x3;
 		}
 	else
@@ -1470,10 +1477,8 @@ static void write_header(block_t *block, size_t size, size_t alloc)
  */
 static void write_footer(block_t *block, size_t size, size_t alloc)
 {
-    dbg_printf("write footer called with block %p, its footer is %p\n",block,((block->payload)+get_size(block)-dsize));
 	word_t *footerp = (word_t *)((block->payload) + get_size(block) - dsize);
 	*footerp = pack(size, alloc);
-	dbg_printf("footerp val is %zu \n",*(word_t *)(block->payload + get_size(block) - dsize));
 }
 
 /*
