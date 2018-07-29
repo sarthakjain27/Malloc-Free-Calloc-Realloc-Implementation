@@ -14,26 +14,26 @@
  * 
  * Free block structure
  * | block size | (PREVIOUSALLOCATION)|(CURRENTALLOCATION)|
- * | pointer to next free block				  |
- * | pointer to previous free block			  |
- * | Optional padding					  |
+ * | pointer to next free block				  			  |
+ * | pointer to previous free block			  			  |
+ * | Optional padding					  				  |
  * | block size | (PREVIOUSALLOCATION)|(CURRENTALLOCATION)|
  *
  *
  * Allocated block
  * | block size | (PREVIOUSALLOCATION)|(CURRENTALLOCATION)|
- * | Application requested size				  |
- * | Optional Padding					  |
+ * | Application requested size				  			  |
+ * | Optional Padding					  				  |
  *
  * 
  * The segregated free list for 16B blocks would be singly linked list. So need for prev pointer for this.
  * Free 16B block
  * | block size | (PREVIOUSALLOCATION)|(CURRENTALLOCATION)|
- * | pointer to next free block				  |
+ * | pointer to next free block				  		      |
  *
  * Allocated 16B block
  * | block size | (PREVIOUSALLOCATION)|(CURRENTALLOCATION)|
- * | Application requested size				  |
+ * | Application requested size				  			  |
  * 
  * I have stored each free list's starting and ending pointer on the heap itself at the very start when the heap is initialised
  * For each free list the header and pointer are present consecutively.
@@ -121,7 +121,7 @@ static const word_t size_mask = ~(word_t)0xF;
 #define SEGLIST14    14*dsize
 
 /* Maximum size limit of each list */
-#define LIST0_LIMIT	 16
+#define LIST0_LIMIT	     16
 #define LIST1_LIMIT      32
 #define LIST2_LIMIT      64
 #define LIST3_LIMIT      128
@@ -146,7 +146,7 @@ static size_t align(size_t x) {
 
 typedef struct block
 {
-    /* Header contains size + allocation flag */
+    /* Header contains size + previous and current allocation bits */
     word_t header;
     /*
      * We don't know how big the payload will be.  Declaring it as an
@@ -162,6 +162,7 @@ typedef struct block
 
 typedef struct free_block
 {
+	/* Header contains size + previous and current allocation status*/
     word_t header;
     struct free_block *next_free;
     struct free_block *prev_free;
@@ -169,6 +170,7 @@ typedef struct free_block
 
 typedef struct free_sixteen_block
 {
+	/* Header contains size + previous and current allocation status */
 	word_t header;
 	struct free_sixteen_block *next_free;
 } block_f_sixteen;
@@ -265,6 +267,12 @@ static void PUT(char *p,size_t val)
 
 /*
  * Initialize: return false on error, true on success.
+ * mm_init creates an initial empty heap of free CHUNKSIZE
+ * Also it initializes the freeList_start and end pointers
+ * of each segregated list on the heap.
+ *
+ * Additionally, Prologue header and footer and epilogue header
+ * is also initialized with size 0 and current allocation 1.
  */
 bool mm_init(void) {
     // Create the initial empty heap 
@@ -334,7 +342,11 @@ bool mm_init(void) {
 }
 
 /*
- * malloc
+ * malloc: This is the main function that fulfills the
+ * memory requests. The requested size if first adjusted
+ * to accommodate header and meet alignment request.
+ * Then this new size is allocated and a pointer to payload
+ * is returned.
  */
 void *malloc (size_t size) {
     
@@ -372,7 +384,11 @@ void *malloc (size_t size) {
 }
 
 /*
- * free
+ * free : This function frees the allocated requests by malloc.
+ * It modifies the header and footer of the free block to inlcude
+ * the size and previous and current allocation status.
+ * Also, the header of next block in memomry of current block
+ * is modified to show that its previous block is now free.
  */
 void free (void *ptr) {
     
@@ -395,12 +411,14 @@ void free (void *ptr) {
     
 	/* Add free block to appropriate segregated list */
 	freeList_FIFO_insert((block_f *)block, size);
-	coalesce((block_t *)block);
-	
+	coalesce((block_t *)block);	
 }
 
 /*
- * realloc
+ * realloc: It changes the size of block allocated by malloc
+ * to new given size. Depending on whether the new size is 0,
+ * greater than or less than the old allocated size, the appropriate
+ * action is taken.
  */
 void *realloc(void *ptr, size_t size) {
 	block_t *block = payload_to_header(ptr);
@@ -561,8 +579,7 @@ bool mm_checkheap(int lineno) {
 			   {
 				   dbg_printf("Two consecutive free block %p and %p present \n",i,find_next(i));
 				   return false;
-			   }
-			
+			   }			
 		}
 		
 		//alignment check for each block
@@ -605,75 +622,75 @@ bool mm_checkheap(int lineno) {
 	   the appropriate ranges (Different segregated lists) */
 	for (sizeatstart = 0; sizeatstart < TOTALLIST; sizeatstart++) 
     	{
-		dbg_printf("sizeattart %d \n",sizeatstart);
-		if (sizeatstart == 0) {
-			listpointer = (char *) GET(freeList_start + SEGLIST0);
-			minimumblocksize = 0;
-			maximumblocksize = LIST0_LIMIT;
-		} else if (sizeatstart == 1) {
-			listpointer = (char *) GET(freeList_start + SEGLIST1);
-			minimumblocksize = LIST0_LIMIT;
-			maximumblocksize = LIST1_LIMIT;
-		} else if (sizeatstart == 2) {
-			listpointer = (char *) GET(freeList_start + SEGLIST2);
-			minimumblocksize = LIST1_LIMIT;
-			maximumblocksize = LIST2_LIMIT;
-		} else if (sizeatstart == 3) {
-			listpointer = (char *) GET(freeList_start + SEGLIST3);
-			minimumblocksize = LIST2_LIMIT;
-			maximumblocksize = LIST3_LIMIT;
-		} else if (sizeatstart == 4) {
-			listpointer = (char *) GET(freeList_start + SEGLIST4);
-			minimumblocksize = LIST3_LIMIT;
-			maximumblocksize = LIST4_LIMIT;
-		} else if (sizeatstart == 5) {
-			listpointer = (char *) GET(freeList_start + SEGLIST5);
-			minimumblocksize = LIST4_LIMIT;
-			maximumblocksize = LIST5_LIMIT;
-		} else if (sizeatstart == 6) {
-			listpointer = (char *) GET(freeList_start + SEGLIST6);
-			minimumblocksize = LIST5_LIMIT;
-			maximumblocksize = LIST6_LIMIT;
-		} else if (sizeatstart == 7) {
-			listpointer = (char *) GET(freeList_start + SEGLIST7);
-			minimumblocksize = LIST6_LIMIT;
-			maximumblocksize = LIST7_LIMIT;
-		} else if (sizeatstart == 8) {
-			listpointer = (char *) GET(freeList_start + SEGLIST8);
-			minimumblocksize = LIST7_LIMIT;
-			maximumblocksize = LIST8_LIMIT;
-		} else if (sizeatstart == 9) {
-			listpointer = (char *) GET(freeList_start + SEGLIST9);
-			minimumblocksize = LIST8_LIMIT;
-			maximumblocksize = LIST9_LIMIT;
-		} else if (sizeatstart == 10) {
-			listpointer = (char *) GET(freeList_start + SEGLIST10);
-			minimumblocksize = LIST9_LIMIT;
-			maximumblocksize = LIST10_LIMIT;
-		} else if (sizeatstart == 11) {
-			listpointer = (char *) GET(freeList_start + SEGLIST11);
-			minimumblocksize = LIST10_LIMIT;
-			maximumblocksize = LIST11_LIMIT;
-		} else if (sizeatstart == 12) {
-			listpointer = (char *) GET(freeList_start + SEGLIST12);
-			minimumblocksize = LIST11_LIMIT;
-			maximumblocksize = LIST12_LIMIT;
-		} else if (sizeatstart == 13){
-			listpointer = (char *) GET(freeList_start + SEGLIST13);
-			minimumblocksize = LIST12_LIMIT;
-			maximumblocksize = LIST13_LIMIT;
-		}
-		else{
-			listpointer = (char *) GET(freeList_start + SEGLIST14);
-			minimumblocksize = LIST13_LIMIT;
-			maximumblocksize = ~0;
-		}
-		f=(block_f *)listpointer;
-		slow_ptr=f;
-		if(slow_ptr)
-			fast_ptr=slow_ptr->next_free;
-		while (f != NULL) 
-        	{
+			dbg_printf("sizeattart %d \n",sizeatstart);
+			if (sizeatstart == 0) {
+				listpointer = (char *) GET(freeList_start + SEGLIST0);
+				minimumblocksize = 0;
+				maximumblocksize = LIST0_LIMIT;
+			} else if (sizeatstart == 1) {
+				listpointer = (char *) GET(freeList_start + SEGLIST1);
+				minimumblocksize = LIST0_LIMIT;
+				maximumblocksize = LIST1_LIMIT;
+			} else if (sizeatstart == 2) {
+				listpointer = (char *) GET(freeList_start + SEGLIST2);
+				minimumblocksize = LIST1_LIMIT;
+				maximumblocksize = LIST2_LIMIT;
+			} else if (sizeatstart == 3) {
+				listpointer = (char *) GET(freeList_start + SEGLIST3);
+				minimumblocksize = LIST2_LIMIT;
+				maximumblocksize = LIST3_LIMIT;
+			} else if (sizeatstart == 4) {
+				listpointer = (char *) GET(freeList_start + SEGLIST4);
+				minimumblocksize = LIST3_LIMIT;
+				maximumblocksize = LIST4_LIMIT;
+			} else if (sizeatstart == 5) {
+				listpointer = (char *) GET(freeList_start + SEGLIST5);
+				minimumblocksize = LIST4_LIMIT;
+				maximumblocksize = LIST5_LIMIT;
+			} else if (sizeatstart == 6) {
+				listpointer = (char *) GET(freeList_start + SEGLIST6);
+				minimumblocksize = LIST5_LIMIT;
+				maximumblocksize = LIST6_LIMIT;
+			} else if (sizeatstart == 7) {
+				listpointer = (char *) GET(freeList_start + SEGLIST7);
+				minimumblocksize = LIST6_LIMIT;
+				maximumblocksize = LIST7_LIMIT;
+			} else if (sizeatstart == 8) {
+				listpointer = (char *) GET(freeList_start + SEGLIST8);
+				minimumblocksize = LIST7_LIMIT;
+				maximumblocksize = LIST8_LIMIT;
+			} else if (sizeatstart == 9) {
+				listpointer = (char *) GET(freeList_start + SEGLIST9);
+				minimumblocksize = LIST8_LIMIT;
+				maximumblocksize = LIST9_LIMIT;
+			} else if (sizeatstart == 10) {
+				listpointer = (char *) GET(freeList_start + SEGLIST10);
+				minimumblocksize = LIST9_LIMIT;
+				maximumblocksize = LIST10_LIMIT;
+			} else if (sizeatstart == 11) {
+				listpointer = (char *) GET(freeList_start + SEGLIST11);
+				minimumblocksize = LIST10_LIMIT;
+				maximumblocksize = LIST11_LIMIT;
+			} else if (sizeatstart == 12) {
+				listpointer = (char *) GET(freeList_start + SEGLIST12);
+				minimumblocksize = LIST11_LIMIT;
+				maximumblocksize = LIST12_LIMIT;
+			} else if (sizeatstart == 13){
+				listpointer = (char *) GET(freeList_start + SEGLIST13);
+				minimumblocksize = LIST12_LIMIT;
+				maximumblocksize = LIST13_LIMIT;
+			}
+			else{
+				listpointer = (char *) GET(freeList_start + SEGLIST14);
+				minimumblocksize = LIST13_LIMIT;
+				maximumblocksize = ~0;
+			}
+			f=(block_f *)listpointer;
+			slow_ptr=f;
+			if(slow_ptr)
+				fast_ptr=slow_ptr->next_free;
+			while (f != NULL) 
+   	     	{
 				total_free_block_list++;
 				//checking for each free block to be in correct seglist
 				if (!(minimumblocksize < get_size((block_t *)f) && get_size((block_t *)f) <= maximumblocksize)) 
@@ -681,20 +698,20 @@ bool mm_checkheap(int lineno) {
 							dbg_printf("Free block pointer %p is not in the appropriate list", f);
                 			return false;
 				}
-			f=f->next_free;
+				f=f->next_free;
 			}
-		//checking for presence of loop in a free list
-		while(slow_ptr && fast_ptr && fast_ptr->next_free)
-		{
-			slow_ptr=slow_ptr->next_free;
-			fast_ptr=fast_ptr->next_free->next_free;
-			if(slow_ptr==fast_ptr)
+			//checking for presence of loop in a free list
+			while(slow_ptr && fast_ptr && fast_ptr->next_free)
 			{
-				dbg_printf("Found loop in list %d \n",sizeatstart);
-				return false;
+				slow_ptr=slow_ptr->next_free;
+				fast_ptr=fast_ptr->next_free->next_free;
+				if(slow_ptr==fast_ptr)
+				{
+					dbg_printf("Found loop in list %d \n",sizeatstart);
+					return false;
+				}
 			}
 		}
-	}
 	//checking for total count of free block via heap traversal and seglist traversal
 	if(total_free_block != total_free_block_list)
 	{
@@ -749,11 +766,11 @@ static block_t *coalesce(block_t * block)
 {
 	dbg_printf("Coalesce called\n");
 	size_t prev_alloc = GET_PREV_ALLOC(block);
-    	size_t size = get_size(block);
+   	size_t size = get_size(block);
 	
 	block_t *block_next = find_next(block);
 	size_t next_alloc = get_alloc(block_next);
-    	block_t *block_prev = NULL;
+   	block_t *block_prev = NULL;
 	
 	// Since 16B free blocks doesn't have footer. 
 	// I am taking the present passed starting block address - 2 * wsize 
@@ -809,8 +826,7 @@ static block_t *coalesce(block_t * block)
     }
 
     else if (!prev_alloc && next_alloc)        // Case 3
-    {
-	    
+    {   
   	  	size_t block_prev_size=get_size(block_prev);
     	size_t block_next_size=get_size(block_next);
         size_t prev_alloc_prev_block=GET_PREV_ALLOC(block_prev);
@@ -831,8 +847,7 @@ static block_t *coalesce(block_t * block)
     }
 
     else                                        // Case 4
-    {
-	    
+    {	    
   	  	size_t block_prev_size=get_size(block_prev);
     	size_t block_next_size=get_size(block_next);
         size_t prev_alloc_prev_block=GET_PREV_ALLOC(block_prev);
@@ -847,7 +862,6 @@ static block_t *coalesce(block_t * block)
 		freeList_FIFO_insert(block_prev_free,size);
 		block=block_prev;
     }
-	dbg_printf("Returning from coalesce \n");
     return block;
 }
 
@@ -958,7 +972,6 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
 	{
 		if(listend==NULL)
     		{
-        		
         		//set current block as head
         		PUT(segstart,(size_t)(block));
 				PUT(segend,(size_t)(block));
@@ -1218,6 +1231,13 @@ static void freeList_del(block_f *block,size_t size)
 
 /*
 * find fit determines the appropriate seglist to start searching for a block which can fit asize sized block
+* Rather than checking all the free list starting from seglist 0 for a free block
+* large enough to accommodate the requested size, I have compared
+* the requested size with maximum limit of each seglist
+*
+* And if requested size is greater than a seglist's maximum size, then that
+* seglist is not checked for a free block to accommmodate
+* the request.
 */
 static void *find_fit(size_t asize)
 {
@@ -1376,6 +1396,9 @@ static void *find(size_t sizeatstart, size_t actual_size)
      
 	 //handling cases where splicing of a bigger block results in either a
 	 // 16B block or more, separately.
+	 // 
+	 // This is because, 16B free block doesn't have footer. So better to handle
+	 // such case with an if else
 	 if ( (csize - asize) == min_block_size )
 	 {
 		 write_header(block, asize, (GET_PREV_ALLOC(block) | CURRENTALLOCATED));
@@ -1408,7 +1431,7 @@ static void *find(size_t sizeatstart, size_t actual_size)
 		    
 /*
  * get_payload_size: returns the payload size of a given block, equal to
- *                   the entire block size minus the header and footer sizes.
+ *                   the entire block size minus the header size.
  */
 static word_t get_payload_size(block_t *block)
 {
