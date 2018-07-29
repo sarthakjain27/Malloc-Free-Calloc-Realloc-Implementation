@@ -749,11 +749,11 @@ static block_t *coalesce(block_t * block)
 {
 	dbg_printf("Coalesce called\n");
 	size_t prev_alloc = GET_PREV_ALLOC(block);
-	size_t next_alloc = get_alloc(block_next);
-    size_t size = get_size(block);
+    	size_t size = get_size(block);
 	
 	block_t *block_next = find_next(block);
-    block_t *block_prev = NULL;
+	size_t next_alloc = get_alloc(block_next);
+    	block_t *block_prev = NULL;
 	
 	// Since 16B free blocks doesn't have footer. 
 	// I am taking the present passed starting block address - 2 * wsize 
@@ -1314,7 +1314,6 @@ static void *find(size_t sizeatstart, size_t actual_size)
 {
 	dbg_printf("Find called with sizeatstart %zu actual size %zu and freeList_start %p\n",sizeatstart,actual_size,freeList_start);
 	char *current = NULL;
-    block_t *current_f=NULL;
 	block_f *current_free=NULL;
 	/* Finding which list to look into */
 	if (sizeatstart == 0)
