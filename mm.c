@@ -4,7 +4,7 @@
  * mm.c
  *
  * The below code is for a general purpose dynamic memory allocator. 
- * I have used Segregated free list with 14 different sized classes.
+ * I have used Segregated free list with 15 different sized classes.
  * Whenever a request for malloc occurs, it is first rounded up to included header and meet alignment requirements.
  * Thereafter, according to the new size, classes are searched to get a first free block that can accommodate this request.
  * If a block is found, then it is removed from free list, spliced up if (free block size - requested size) >= minimum block size.
@@ -38,6 +38,9 @@
  * I have stored each free list's starting and ending pointer on the heap itself at the very start when the heap is initialised
  * For each free list the header and pointer are present consecutively.
  *
+ *
+ * We can assume that Segregated Free Lists from SEGLIST1 to SEGLIST14 are doubly linked list with previous and next pointer
+ * SEGLIST 0 is the only segregated free list which is Singly linked list and has only next pointer. 
  */
 #include <assert.h>
 #include <stdio.h>
@@ -334,7 +337,7 @@ bool mm_init(void) {
  * malloc
  */
 void *malloc (size_t size) {
-    dbg_printf("Malloc called with size %zu\n",size);
+    
     size_t asize, extendsize;;
     void *bp=NULL;
     if (heap_start == NULL) // Initialize heap if it isn't initialized
@@ -352,16 +355,14 @@ void *malloc (size_t size) {
 		asize=min_block_size;
 	else
 		asize = round_up(size + wsize, dsize);
-    dbg_printf("Requested Size %zu allocating size %zu\n",size,asize);
     
-    //dbg_printf("Calling find_fit\n");
-	/* Search through heap for possible fit */
+    
+	/* Search through segregated lists for possible fit */
 	if ((bp = find_fit(asize)) != NULL) {
 		place(bp, asize);
-		//dbg_printf("Returning from malloc %p \n",bp+wsize);
-		return bp+wsize;
+		return bp+wsize; //returning +wsize since bp points to header of assigned block and not payload.
 	}
-    dbg_printf("No fit found, calling extend heap \n");
+    
 	/* If no fit, get more memory and allocate memory */
 	extendsize = MAX(asize, CHUNKSIZE);
 	if ((bp = extend_heap(extendsize)) == NULL)
@@ -374,35 +375,34 @@ void *malloc (size_t size) {
  * free
  */
 void free (void *ptr) {
-    //dbg_printf("Free called %p\n",ptr);
+    
     if (ptr == NULL)
     {
         return;
     }
     block_t *block = payload_to_header(ptr);
-    dbg_printf("Free called for block pointer %p\n",block);
+	block_t *block_next=find_next(block);
 	size_t size = get_size(block);
 
     write_header(block, size, GET_PREV_ALLOC(block));
+	
+	//writing footer of the current free block only if the size is grater than 16B
 	if(size > dsize)
     	write_footer(block, size, GET_PREV_ALLOC(block));
     
-	write_header(find_next(block),get_size(find_next(block)),get_alloc(find_next(block)));
+	//modify header of next block to denote that its previous block is now free.
+	write_header(block_next,get_size(block_next),get_alloc(block_next));
     
 	/* Add free block to appropriate segregated list */
-	//freeList_LIFO_insert((block_f *)block, size);
 	freeList_FIFO_insert((block_f *)block, size);
-	dbg_printf("after call of FIFO insert in free block next %p and its size %zu\n",find_next(block),get_size(find_next(block)));
-	dbg_printf("Calling coalesce from free\n");
 	coalesce((block_t *)block);
-	dbg_printf("Returned from coalesce in free \n");
+	
 }
 
 /*
  * realloc
  */
 void *realloc(void *ptr, size_t size) {
-    dbg_printf("Realloc called for ptr %p \n",ptr);
 	block_t *block = payload_to_header(ptr);
     size_t copysize;
     void *newptr;
@@ -502,7 +502,12 @@ static bool aligned(const void *p) {
  */
 
 /*
- * mm_checkheap
+ * A function that checks all the invariants of my dynamic memory allocator.
+ * It checks for each block's alignment and whether they are in limits of heap
+ * It checks for previous and current bit consistency.
+ * for free blocks we check for total count of free block when traversing entire heap with
+ * total count by just traversing free list
+ * also we check for previous and next pointer consistencies.
  */
 bool mm_checkheap(int lineno) {
 	dbg_printf("Printing Heap blocks \n");
@@ -519,26 +524,33 @@ bool mm_checkheap(int lineno) {
 	unsigned int total_free_block_list=0;
 	for(i=heap_start;get_size(i) > 0; i = find_next(i))
 	{
+		//printing starting address of each heap block along with its size
+		//and previous and current allocation present in its header
 		if(get_alloc(i))
 			dbg_printf("Heap Block %p size %zu prev allocation %zu current allocation %zu\n",i,get_size(i),GET_PREV_ALLOC(i),get_alloc(i));
 		
+		//Doing the below only for free blocks
 		if(!get_alloc(i))
 		{
 			total_free_block++;
 			block_f *free_block=(block_f *)i;
 			dbg_printf("FreeList Block %p size %zu prev allocation %zu current allocation %zu \n",i,get_size(i),GET_PREV_ALLOC(i),get_alloc(i));
+			
 			//check for free block header and footer mismatch
+			//only if free block size is greater than dsize
 			if(get_size(i) > dsize && GET(HDRP(i)) != GET(FTRP(i)))
 			{
 				dbg_printf("Free block %p header %p size %zu and footer %p size %zu mismatch \n",i,HDRP(i),GET(HDRP(i)),FTRP(i),GET(FTRP(i)));
 				return false;
 			}
 			//check for free block prev and next pointer consistency
+			// can check for net pointer in 16B as 16B free block stores next pointer
 			if( free_block->next_free!=NULL && get_size( (block_t *)(free_block->next_free) ) > dsize && free_block->next_free->prev_free!=free_block)
 			   {
 				   dbg_printf("Free block %p next pointer is incosistent \n",i);
 				   return false;
 			   }
+			//checking for previous pointer consistency only for free block size > dsize
 			if(get_size(i) > dsize && free_block->prev_free!=NULL && free_block->prev_free->next_free!=free_block)
 			   {
 				   dbg_printf("Free block %p prev pointer is %p whose next pointer is %p inconsistent \n",i,free_block->prev_free,free_block->prev_free->next_free);
@@ -552,19 +564,22 @@ bool mm_checkheap(int lineno) {
 			   }
 			
 		}
-		//alignment check
+		
+		//alignment check for each block
 		if(!aligned((char *)i+wsize))
 		   {
 			   dbg_printf("Block pointer %p isn't aligned \n",i);
 			   return false;
 		   }
-		// presence inside heap check
+		// presence inside heap check for each block
 		if(!in_heap((char *)i+wsize))
 		{
 			dbg_printf("Block pointer %p isn't in heap \n",i);
 			return false;
 		}
-		//previous/next allocation/free bit consistency check
+		
+		//previous/next allocation/free bit consistency check for each block
+		// If current allocation is 0 then next block's prev allocation should also be 0
 		if(get_alloc(i)==0) 
 		{
 			if(GET_PREV_ALLOC(find_next(i))!=0)
@@ -573,6 +588,7 @@ bool mm_checkheap(int lineno) {
 				return false;
 			}
 		}
+		// If current allocation is 1 then next block's prev allocation should also be 1
 		if(get_alloc(i)==1)
 		{
 			if(GET_PREV_ALLOC(find_next(i))!=2)
@@ -582,7 +598,9 @@ bool mm_checkheap(int lineno) {
 			}
 		}
 	}
+	
 	dbg_printf("All blocks printed now checking for each free block's range \n");	
+	
 	/* Checking if all blocks in each freelist fall within
 	   the appropriate ranges (Different segregated lists) */
 	for (sizeatstart = 0; sizeatstart < TOTALLIST; sizeatstart++) 
@@ -686,9 +704,15 @@ bool mm_checkheap(int lineno) {
 	return true;
 }
 
+/*
+* In case a malloc request for certain size is not able to be accommodated
+* with present free blocks in free list. 
+* We call extend heap to create new free memory of size maximum of requested v/s defined chunksize.
+* After creating this new memory we call coalesce in case the previous continous chunk of memory in heap
+* was also free. To not let two consecutive free memory present together.
+*/ 
 static block_t *extend_heap(size_t size) 
 {
-    dbg_printf("Extend heap called with size %zu\n",size);
     void *bp;
 
     // Allocate an even number of words to maintain alignment
@@ -702,41 +726,56 @@ static block_t *extend_heap(size_t size)
     block_t *block = payload_to_header(bp);
     write_header(block, size, GET_PREV_ALLOC(block));
     write_footer(block, size, GET_PREV_ALLOC(block));
-    dbg_printf("new extend heap block address %p size %zu and original bp %p\n",block,size,bp);
-	
-    //dbg_printf("Calling freeList_FIFO_insert in extend heap \n");
-    /* Add to segregated list */
+    
+    /* Add to appropriate segregated list */
 	freeList_FIFO_insert((block_f *)block, size);
-	dbg_printf("Returned from freeList_FIFO_insert in extend heap \n");
     
     // Create new epilogue header
     block_t *block_next = find_next(block);
-    dbg_printf("new epilogue %p\n",block_next);
     write_header(block_next, 0, 1);
     
-    //dbg_printf("Calling coalesce from extend_heap\n");
     // Coalesce in case the previous block was free
     return coalesce((block_t *)block);
 }
 
 /*
- * <what does coalesce do?>
+ * Coalesce is for combining consecutive free blocks in memory to form
+ * a single unified block of free memory. 
+ * It is done so that in future if certain request come to allocate memory
+ * which can be served by this unified block, it can be served and thus to
+ * not call extend_heap.
  */
 static block_t *coalesce(block_t * block) 
 {
 	dbg_printf("Coalesce called\n");
+	size_t prev_alloc = GET_PREV_ALLOC(block);
+	size_t next_alloc = get_alloc(block_next);
+    size_t size = get_size(block);
+	
 	block_t *block_next = find_next(block);
     block_t *block_prev = NULL;
+	
+	// Since 16B free blocks doesn't have footer. 
+	// I am taking the present passed starting block address - 2 * wsize 
+	// Then i am checking if this calculated address is header of 16B free block
+	// And if this 16B free block is free
+	// And if this 16B free block is present in 16B segregated free list. 
+	
+	// The presence in segregated free list check is performed since
+	// some garbage value was apparently satisfying dsize and free bit allocationg requirement
+	// which was giving wrong results.
+	// It indeed affects a bit of throughput
 	block_f_sixteen *startp=(block_f_sixteen *)(GET(freeList_start+SEGLIST0));
-	block_f_sixteen *footerp=(block_f_sixteen *)((&(block->header))-2);
-	word_t *foot=(&(block->header)) -2;
-	size_t prev_size=extract_size(*foot);
-    size_t prev_alloc = GET_PREV_ALLOC(block);
-	while(prev_alloc == 0 && startp!=NULL && prev_size==dsize && startp!=footerp)
+	block_f_sixteen *headerp=(block_f_sixteen *)((&(block->header))-2);
+	word_t *head=(&(block->header)) -2;
+	size_t prev_size=extract_size(*head);
+    
+	while(prev_alloc == 0 && get_alloc( (block_t *)headerp )==0 &&startp!=NULL && prev_size==dsize && startp!=headerp)
 	{
 		startp=startp->next_free;	
 	}
-	if(startp!=footerp)
+	
+	if(startp!=headerp)
 		block_prev=find_prev(block);
 	else block_prev=(block_t *)((char *)block-dsize);
 	
@@ -746,61 +785,65 @@ static block_t *coalesce(block_t * block)
     block_f *block_free=(block_f *)block;
     block_f *block_next_free=(block_f *)block_next;
     block_f *block_prev_free=(block_f *)block_prev;
-	size_t next_alloc = get_alloc(block_next);
-    size_t size = get_size(block);
+	
 	
     if (prev_alloc && next_alloc)              // Case 1
     {
-	    dbg_printf("Case 1 entered \n");
     	size_t block_next_size=get_size(block_next);
-		write_header(block_next,block_next_size,1);
+		//tell next block that its previous block is now free
+		write_header(block_next,block_next_size,CURRENTALLOCATED);
     }
 
     else if (prev_alloc && !next_alloc)        // Case 2
     {
-	    dbg_printf("Case 2 entered \n");
     	size_t block_next_size=get_size(block_next);
         freeList_del(block_free,size);
 	    freeList_del(block_next_free,block_next_size);
 	    
         size += block_next_size;
-        write_header(block, size, prev_alloc);
+        
+		write_header(block, size, prev_alloc);
 	    write_footer(block,size,prev_alloc);
-		//dbg_printf("block %p size %zu\n",block,block->header);
+		
 	    freeList_FIFO_insert((block_f *)block,size);
     }
 
     else if (!prev_alloc && next_alloc)        // Case 3
     {
-	    dbg_printf("Case 3 entered \n");
+	    
   	  	size_t block_prev_size=get_size(block_prev);
     	size_t block_next_size=get_size(block_next);
-        
+        size_t prev_alloc_prev_block=GET_PREV_ALLOC(block_prev);
+		
 		freeList_del(block_free,size);
 	    freeList_del(block_prev_free,block_prev_size);
-        dbg_printf("Returned from bboth freeList_Del \n"); 
+         
         size += block_prev_size;
-		write_header(block_prev, size, GET_PREV_ALLOC(block_prev));
-		write_header(block_next,block_next_size,1);
-    	write_footer(block_prev,size,GET_PREV_ALLOC(block_prev)); 
-	 	//dbg_printf("block %p size %zu\n",block_prev,block_prev->header);    
+		
+		write_header(block_prev, size, prev_alloc_prev_block);
+		write_footer(block_prev,size,prev_alloc_prev_block); 
+		
+		//tell next block that prev block is now free.
+		write_header(block_next,block_next_size,CURRENTALLOCATED);
+        
 		freeList_FIFO_insert(block_prev_free,size);
         block=block_prev;
     }
 
     else                                        // Case 4
     {
-	    dbg_printf("Case 4 entered \n");
+	    
   	  	size_t block_prev_size=get_size(block_prev);
     	size_t block_next_size=get_size(block_next);
-        freeList_del(block_free,size);
+        size_t prev_alloc_prev_block=GET_PREV_ALLOC(block_prev);
+		
+		freeList_del(block_free,size);
         freeList_del(block_next_free,block_next_size);
 	    freeList_del(block_prev_free,block_prev_size);
         
         size += block_next_size + block_prev_size;
-        write_header(block_prev, size, GET_PREV_ALLOC(block_prev));
-		//dbg_printf("block %p sze %zu \n",block_prev,block_prev->header);
-	    write_footer(block_prev,size,GET_PREV_ALLOC(block_prev)); 
+        write_header(block_prev, size, prev_alloc_prev_block);
+	    write_footer(block_prev,size,prev_alloc_prev_block); 
 		freeList_FIFO_insert(block_prev_free,size);
 		block=block_prev;
     }
@@ -810,7 +853,6 @@ static block_t *coalesce(block_t * block)
 
 static void freeList_FIFO_insert(block_f *block,size_t size)
 {
-	dbg_printf("freelist_fifo entered with blck pointer %p and size %zu and footer size %zu\n",block,size,GET(FTRP((block_t *)block)));
 	char *listend;
 	char *segstart;
 	char *segend;
@@ -890,22 +932,22 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
 		segend = freeList_end + SEGLIST14;
 		listend = (char *) GET(segend);
 	}
-	dbg_printf("segstart %p segend %p listend %p\n",segstart,segend,listend);
+	
+	//handling cases of insertion of free block of sizes dsize and others separately
 	if(size <= LIST0_LIMIT)
 	{
 		block_f_sixteen *small_block=(block_f_sixteen *)block;
+		//if list is empty
 		if(listend==NULL)
     		{
-        		dbg_printf("If of freeList_fifo_insert for small block\n");
         		//set current block as head
         		PUT(segstart,(size_t)(small_block));
 				PUT(segend,(size_t)(small_block));
-        		dbg_printf("segstart %p segend %p size %zu \n", segstart, segend,(size_t)small_block);
         		small_block->next_free=NULL;
     		}
+		//insert at last of list
 		else
 		{
-			dbg_printf("Else of fifo insert for small block\n");
        		block_f_sixteen *listend_blockf=(block_f_sixteen *)listend;
 			small_block->next_free=NULL;
 			listend_blockf->next_free=small_block;
@@ -916,17 +958,15 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
 	{
 		if(listend==NULL)
     		{
-        		dbg_printf("If of freeList_fifo_insert \n");
+        		
         		//set current block as head
         		PUT(segstart,(size_t)(block));
 				PUT(segend,(size_t)(block));
-        		dbg_printf("segstart %p segend %p size %zu \n", segstart, segend,(size_t)block);
         		block->prev_free=NULL;
         		block->next_free=NULL;
     		}
 		else
 		{
-			dbg_printf("Else of fifo insert \n");
        		block_f * listend_blockf=(block_f *)listend;
 			block->prev_free=listend_blockf;
 			block->next_free=NULL;
@@ -938,16 +978,14 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
 
 static void freeList_del(block_f *block,size_t size)
 {
-	dbg_printf("freeList_del called for block %p and size %zu \n",block,size);
+	//handling deletion of free block of sizes dsize and others separately
 	if (size <= LIST0_LIMIT)
 		{
 			block_f_sixteen *small_block=(block_f_sixteen *)block;
 			if(small_block == ( (block_f_sixteen *)(GET(freeList_start + SEGLIST0)) ))
 			{
-				dbg_printf("small block at start of freelist \n");
 				if(small_block->next_free==NULL)
 				{
-					dbg_printf("only small block in 16B seg list \n");
 					PUT(freeList_end + SEGLIST0, (size_t)NULL);
 					PUT(freeList_start + SEGLIST0,(size_t)NULL);
 				}
@@ -959,11 +997,9 @@ static void freeList_del(block_f *block,size_t size)
 			}
 			else if(small_block->next_free==NULL)
 			{
-				dbg_printf("small block at end of freelist \n");
 				block_f_sixteen *startp=(block_f_sixteen *)(GET(freeList_start + SEGLIST0));
-				block_f_sixteen *endp=(block_f_sixteen *)(GET(freeList_end + SEGLIST0));
 				block_f_sixteen *prevp=NULL;
-				while(startp!=endp)
+				while(startp!=small_block)
 				{
 					prevp=startp;
 					startp=startp->next_free;
@@ -973,28 +1009,23 @@ static void freeList_del(block_f *block,size_t size)
 			}
 			else
 			{
-				dbg_printf("small block in middle of freelist \n");
 				block_f_sixteen *startp=(block_f_sixteen *)(GET(freeList_start + SEGLIST0));
 				block_f_sixteen *prevp=NULL;
 				while(startp != small_block)
 				{
-					//dbg_printf("prevp %p startp %p startp next %p \n",prevp,startp,startp->next_free);
 					prevp=startp;
 					startp=startp->next_free;
 				}
-				dbg_printf("prevp %p startp %p and small_block %p\n",prevp,startp,small_block);
 				prevp->next_free=small_block->next_free;
 				small_block->next_free=NULL;
 			}
-			dbg_printf("deleted small block \n");
+			//maintaining allocation status in the header since removing them was throwing segmentation fault
 			small_block->header=(small_block->header) & 0x3;
 		}
 	else
 	{
 		if(block->prev_free==NULL) //at start of freeList
 		{
-			dbg_printf("block at start of freelist\n");
-		
 			if (size <= LIST1_LIMIT)
 			{
 				if( block->next_free==NULL  )
@@ -1172,13 +1203,11 @@ static void freeList_del(block_f *block,size_t size)
 				PUT(freeList_end + SEGLIST13, (size_t) (block->prev_free));
 			else
 				PUT(freeList_end + SEGLIST14, (size_t) (block->prev_free));
-        		dbg_printf("it is last block in its list \n");
 			block->prev_free->next_free=NULL;
 			block->prev_free=NULL;
 		}
 		else //in middle of freeList
 		{
-		    	dbg_printf("in Middle of its list\n");
 			block->prev_free->next_free=block->next_free;
 			block->next_free->prev_free=block->prev_free;
 			block->prev_free=NULL;
@@ -1192,7 +1221,6 @@ static void freeList_del(block_f *block,size_t size)
 */
 static void *find_fit(size_t asize)
 {
-	dbg_printf("Find_fit called with asize %zu\n",asize);
 	size_t sizeatstart;
 	char *bp = NULL;
 
@@ -1272,7 +1300,6 @@ static void *find_fit(size_t asize)
 		if ((bp = find(sizeatstart, asize)) != NULL) 
 			return bp;
 	}
-	dbg_printf("All if else failed in find_fit \n");
 	return bp;
 }
 
@@ -1328,21 +1355,16 @@ static void *find(size_t sizeatstart, size_t actual_size)
 		else if(sizeatstart ==14 )
 			current = (char *) GET(freeList_start + SEGLIST14);
 
-    		current_f=(block_t *)current;
+    		current_free=(block_f *)current;
 	
 		/* Finding available free block in list */
-		while (current_f != NULL)
+		while (current_free != NULL)
 		{
-			current_free=(block_f *)current_f;
-			if (actual_size <= get_size(current_f))
+			if (actual_size <= get_size((block_t *)current_free))
 				break;	
-			current_f = (block_t *)(current_free->next_free);
+			current_free = current_free->next_free;
 		}
-		if(current_f!=NULL)
-       		     dbg_printf("Current where block will fit %p size %zu \n",current_f,get_size(current_f));
-		else 
-	            	dbg_printf("Current is null \n");
-		return current_f;
+		return ((block_t *)current_free);
 	}
 }
 
@@ -1350,26 +1372,24 @@ static void *find(size_t sizeatstart, size_t actual_size)
  {
      block_t * block=(block_t *)bp;
      size_t csize = get_size(block);
-     dbg_printf("place called with bp %p requesting size %zu with passed block size %zu\n",bp,asize,csize);
     
      freeList_del((block_f *)block,csize);
      
-	 if ( (csize - asize) == min_block_size)
+	 //handling cases where splicing of a bigger block results in either a
+	 // 16B block or more, separately.
+	 if ( (csize - asize) == min_block_size )
 	 {
-		 dbg_printf("Place will create 16B free block on splicing of currently passed block \n");
 		 write_header(block, asize, (GET_PREV_ALLOC(block) | CURRENTALLOCATED));
 		 block_t *block_next=find_next(block);
-         dbg_printf("Block_next %p\n",block_next);
 	 	 write_header(block_next, min_block_size, PREVIOUSALLOCATED);
 		 freeList_FIFO_insert((block_f *)block_next,min_block_size);
 	 }
-     else if ((csize - asize) >= min_block_size)
-     {
-         dbg_printf("If entered of place \n");	
+     else if ((csize - asize) > min_block_size)
+     {	
          write_header(block, asize, (GET_PREV_ALLOC(block) | CURRENTALLOCATED));
          
          block_t *block_next=find_next(block);
-         dbg_printf("Block_next %p\n",block_next);
+      
 	 	 write_header(block_next, csize-asize, PREVIOUSALLOCATED);
          write_footer(block_next, csize-asize, PREVIOUSALLOCATED);
          
@@ -1380,6 +1400,7 @@ static void *find(size_t sizeatstart, size_t actual_size)
          write_header(block, csize, (GET_PREV_ALLOC(block) | CURRENTALLOCATED));
 		 block_t *block_next=find_next(block);
 		 write_header(block_next,get_size(block_next),(PREVIOUSALLOCATED | get_alloc(block_next)));
+		 
 		 //update the footer of next block only if next block is a free block of size more than dsize
 		 if( (!get_alloc(block_next)) && get_size(block_next) > dsize )
 			write_footer(block_next,get_size(block_next), (PREVIOUSALLOCATED | get_alloc(block_next)));
