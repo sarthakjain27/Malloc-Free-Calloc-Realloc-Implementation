@@ -731,7 +731,8 @@ static block_t *coalesce(block_t * block)
 	block_f_sixteen *footerp=(block_f_sixteen *)((&(block->header))-2);
 	word_t *foot=(&(block->header)) -2;
 	size_t prev_size=extract_size(*foot);
-	while(startp!=NULL && prev_size==dsize && startp!=footerp)
+    size_t prev_alloc = GET_PREV_ALLOC(block);
+	while(prev_alloc == 0 && startp!=NULL && prev_size==dsize && startp!=footerp)
 	{
 		startp=startp->next_free;	
 	}
@@ -745,7 +746,6 @@ static block_t *coalesce(block_t * block)
     block_f *block_free=(block_f *)block;
     block_f *block_next_free=(block_f *)block_next;
     block_f *block_prev_free=(block_f *)block_prev;
-    size_t prev_alloc = GET_PREV_ALLOC(block);
 	size_t next_alloc = get_alloc(block_next);
     size_t size = get_size(block);
 	
