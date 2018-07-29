@@ -94,7 +94,7 @@ typedef uint64_t word_t;
 static const size_t wsize = sizeof(word_t);   // word and header size (bytes)
 static const size_t dsize = 2*wsize;          // double word size (bytes)
 static const size_t min_block_size =dsize ; // Minimum block size
-static const size_t CHUNKSIZE = 512;    // requires (chunksize % 16 == 0)
+static const size_t CHUNKSIZE = 4096;    // requires (chunksize % 16 == 0)
 
 //static const word_t alloc_mask = 0x1;
 static const word_t size_mask = ~(word_t)0xF;
