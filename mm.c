@@ -214,6 +214,7 @@ static char *HDRP(block_t *block)
 //returns pointer to footer of the block
 static char *FTRP(block_t *block)
 {
+	//dbg_printf("FTRP value for pointer %p %zu",block,*(word_t *)(block->payload + get_size(block)-dsize));
 	return (char *)((char *)block + get_size(block) - wsize);
 }
 
@@ -527,7 +528,7 @@ bool mm_checkheap(int lineno) {
 			block_f *free_block=(block_f *)i;
 			dbg_printf("FreeList Block %p size %zu prev allocation %zu current allocation %zu \n",i,get_size(i),GET_PREV_ALLOC(i),get_alloc(i));
 			//check for free block header and footer mismatch
-			if(get_size(i) >dsize && GET(HDRP(i)) != GET(FTRP(i)))
+			if(get_size(i) > dsize && GET(HDRP(i)) != GET(FTRP(i)))
 			{
 				dbg_printf("Free block %p header %p size %zu and footer %p size %zu mismatch \n",i,HDRP(i),GET(HDRP(i)),FTRP(i),GET(FTRP(i)));
 				return false;
@@ -540,7 +541,7 @@ bool mm_checkheap(int lineno) {
 			   }
 			if(get_size(i) > dsize && free_block->prev_free!=NULL && free_block->prev_free->next_free!=free_block)
 			   {
-				   dbg_printf("Free block %p prev pointer is inconsistent \n",i);
+				   dbg_printf("Free block %p prev pointer is %p whose next pointer is %p inconsistent \n",i,free_block->prev_free,free_block->prev_free->next_free);
 				   return false;
 			   }
 			   //check for two consecutive free blocks presence
@@ -760,9 +761,9 @@ static block_t *coalesce(block_t * block)
 	    
         size += block_next_size;
         write_header(block, size, prev_alloc);
-        write_footer(block, size, prev_alloc);
-	    //dbg_printf("block %p size %zu\n",block,block->header);
-	    freeList_FIFO_insert(block_free,size);
+	    write_footer(block,size,prev_alloc);
+		//dbg_printf("block %p size %zu\n",block,block->header);
+	    freeList_FIFO_insert((block_f *)block,size);
     }
 
     else if (!prev_alloc && next_alloc)        // Case 3
@@ -776,11 +777,10 @@ static block_t *coalesce(block_t * block)
         
         size += block_prev_size;
 		write_header(block_prev, size, GET_PREV_ALLOC(block_prev));
-        write_footer(block_prev, size, GET_PREV_ALLOC(block_prev));
 		write_header(block_next,block_next_size,1);
-      	//dbg_printf("block %p size %zu\n",block_prev,block_prev->header);    
+    	write_footer(block_prev,size,GET_PREV_ALLOC(block_prev)); 
+	 	//dbg_printf("block %p size %zu\n",block_prev,block_prev->header);    
 		freeList_FIFO_insert(block_prev_free,size);
-	        
         block=block_prev;
     }
 
@@ -795,11 +795,10 @@ static block_t *coalesce(block_t * block)
         
         size += block_next_size + block_prev_size;
         write_header(block_prev, size, GET_PREV_ALLOC(block_prev));
-        write_footer(block_prev, size, GET_PREV_ALLOC(block_prev));
 		//dbg_printf("block %p sze %zu \n",block_prev,block_prev->header);
-	    
+	    write_footer(block_prev,size,GET_PREV_ALLOC(block_prev)); 
 		freeList_FIFO_insert(block_prev_free,size);
-        block=block_prev;
+		block=block_prev;
     }
 	dbg_printf("Returning from coalesce \n");
     return block;
@@ -807,7 +806,7 @@ static block_t *coalesce(block_t * block)
 
 static void freeList_FIFO_insert(block_f *block,size_t size)
 {
-	dbg_printf("freelist_fifo entered with blck pointer %p and size %zu \n",block,size);
+	dbg_printf("freelist_fifo entered with blck pointer %p and size %zu and footer size %zu\n",block,size,GET(FTRP((block_t *)block)));
 	char *listend;
 	char *segstart;
 	char *segend;
@@ -925,7 +924,6 @@ static void freeList_FIFO_insert(block_f *block,size_t size)
 		{
 			dbg_printf("Else of fifo insert \n");
        		block_f * listend_blockf=(block_f *)listend;
-	
 			block->prev_free=listend_blockf;
 			block->next_free=NULL;
 			listend_blockf->next_free=block;
@@ -967,7 +965,7 @@ static void freeList_del(block_f *block,size_t size)
 					startp=startp->next_free;
 				}
 				prevp->next_free=NULL;
-				PUT(freeList_end + SEGLIST1, (size_t)prevp);
+				PUT(freeList_end + SEGLIST0, (size_t)prevp);
 			}
 			else
 			{
@@ -1472,9 +1470,10 @@ static void write_header(block_t *block, size_t size, size_t alloc)
  */
 static void write_footer(block_t *block, size_t size, size_t alloc)
 {
-    //dbg_printf("write footer called with block %p, its footer is %p\n",block,((block->payload)+get_size(block)-dsize));
+    dbg_printf("write footer called with block %p, its footer is %p\n",block,((block->payload)+get_size(block)-dsize));
 	word_t *footerp = (word_t *)((block->payload) + get_size(block) - dsize);
-    *footerp = pack(size, alloc);
+	*footerp = pack(size, alloc);
+	dbg_printf("footerp val is %zu \n",*(word_t *)(block->payload + get_size(block) - dsize));
 }
 
 /*
