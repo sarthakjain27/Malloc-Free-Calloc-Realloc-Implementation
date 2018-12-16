@@ -1,7 +1,60 @@
-#############################
-# CS:APP Malloc Lab
-# Handout files for students
-#############################
+The main functions implemented are as follows: 
+
+1. mm init: Performs any necessary initializations, such as allocating the initial heap area. The return
+value should be false if there was a problem in performing the initialization, true otherwise. You
+must reinitialize all of your data structures in this function, because the drivers call your mm init
+function every time they begin a new trace to reset to an empty heap.
+
+2. malloc: The malloc routine returns a pointer to an allocated block payload of at least size
+bytes. The entire allocated block should lie within the heap region and should not overlap with any
+other allocated block. Malloc always returns 16-byte aligned pointers.
+
+3. free: The free routine frees the block pointed to by ptr. It returns nothing. This routine is only
+guaranteed to work when the passed pointer was returned by an earlier call to malloc, calloc, or
+realloc and has not yet been freed. free(NULL) has no effect.
+
+4. realloc: The realloc routine returns a pointer to an allocated region of at least size bytes
+with the following constraints:
+
+	– if ptr is NULL, the call is equivalent to malloc(size);
+	– if size is equal to zero, the call is equivalent to free(ptr) and should return NULL;
+	– if ptr is not NULL, it must have been returned by an earlier call to malloc or realloc and
+	not yet have been freed. The call to realloc takes an existing block of memory, pointed to by
+	ptr — the old block. Upon return, the contents of the new block should be the same as those
+	of the old block, up to the minimum of the old and new sizes. Everything else is uninitialized.
+	Achieving this involves either copying the old bytes to a newly allocated region or reusing the
+	existing region.
+	For example, if the old block is 16 bytes and the new block is 24 bytes, then the first 16 bytes
+	of the new block are identical to the first 16 bytes of the old block and the last 8 bytes are
+	uninitialized. Similarly, if the old block is 16 bytes and the new block is 8 bytes, then the
+	contents of the new block are identical to the first 8 bytes of the old block.
+	The function returns a pointer to the resulting region. The return value might be the same as the
+	old block—perhaps there is free space after the old block, or size is smaller than the old block
+	size—or it might be different. If the call to realloc does not fail and the returned address is
+	different than the address passed in, the old block has been freed and should not be used, freed,
+	or passed to realloc again.
+
+5. calloc: Allocates memory for an array of nmemb elements of size bytes each and returns a
+pointer to the allocated memory. The memory is set to zero before returning.
+
+6. mm checkheap: The mm checkheap function (the heap consistency checker, or simply heap
+checker) scans the heap and checks it for possible errors (e.g., by making sure the headers and footers
+of each block are identical). Your heap checker should run silently until it detects some error in the
+heap. Then, and only then, should it print a message and return false. If it finds no errors, it should
+return true. It is very important that your heap checker run silently; otherwise, it will produce too
+much output to be useful on the large traces.
+
+A quality heap checker is essential for debugging your malloc implementation. Many malloc
+bugs are too subtle to debug using conventional gdb techniques. The only effective technique for
+some of these bugs is to use a heap consistency checker. When you encounter a bug, you can isolate
+it with repeated calls to the consistency checker until you find the operation that corrupted your heap.
+Because of the importance of the consistency checker, it will be graded. If you ask members of the
+course staff for help, the first thing we will do is ask to see your checkheap function, so please write
+this function before coming to see us!
+
+If mm checkheap detects a problem with the heap, it can print the line number where mm checkheap
+was called, which allows you to call mm checkheap at numerous places in your code while you are
+debugging.
 
 ***********
 Main Files:
@@ -60,8 +113,4 @@ You can use mdriver-emulate to test the correctness of your code in
 handling 64-bit addresses:
 
 	unix> ./mdriver-emulate
-
-You should see the exact same utilization numbers as you did with the
-regular driver.  No timing is done, and so the time and throughput
-numbers show up as zeros.
 
