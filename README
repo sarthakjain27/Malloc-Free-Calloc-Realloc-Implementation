@@ -1,8 +1,8 @@
 The main functions implemented are as follows: 
 
 1. mm init: Performs any necessary initializations, such as allocating the initial heap area. The return
-value should be false if there was a problem in performing the initialization, true otherwise. You
-must reinitialize all of your data structures in this function, because the drivers call your mm init
+value should be false if there was a problem in performing the initialization, true otherwise. It
+reinitializes all of the data structures in this function, because the drivers call mm init
 function every time they begin a new trace to reset to an empty heap.
 
 2. malloc: The malloc routine returns a pointer to an allocated block payload of at least size
